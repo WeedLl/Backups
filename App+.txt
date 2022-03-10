@@ -1,0 +1,16 @@
+1. git;
+2. Fork - GUI для git;
+3. HomeBrew - менеджер пакетов;
+4. Vim (brew with macvim) + vim-plug;
+5. Mac Vim (brew);
+6. ZSH + brew OhMyZsh (+ zsh-syntax-highkighting);
+7. FZF.
+
+Некоторые утилиты для Mac OS:
+1. CheatSheet;
+2. Downie 4;
+3. iStat menus;
+4. NightOwl;
+5. CleanMyMac X;
+6. Macs Fun Control.
+
