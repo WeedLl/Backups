@@ -70,7 +70,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting)
+plugins=(git zsh-syntax-highlighting vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -100,7 +100,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Дефолтные настройки
+
+#_______________________________________________ Дефолтные настройки ______________________________
 
 PATH=/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}
 export PATH
@@ -108,11 +109,12 @@ alias python=python3
 alias pip="/Library/Frameworks/Python.framework/Versions/3.10/bin/pip3"
 
 
-# SmartMooving
+#_______________________________________________ SmartMooving ______________________________________
 alias Dpython='cd ~/Documents/Python'
 alias Dpycharm='cd ~/PycharmProjects'
+alias Dbackup='cd ~/Documents/For\ Sys/Backup'
 
-# ShortCat
+#_______________________________________________ ShortCat __________________________________________
 ## Vim
 alias default_vim='/usr/bin/vim'
 alias vim='/Applications/Програмирование/MacVim.app/Contents/MacOS/Vim'
@@ -122,16 +124,49 @@ alias fopen='open $(fzf)'
 
 alias nopen='open "$(PWD)"'
 
-# Function
+## GIT
+alias glol='git log --pretty=format:"%h %an %ad %s" --name-only --graph'
+alias glog='git log --graph'
+
+#_______________________________________________ Function __________________________________________
 ## Backup
-function bzv_backup() {
+function backup_bzv() {
 cp -R ~/.bash_profile ~/Documents/For\ Sys/Backup/
 cp -R ~/.zshrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.vimrc ~/Documents/For\ Sys/Backup/
 }
 
-function bzv_upload() {
+function upload_bzv() {
 cp -R ~/Documents/For\ Sys/Backup/.bash_profile ~/
 cp -R ~/Documents/For\ Sys/Backup/.zshrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.vimrc ~/
 }
+
+
+#_______________________________________________ ZSH-vim-status ____________________________________
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+VI_MODE_SET_CURSOR=true
+MODE_INDICATOR="%F{red}+%f"
+INSERT_MODE_INDICATOR="%F{green}+%f"
+
+## Моя функция для обновления PS1
+function _vi-mode-set-cursor-shape-for-keymap() {
+  [[ "$VI_MODE_SET_CURSOR" = true ]] || return
+  local _shape=0
+  case "${1:-${VI_KEYMAP:-main}}" in
+    main)    _shape="%F{red}--NORMAL--%f " ;; # vi insert: line
+    viins)   _shape="%F{green}--INSERT--%f " ;; # vi insert: line
+    isearch) _shape="%F{green}--INSERT--%f " ;; # inc search: line
+    command) _shape="%F{yellow}----%f " ;; # read a command name
+    vicmd)   _shape="%F{green}--INSERT--%f " ;; # vi cmd: block
+    visual)  _shape="%F{white}--VISUAL--%f " ;; # vi visual mode: block
+    viopp)   _shape="%F{black}--BLINKING--%f " ;; # vi operation pending: blinking block
+    *)       _shape="%F{blue}>>>%f " ;;
+  esac
+  ZVIMMODE=${_shape}
+  export ZVIMMODE
+}
+# Бывают случаи, что для интерактивной переменной необходимо прописывать \$ вначале, но иногда,
+# достаточно просто значка $. Не знаю, с чем это связанно.
+PS1+="\${ZVIMMODE}"
+export PS1

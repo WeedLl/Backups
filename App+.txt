@@ -1,10 +1,10 @@
 1. git;
 2. Fork - GUI для git;
 3. HomeBrew - менеджер пакетов;
-4. Vim (brew with macvim) + vim-plug;
+4. Vim (brew with macvim) + vim-plug(git);
 5. Mac Vim (brew);
-6. ZSH + brew OhMyZsh (+ zsh-syntax-highkighting);
-7. FZF.
+6. ZSH (brew?) + brew OhMyZsh (+ zsh-syntax-highkighting);
+7. FZF (brew).
 
 Некоторые утилиты для Mac OS:
 1. CheatSheet;
@@ -14,3 +14,10 @@
 5. CleanMyMac X;
 6. Macs Fun Control.
 
+Программы :
+1. Telegram;
+2. Spark;
+3. Trello;
+4. Discord;
+5. PyCharm;
+- Остальные по желанию.

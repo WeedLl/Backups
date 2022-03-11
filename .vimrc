@@ -13,7 +13,7 @@ set shiftwidth=4
 set smarttab
 set expandtab "Ставим табы пробелами
 set softtabstop=4 "4 пробела в табе
-"
+
 set mousehide "Спрятать курсор мыши когда набираем текст
 set mouse=a "Включить поддержку мыши
 set termencoding=utf-8 "Кодировка терминала
