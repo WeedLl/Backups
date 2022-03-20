@@ -130,16 +130,18 @@ alias glog='git log --graph'
 
 #_______________________________________________ Function __________________________________________
 ## Backup
-function backup_bzv() {
+function backup_bzvp() {
 cp -R ~/.bash_profile ~/Documents/For\ Sys/Backup/
 cp -R ~/.zshrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.vimrc ~/Documents/For\ Sys/Backup/
+cp -R ~/.psqlrc ~/Documents/For\ Sys/Backup/
 }
 
-function upload_bzv() {
+function upload_bzvp() {
 cp -R ~/Documents/For\ Sys/Backup/.bash_profile ~/
 cp -R ~/Documents/For\ Sys/Backup/.zshrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.vimrc ~/
+cp -R ~/Documents/For\ Sys/Backup/.psqlrc ~/
 }
 
 
