@@ -128,6 +128,9 @@ alias nopen='open "$(PWD)"'
 alias glol='git log --pretty=format:"%h %an %ad %s" --name-only --graph'
 alias glog='git log --graph'
 
+## PGCLI
+alias psqlc=pgcli
+
 #_______________________________________________ Function __________________________________________
 ## Backup
 function backup_bzvp() {
@@ -135,6 +138,7 @@ cp -R ~/.bash_profile ~/Documents/For\ Sys/Backup/
 cp -R ~/.zshrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.vimrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.psqlrc ~/Documents/For\ Sys/Backup/
+cp -R ~/.config/pgcli/config ~/Documents/For\ Sys/Backup/config_pgcli
 }
 
 function upload_bzvp() {
@@ -142,6 +146,7 @@ cp -R ~/Documents/For\ Sys/Backup/.bash_profile ~/
 cp -R ~/Documents/For\ Sys/Backup/.zshrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.vimrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.psqlrc ~/
+cp -R ~/Documents/For\ Sys/Backup/config_pgcli ~/.config/pgcli/config
 }
 
 

@@ -4,7 +4,9 @@
 4. Vim (brew with macvim) + vim-plug(git);
 5. Mac Vim (brew);
 6. ZSH (brew?) + brew OhMyZsh (+ zsh-syntax-highkighting);
-7. FZF (brew).
+7. FZF (brew);
+8. PostgreSQL (brew);
+9. Pgcli (brew).
 
 Некоторые утилиты для Mac OS:
 1. CheatSheet;
