@@ -102,17 +102,22 @@ source $ZSH/oh-my-zsh.sh
 
 
 #_______________________________________________ Дефолтные настройки ______________________________
-
 PATH=/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}
 export PATH
 alias python=python3
 alias pip="/Library/Frameworks/Python.framework/Versions/3.10/bin/pip3"
 
 
+#_______________________________________________ SysVAR ____________________________________________
+RPS1="%T"
+export RPS1
+
+
 #_______________________________________________ SmartMooving ______________________________________
 alias Dpython='cd ~/Documents/Python'
 alias Dpycharm='cd ~/PycharmProjects'
 alias Dbackup='cd ~/Documents/For\ Sys/Backup'
+
 
 #_______________________________________________ ShortCat __________________________________________
 ## Vim
@@ -130,6 +135,7 @@ alias glog='git log --graph'
 
 ## PGCLI
 alias psqlc=pgcli
+
 
 #_______________________________________________ Function __________________________________________
 ## Backup
@@ -151,11 +157,6 @@ cp -R ~/Documents/For\ Sys/Backup/config_pgcli ~/.config/pgcli/config
 
 
 #_______________________________________________ ZSH-vim-status ____________________________________
-VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
-VI_MODE_SET_CURSOR=true
-MODE_INDICATOR="%F{red}+%f"
-INSERT_MODE_INDICATOR="%F{green}+%f"
-
 ## Моя функция для обновления PS1
 function _vi-mode-set-cursor-shape-for-keymap() {
   [[ "$VI_MODE_SET_CURSOR" = true ]] || return

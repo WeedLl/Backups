@@ -1,9 +1,13 @@
 #_______________________________________________ Дефолтные настройки ______________________________
-
 PATH=/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}
 export PATH
 alias python=python3
 alias pip="/Library/Frameworks/Python.framework/Versions/3.10/bin/pip3"
+
+
+#_______________________________________________ SysVAR ____________________________________________
+PS1="\T\n\u $PWD ~ "
+export PS1
 
 
 #_______________________________________________ SmartMooving ______________________________________
