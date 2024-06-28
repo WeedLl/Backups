@@ -13,14 +13,13 @@ ________________________________________________ Некоторые утилит
 1. CheatSheet;
 2. Downie 4;
 3. iStat menus;
-4. NightOwl;
-5. CleanMyMac X;
-6. Macs Fun Control.
+4. Gemini 2;
+5. iMazing;
+6. CoconutBattery.
 
 ________________________________________________ Программы _________________________________________
 1. Telegram;
-2. Spark;
-3. Trello;
-4. Discord;
-5. PyCharm;
+2. Trello;
+3. Discord;
+4. PyCharm;
 - Остальные по желанию.

@@ -70,9 +70,10 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting vi-mode)
+plugins=(git vi-mode)
 
 source $ZSH/oh-my-zsh.sh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # User configuration
 
@@ -107,6 +108,8 @@ export PATH
 alias python=python3
 alias pip="/Library/Frameworks/Python.framework/Versions/3.10/bin/pip3"
 
+PATH=/opt/homebrew/bin:${PATH}
+export PATH
 
 #_______________________________________________ SysVAR ____________________________________________
 RPS1="%T"
@@ -122,10 +125,10 @@ alias Dbackup='cd ~/Documents/For\ Sys/Backup'
 #_______________________________________________ ShortCat __________________________________________
 ## Vim
 alias default_vim='/usr/bin/vim'
-alias vim='/Applications/Програмирование/MacVim.app/Contents/MacOS/Vim'
-alias mac_vim='open -a /Applications/Програмирование/MacVim.app'
+alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+alias mac_vim='open -a /Applications/MacVim.app'
 ## FZF
-alias fopen='open $(fzf)'
+#alias fopen='open $(fzf)'
 
 alias nopen='open "$(PWD)"'
 
