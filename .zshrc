@@ -103,10 +103,10 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 #_______________________________________________ Дефолтные настройки ______________________________
-PATH=/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}
+PATH=/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}
 export PATH
 alias python=python3
-alias pip="/Library/Frameworks/Python.framework/Versions/3.10/bin/pip3"
+alias pip="/Library/Frameworks/Python.framework/Versions/3.12/bin/pip3"
 
 PATH=/opt/homebrew/bin:${PATH}
 export PATH
