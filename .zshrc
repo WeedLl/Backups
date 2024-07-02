@@ -74,6 +74,7 @@ plugins=(git vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # User configuration
 
@@ -111,6 +112,13 @@ alias pip="/Library/Frameworks/Python.framework/Versions/3.12/bin/pip3"
 PATH=/opt/homebrew/bin:${PATH}
 export PATH
 
+##Рекомендации HomeBrew для PostgreSQL после установки
+PATH=/opt/homebrew/opt/postgresql@15/bin:${PATH} #If you need to have postgresql@15 first in your PATH, run:
+export PATH
+
+export LDFLAGS="-L/opt/homebrew/opt/postgresql@15/lib" #For compilers to find postgresql@15 you may need to set:
+export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
+
 #_______________________________________________ SysVAR ____________________________________________
 RPS1="%T"
 export RPS1
@@ -128,7 +136,7 @@ alias default_vim='/usr/bin/vim'
 alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 alias mac_vim='open -a /Applications/MacVim.app'
 ## FZF
-#alias fopen='open $(fzf)'
+alias fopen='open $(fzf)'
 
 alias nopen='open "$(PWD)"'
 
@@ -160,6 +168,21 @@ cp -R ~/Documents/For\ Sys/Backup/config_pgcli ~/.config/pgcli/config
 
 
 #_______________________________________________ ZSH-vim-status ____________________________________
+###Рекомендация из видео https://www.youtube.com/watch?v=hIJh-KlQ7io
+bindkey -v          #Нахуя эти две строки не ясно
+export KEYTIMEOUT=1
+#Переключение по списку предложенных к автозаполнению через TAB клавишами vim
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+
+###
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+VI_MODE_SET_CURSOR=true
+MODE_INDICATOR="%F{red}+%f"
+INSERT_MODE_INDICATOR="%F{green}+%f"
+
 ## Моя функция для обновления PS1
 function _vi-mode-set-cursor-shape-for-keymap() {
   [[ "$VI_MODE_SET_CURSOR" = true ]] || return
