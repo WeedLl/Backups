@@ -61,9 +61,10 @@ set t_Co=256
 call plug#begin()
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-"" Отображение скрытых файлов и папок в NTree по умолчанию
-let NERDTreeShowHidden=1
-
+""Показывает статут гит файлов
+Plug 'Xuyuanp/nerdtree-git-plugin'
+""Подсветка SQL
+Plug 'shmup/vim-sql-syntax'
 
 ""Цветовые схемы colorscheme
 Plug 'morhetz/gruvbox'
@@ -74,8 +75,13 @@ call plug#end()
 ""Включение цветовой темы
 colorscheme gruvbox
 
+"" Отображение скрытых файлов и папок в NTree по умолчанию
+let NERDTreeShowHidden=1
 
-
+""Отображение количества строк
+let g:NERDTreeFileLines = 1 
+""Автоматическое закрытие Vim, если NerdTree является последним окном
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
 ""####Mappings
 
