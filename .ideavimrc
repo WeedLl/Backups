@@ -1,0 +1,54 @@
+""#### Основные параметы
+""Установка языка
+set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
+language en_US                 " sets the language of the messages / ui (vim)
+
+set ruler ""Статус в правом нижнем углу
+set autoindent ""Автоотступ
+
+" Настройки табов для Python, согласно рекоммендациям
+set tabstop=4 
+set shiftwidth=4
+set smarttab
+set expandtab "Ставим табы пробелами
+set softtabstop=4 "4 пробела в табе
+
+set mousehide "Спрятать курсор мыши когда набираем текст
+set mouse=a "Включить поддержку мыши
+set termencoding=utf-8 "Кодировка терминала
+" Вырубаем .swp и ~ (резервные) файлы
+set nobackup
+set noswapfile
+set encoding=utf-8 " Кодировка файлов по умолчанию
+set fileencodings=utf8,cp1251
+
+" Переносим на другую строчку, разрываем строки
+set wrap
+set linebreak
+
+" Удобное поведение backspace
+set backspace=indent,eol,start whichwrap+=<,>,[,]
+" Вырубаем черточки на табах
+set showtabline=1
+
+""Поиск
+set hlsearch ""Подсвета найденных слов
+set incsearch ""Инкрементальный поиск (предварительное отображение)
+
+""####Питонячие фишки
+" Перед сохранением вырезаем пробелы на концах (только в .py файлах)
+autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
+
+
+""####Плагины
+
+call plug#begin()
+
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+
+call plug#end()
+
+""####Mappings
+
+map <C-n> :NERDTreeToggle<CR>
+

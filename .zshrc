@@ -154,6 +154,7 @@ function backup_bzvp() {
 cp -R ~/.bash_profile ~/Documents/For\ Sys/Backup/
 cp -R ~/.zshrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.vimrc ~/Documents/For\ Sys/Backup/
+cp -R ~/.ideavimrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.psqlrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.config/pgcli/config ~/Documents/For\ Sys/Backup/config_pgcli
 }
@@ -162,6 +163,7 @@ function upload_bzvp() {
 cp -R ~/Documents/For\ Sys/Backup/.bash_profile ~/
 cp -R ~/Documents/For\ Sys/Backup/.zshrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.vimrc ~/
+cp -R ~/Documents/For\ Sys/Backup/.ideavimrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.psqlrc ~/
 cp -R ~/Documents/For\ Sys/Backup/config_pgcli ~/.config/pgcli/config
 }
