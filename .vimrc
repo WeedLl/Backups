@@ -3,23 +3,25 @@
 set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
 language en_US                 " sets the language of the messages / ui (vim)
 
-set number "" Нумерация строк на полях
+set number relativenumber "" Нумерация строк на полях
 set ruler ""Статус в правом нижнем углу
+set showcmd "Отображение вводимой комманды
 set autoindent ""Автоотступ
-
-" Настройки табов для Python, согласно рекоммендациям
-set tabstop=4 
-set shiftwidth=4
-set smarttab
-set expandtab "Ставим табы пробелами
-set softtabstop=4 "4 пробела в табе
-
+set colorcolumn=120 ""Вертикальная линия
 set mousehide "Спрятать курсор мыши когда набираем текст
 set mouse=a "Включить поддержку мыши
 set termencoding=utf-8 "Кодировка терминала
+
+set laststatus=2
+
+set scrolloff=5 "Всегда иметь вищульные отступы от верхнего и нижнего края
+set cursorline "Подсвечивать строку, на которой находится курсор
+autocmd InsertEnter,InsertLeave * set cursorline! "Прекратить подсвечивать строку в режиме INSERT
+
 " Вырубаем .swp и ~ (резервные) файлы
 set nobackup
 set noswapfile
+
 set encoding=utf-8 " Кодировка файлов по умолчанию
 set fileencodings=utf8,cp1251
 
@@ -32,13 +34,25 @@ set backspace=indent,eol,start whichwrap+=<,>,[,]
 " Вырубаем черточки на табах
 set showtabline=1
 
+"Размер истории для undo/redo 1000
+set undolevels=1000
+set history=1000
+
 ""Поиск
 set hlsearch ""Подсвета найденных слов
 set incsearch ""Инкрементальный поиск (предварительное отображение)
-
+"При вводе только маленьких букв регистронезависимый поиск, а если есть болшая- зависимый
+set ignorecase
+set smartcase
 
 
 ""####Питонячие фишки
+" Настройки табов для Python, согласно рекоммендациям
+set tabstop=4 
+set shiftwidth=4
+set smarttab
+set expandtab "Ставим табы пробелами
+set softtabstop=4 "4 пробела в табе
 " Перед сохранением вырезаем пробелы на концах (только в .py файлах)
 autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 " В .py файлах включаем умные отступы после ключевых слов

@@ -107,6 +107,7 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 PATH=/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}
 export PATH
 alias python=python3
+alias python3="/Library/Frameworks/Python.framework/Versions/3.12/bin/python3"
 alias pip="/Library/Frameworks/Python.framework/Versions/3.12/bin/pip3"
 
 PATH=/opt/homebrew/bin:${PATH}
