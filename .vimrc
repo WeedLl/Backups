@@ -2,48 +2,45 @@
 ""Установка языка
 set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
 language en_US                 " sets the language of the messages / ui (vim)
-
+set termencoding=utf-8 "Кодировка терминала
+set encoding=utf-8 " Кодировка файлов по умолчанию
+set fileencodings=utf8,cp1251
+""Меню
 set number relativenumber "" Нумерация строк на полях
 set ruler ""Статус в правом нижнем углу
 set showcmd "Отображение вводимой комманды
-set autoindent ""Автоотступ
 set colorcolumn=120 ""Вертикальная линия
 set mousehide "Спрятать курсор мыши когда набираем текст
 set mouse=a "Включить поддержку мыши
-set termencoding=utf-8 "Кодировка терминала
-
-set laststatus=2
-
-set scrolloff=5 "Всегда иметь вищульные отступы от верхнего и нижнего края
+set laststatus=2 "Постоянное отображение статуса
+set scrolloff=5 "Всегда иметь визульные отступы от верхнего и нижнего края
 set cursorline "Подсвечивать строку, на которой находится курсор
 autocmd InsertEnter,InsertLeave * set cursorline! "Прекратить подсвечивать строку в режиме INSERT
+
+""Строки
+" Переносим на другую строчку, разрываем строки
+set wrap
+set linebreak
+set autoindent "Автоотступ
+"Вырубаем черточки на табах
+set showtabline=1
+"Удобное поведение backspace
+set backspace=indent,eol,start whichwrap+=<,>,[,]
+
+""Поиск
+set hlsearch "Подсвета найденных слов
+set incsearch "Инкрементальный поиск (предварительное отображение)
+"При вводе только маленьких букв регистронезависимый поиск, а если есть болшая- зависимый
+set ignorecase
+set smartcase
+
+""Размер истории для undo/redo 1000
+set undolevels=1000
+set history=1000
 
 " Вырубаем .swp и ~ (резервные) файлы
 set nobackup
 set noswapfile
-
-set encoding=utf-8 " Кодировка файлов по умолчанию
-set fileencodings=utf8,cp1251
-
-" Переносим на другую строчку, разрываем строки
-set wrap
-set linebreak
-
-" Удобное поведение backspace
-set backspace=indent,eol,start whichwrap+=<,>,[,]
-" Вырубаем черточки на табах
-set showtabline=1
-
-"Размер истории для undo/redo 1000
-set undolevels=1000
-set history=1000
-
-""Поиск
-set hlsearch ""Подсвета найденных слов
-set incsearch ""Инкрементальный поиск (предварительное отображение)
-"При вводе только маленьких букв регистронезависимый поиск, а если есть болшая- зависимый
-set ignorecase
-set smartcase
 
 
 ""####Питонячие фишки
@@ -58,7 +55,6 @@ autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 " В .py файлах включаем умные отступы после ключевых слов
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 
-
 ""Подсветка синтаксиса
 syntax on 
 let python_highlight_all = 1 
@@ -67,11 +63,7 @@ let python_highlight_all = 1
 set t_Co=256
 
 
-
-
-
 ""####Плагины
-
 call plug#begin()
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
@@ -85,6 +77,7 @@ Plug 'morhetz/gruvbox'
 set background=dark 
 
 call plug#end()
+
 
 ""Включение цветовой темы
 colorscheme gruvbox
