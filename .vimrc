@@ -71,6 +71,8 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 ""Подсветка SQL
 Plug 'shmup/vim-sql-syntax'
+""Возможность читать PDF в вим
+Plug 'makerj/vim-pdf'
 
 ""Цветовые схемы colorscheme
 Plug 'morhetz/gruvbox'
@@ -84,7 +86,6 @@ colorscheme gruvbox
 
 "" Отображение скрытых файлов и папок в NTree по умолчанию
 let NERDTreeShowHidden=1
-
 ""Отображение количества строк
 let g:NERDTreeFileLines = 1 
 ""Автоматическое закрытие Vim, если NerdTree является последним окном
