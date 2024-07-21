@@ -42,6 +42,13 @@ set history=1000
 set nobackup
 set noswapfile
 
+""Запоминание вкладок (сворачиваний текста / vim folding)
+augroup remember_folds
+  autocmd!
+  autocmd BufWinLeave * mkview
+  autocmd BufWinEnter * silent! loadview
+augroup END
+
 
 ""####Питонячие фишки
 " Настройки табов для Python, согласно рекоммендациям
@@ -71,6 +78,8 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 ""Подсветка SQL
 Plug 'shmup/vim-sql-syntax'
+""Возможность читать PDF в вим
+Plug 'makerj/vim-pdf'
 
 ""Цветовые схемы colorscheme
 Plug 'morhetz/gruvbox'
