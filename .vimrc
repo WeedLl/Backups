@@ -50,8 +50,19 @@ augroup remember_folds
 augroup END
 
 
+""####Markdown
+""Folding
+set foldenable
+set foldmethod=indent
+set foldminlines=4
+set foldnestmax=4
+let g:markdown_folding=1
+
+""Правописание
+set spell spelllang=ru_ru,en_us
+
 ""####Питонячие фишки
-" Настройки табов для Python, согласно рекоммендациям
+" Настройки табов для Python, согласно рекомендациям
 set tabstop=4 
 set shiftwidth=4
 set smarttab
@@ -85,15 +96,34 @@ Plug 'makerj/vim-pdf'
 Plug 'morhetz/gruvbox'
 set background=dark 
 
+""MarkDown
+Plug 'godlygeek/tabular'
+Plug 'preservim/vim-markdown'
+
+""UltiSnips
+" Track the engine.
+Plug 'SirVer/ultisnips'
+" Snippets are separated from the engine. Add this if you want them:
+"Plugin 'honza/vim-snippets'
+
+"VimTex
+Plug 'lervag/vimtex'
+
+
 call plug#end()
 
+""MarkDown
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 ""Включение цветовой темы
 colorscheme gruvbox
 
 "" Отображение скрытых файлов и папок в NTree по умолчанию
 let NERDTreeShowHidden=1
-
 ""Отображение количества строк
 let g:NERDTreeFileLines = 1 
 ""Автоматическое закрытие Vim, если NerdTree является последним окном
