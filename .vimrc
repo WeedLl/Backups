@@ -43,12 +43,9 @@ set nobackup
 set noswapfile
 
 ""Запоминание вкладок (сворачиваний текста / vim folding)
-augroup remember_folds
-  autocmd!
-  autocmd BufWinLeave * mkview
-  autocmd BufWinEnter * silent! loadview
-augroup END
-
+nnoremap <space> za
+set foldcolumn=2 "Специальный столбец сгиба
+"Есть возможность изменять фолдметод автоматичски + также запоминать фолдинги при ручном вводе
 
 ""####Markdown
 ""Folding
