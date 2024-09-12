@@ -109,6 +109,8 @@ export PATH
 alias python=python3
 alias python3="/Library/Frameworks/Python.framework/Versions/3.12/bin/python3"
 alias pip="/Library/Frameworks/Python.framework/Versions/3.12/bin/pip3"
+alias vimdiff="/Applications/MacVim.app/Contents/bin/vimdiff"
+alias vimtutor="/Applications/MacVim.app/Contents/bin/vimtutor"
 
 PATH=/opt/homebrew/bin:${PATH}
 export PATH
@@ -135,7 +137,7 @@ alias Dbackup='cd ~/Documents/For\ Sys/Backup'
 ## Vim
 alias default_vim='/usr/bin/vim'
 alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
-alias mac_vim='open -a /Applications/MacVim.app'
+alias mvim='open -a /Applications/MacVim.app'
 ## FZF
 alias fopen='open $(fzf)'
 
