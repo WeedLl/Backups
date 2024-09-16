@@ -74,7 +74,6 @@ plugins=(git vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # User configuration
 
@@ -155,7 +154,6 @@ function backup_bzvp() {
 cp -R ~/.bash_profile ~/Documents/For\ Sys/Backup/
 cp -R ~/.zshrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.vimrc ~/Documents/For\ Sys/Backup/
-cp -R ~/.ideavimrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.psqlrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.config/pgcli/config ~/Documents/For\ Sys/Backup/config_pgcli
 }
@@ -164,23 +162,12 @@ function upload_bzvp() {
 cp -R ~/Documents/For\ Sys/Backup/.bash_profile ~/
 cp -R ~/Documents/For\ Sys/Backup/.zshrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.vimrc ~/
-cp -R ~/Documents/For\ Sys/Backup/.ideavimrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.psqlrc ~/
 cp -R ~/Documents/For\ Sys/Backup/config_pgcli ~/.config/pgcli/config
 }
 
 
 #_______________________________________________ ZSH-vim-status ____________________________________
-###Рекомендация из видео https://www.youtube.com/watch?v=hIJh-KlQ7io
-bindkey -v          #Нахуя эти две строки не ясно
-export KEYTIMEOUT=1
-#Переключение по списку предложенных к автозаполнению через TAB клавишами vim
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-
-###
 VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 VI_MODE_SET_CURSOR=true
 MODE_INDICATOR="%F{red}+%f"

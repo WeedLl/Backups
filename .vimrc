@@ -69,10 +69,6 @@ call plug#begin()
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 ""Показывает статут гит файлов
 Plug 'Xuyuanp/nerdtree-git-plugin'
-""Подсветка SQL
-Plug 'shmup/vim-sql-syntax'
-""Возможность читать PDF в вим
-Plug 'makerj/vim-pdf'
 
 ""Цветовые схемы colorscheme
 Plug 'morhetz/gruvbox'
