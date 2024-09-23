@@ -1,0 +1,76 @@
+snippet	a "Test"
+
+FuckU (arg, $1):
+	For you $1,
+	From $2
+
+endsnippet
+
+snippet c "Kolonka"
+
+| $1 | $2 |
+|----|----|
+| $3 | $4 |
+-----------
+
+endsnippet
+snippet dsj "Job FSO of date"
+INSERT INTO schedule VALUES
+('${1:Date}', 1, '${2:Job_status BelyaevD.P. }'),
+('$1', 2, '${3:Job_status Berdugin A.I.}'),
+('$1', 3, '${4:Job_status Bushev M.A.}'),
+('$1', 4, '${5:Job_status Voznyak A.E.}'),
+('$1', 5, '${6:Job_status Denisos S.I.}'),
+('$1', 6, '${7:Job_status Dmitrukov A.A.}'),
+('$1', 7, '${8:Job_status Koval E.V.}'),
+('$1', 8, '${9:Job_status Kravchenko K.V.}'),
+('$1', 9, '${10:Job_status Kuchukov A.A.}'),
+('$1', 10, '${11:Job_status Mamonov I.A.}'),
+('$1', 11, '${12:Job_status Melnikov Y.A.}'),
+('$1', 12, '${13:Job_status Tarasov M.S.}'),
+('$1', 13, '${14:Job_status Harlap M.G.}'),
+('$1', 14, '${15:Job_status Pasinkov O.N.}'),
+('$1', 15, '${16:Job_status Yuvitsa N.A.}'),
+('$1', 16, '${17:Job_status Latishev S.V.}'),
+('$1', 17, '${18:Job_status Ponomarev I.I.}')${19:Type ";" for end}
+endsnippet
+
+snippet dsja "Job FSO of date actually list"
+INSERT INTO schedule VALUES
+('${1:Date}', 1, '${2:Job_status BelyaevD.P. }'),
+('$1', 2, '${3:Job_status Berdugin A.I.}'),
+('$1', 3, '${4:Job_status Bushev M.A.}'),
+('$1', 4, '${5:Job_status Voznyak A.E.}'),
+('$1', 5, '${6:Job_status Denisos S.I.}'),
+('$1', 6, '${7:Job_status Dmitrukov A.A.}'),
+('$1', 9, '${8:Job_status Kuchukov A.A.}'),
+('$1', 10, '${9:Job_status Mamonov I.A.}'),
+('$1', 14, '${10:Job_status Pasinkov O.N.}'),
+('$1', 15, '${11:Job_status Yuvitsa N.A.}'),
+('$1', 16, '${12:Job_status Latishev S.V.}'),
+('$1', 7, '${13:Job_status Koval E.V.}'),
+('$1', 11, '${14:Job_status Melnikov Y.A.}'),
+('$1', 8, '${15:Job_status Kravchenko K.V.}'),
+('$1', 12, '${16:Job_status Tarasov M.S.}'),
+('$1', 13, '${17:Job_status Harlap M.G.}'),
+('$1', 17, '${18:Job_status Ponomarev I.I.}')${19:Type ";" for end}
+endsnippet
+snippet dsjap "Job FSO of date actually list +"
+('${1:Date}', 1, '${2:Job_status BelyaevD.P. }'),
+('$1', 2, '${3:Job_status Berdugin A.I.}'),
+('$1', 3, '${4:Job_status Bushev M.A.}'),
+('$1', 4, '${5:Job_status Voznyak A.E.}'),
+('$1', 5, '${6:Job_status Denisos S.I.}'),
+('$1', 6, '${7:Job_status Dmitrukov A.A.}'),
+('$1', 9, '${8:Job_status Kuchukov A.A.}'),
+('$1', 10, '${9:Job_status Mamonov I.A.}'),
+('$1', 14, '${10:Job_status Pasinkov O.N.}'),
+('$1', 15, '${11:Job_status Yuvitsa N.A.}'),
+('$1', 16, '${12:Job_status Latishev S.V.}'),
+('$1', 7, '${13:Job_status Koval E.V.}'),
+('$1', 11, '${14:Job_status Melnikov Y.A.}'),
+('$1', 8, '${15:Job_status Kravchenko K.V.}'),
+('$1', 12, '${16:Job_status Tarasov M.S.}'),
+('$1', 13, '${17:Job_status Harlap M.G.}'),
+('$1', 17, '${18:Job_status Ponomarev I.I.}')${19:Type ";" for end}
+endsnippet

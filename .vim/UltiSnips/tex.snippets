@@ -1,0 +1,15 @@
+snippet be "begin & end" b
+\begin{${1:blockname}}
+	${2:something}
+\end{$1}
+endsnippet
+
+snippet betab "begin & end in tabl" b
+\begin{tabular}{${1:Столбцы}}
+	${2:Линия и сеп &}\\\
+\end{tabular}
+endsnippet
+snippet tabl "tabl line" b
+\hline
+${1:Линия и сеп &}\\\
+endsnippet

@@ -164,6 +164,7 @@ cp -R ~/.vimrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.ideavimrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.psqlrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.config/pgcli/config ~/Documents/For\ Sys/Backup/config_pgcli
+cp -R ~/.vim/UltiSnips/ ~/Documents/For\ Sys/Backup/.vim/UltiSnips/
 }
 
 function upload_bzvp() {
@@ -173,6 +174,7 @@ cp -R ~/Documents/For\ Sys/Backup/.vimrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.ideavimrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.psqlrc ~/
 cp -R ~/Documents/For\ Sys/Backup/config_pgcli ~/.config/pgcli/config
+cp -R ~/Documents/For\ Sys/Backup/.vim/UltiSnips/ ~/.vim/UltiSnips/
 }
 
 
