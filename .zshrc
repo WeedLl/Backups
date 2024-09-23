@@ -109,8 +109,6 @@ export PATH
 alias python=python3
 alias python3="/Library/Frameworks/Python.framework/Versions/3.12/bin/python3"
 alias pip="/Library/Frameworks/Python.framework/Versions/3.12/bin/pip3"
-alias vimdiff="/Applications/MacVim.app/Contents/bin/vimdiff"
-alias vimtutor="/Applications/MacVim.app/Contents/bin/vimtutor"
 
 PATH=/opt/homebrew/bin:${PATH}
 export PATH
@@ -122,6 +120,9 @@ export PATH
 export LDFLAGS="-L/opt/homebrew/opt/postgresql@15/lib" #For compilers to find postgresql@15 you may need to set:
 export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
 
+
+export PSQL_EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
+export EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
 #_______________________________________________ SysVAR ____________________________________________
 RPS1="%T"
 export RPS1
@@ -138,6 +139,9 @@ alias Dbackup='cd ~/Documents/For\ Sys/Backup'
 alias default_vim='/usr/bin/vim'
 alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 alias mvim='open -a /Applications/MacVim.app'
+alias vimdiff="/Applications/MacVim.app/Contents/bin/vimdiff"
+alias vimtutor="/Applications/MacVim.app/Contents/bin/vimtutor"
+
 ## FZF
 alias fopen='open $(fzf)'
 
