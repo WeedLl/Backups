@@ -184,6 +184,9 @@ cp -R ~/.oh-my-zsh/custom/ ~/Documents/For\ Sys/Backup/.oh-my-zsh/custom/
 }
 
 function unload_bzvp() {
+mkdir -pv ~/.config/pgcli/config
+mkdir -pv ~/.vim/UltiSnips/
+mkdir -pv ~/.oh-my-zsh/custom
 cp -R ~/Documents/For\ Sys/Backup/.bash_profile ~/
 cp -R ~/Documents/For\ Sys/Backup/.zshrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.vimrc ~/
