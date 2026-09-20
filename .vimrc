@@ -91,7 +91,7 @@ Plug 'makerj/vim-pdf'
 
 ""Цветовые схемы colorscheme
 Plug 'morhetz/gruvbox'
-set background=dark 
+set background=dark
 
 ""MarkDown
 Plug 'godlygeek/tabular'
@@ -118,6 +118,8 @@ let g:UltiSnipsEditSplit="vertical"
 
 ""Включение цветовой темы
 colorscheme gruvbox
+""Насильное включение подсветки Spelllang
+hi SpellBad cterm=underline ctermfg=red
 
 "" Отображение скрытых файлов и папок в NTree по умолчанию
 let NERDTreeShowHidden=1

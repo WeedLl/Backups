@@ -70,11 +70,23 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git vi-mode)
+
+#!!!! ДЛЯ КОРРЕКТНОЙ РАБОТЫ FZF-TAB И КОМПЛИТА С BREW !!!!
+#Некоторые обновления переменных PATH и FPATH необходимо делать до source #ZSH/oh-my-zsh.sh, т.к. это инициализация,
+#   в которую входит compinit. Некоторые такие болячки можно прощупать, выполнив source ~/.zshrc в терминале
+FPATH=/opt/homebrew/share/zsh/site-functions:${FPATH}
+export FPATH
+
+
+plugins=(git vi-mode brew) 
 
 source $ZSH/oh-my-zsh.sh
+source /opt/homebrew/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+#Для работы fzf сочетаний клавиш в zsh
+source <(fzf --zsh)
+
 
 # User configuration
 
@@ -112,6 +124,8 @@ alias pip="/Library/Frameworks/Python.framework/Versions/3.12/bin/pip3"
 
 PATH=/opt/homebrew/bin:${PATH}
 export PATH
+PATH=/opt/homebrew/sbin:${PATH}
+export PATH
 
 ##Рекомендации HomeBrew для PostgreSQL после установки
 PATH=/opt/homebrew/opt/postgresql@15/bin:${PATH} #If you need to have postgresql@15 first in your PATH, run:
@@ -123,6 +137,8 @@ export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
 
 export PSQL_EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
 export EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
+
+
 #_______________________________________________ SysVAR ____________________________________________
 RPS1="%T"
 export RPS1
@@ -144,7 +160,6 @@ alias vimtutor="/Applications/MacVim.app/Contents/bin/vimtutor"
 
 ## FZF
 alias fopen='open $(fzf)'
-
 alias nopen='open "$(PWD)"'
 
 ## GIT
@@ -165,9 +180,10 @@ cp -R ~/.ideavimrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.psqlrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.config/pgcli/config ~/Documents/For\ Sys/Backup/config_pgcli
 cp -R ~/.vim/UltiSnips/ ~/Documents/For\ Sys/Backup/.vim/UltiSnips/
+cp -R ~/.oh-my-zsh/custom/ ~/Documents/For\ Sys/Backup/.oh-my-zsh/custom/
 }
 
-function upload_bzvp() {
+function unload_bzvp() {
 cp -R ~/Documents/For\ Sys/Backup/.bash_profile ~/
 cp -R ~/Documents/For\ Sys/Backup/.zshrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.vimrc ~/
@@ -175,6 +191,7 @@ cp -R ~/Documents/For\ Sys/Backup/.ideavimrc ~/
 cp -R ~/Documents/For\ Sys/Backup/.psqlrc ~/
 cp -R ~/Documents/For\ Sys/Backup/config_pgcli ~/.config/pgcli/config
 cp -R ~/Documents/For\ Sys/Backup/.vim/UltiSnips/ ~/.vim/UltiSnips/
+cp -R ~/Documents/For\ Sys/Backup/.oh-my-zsh/custom/ ~/.oh-my-zsh/custom/
 }
 
 
