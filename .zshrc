@@ -244,3 +244,7 @@ function _vi-mode-set-cursor-shape-for-keymap() {
 # достаточно просто значка $. Не знаю, с чем это связанно.
 PS1+="\${ZVIMMODE}"
 export PS1
+
+#Страховка от всех дубликатов PATH и FPATH (оставляет только первые вхождения)
+typeset -U PATH
+typeset -U FPATH
