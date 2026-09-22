@@ -6,3 +6,18 @@ snippet c "Kolonka"
 -----------
 
 endsnippet
+
+#For zsh and bash
+#Добавление путей PATH or FPATH с проверкой пути на валидность (существование)
+#В начало (высокий приоритет)
+snippet ifpathb "If not in PATH or FPATH"
+if [[ ":$${1:"PATH of FPATH}:" != *":${2:"custom PATH or FPATH"}:"* ]] && [[ -d "$2" ]]; then
+	export $1="$2:$$1"
+fi
+endsnippet
+#В конец (низкий приоритет)
+snippet ifpathe "If not in PATH or FPATH"
+if [[ ":$${1:"PATH of FPATH}:" != *":${2:"custom PATH or FPATH"}:"* ]] && [[ -d "$2" ]]; then
+	export $1="$1:$$2"
+fi
+endsnippet

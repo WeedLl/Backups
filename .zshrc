@@ -74,9 +74,9 @@ DISABLE_AUTO_TITLE="true"
 #!!!! ДЛЯ КОРРЕКТНОЙ РАБОТЫ FZF-TAB И КОМПЛИТА С BREW !!!!
 #Некоторые обновления переменных PATH и FPATH необходимо делать до source #ZSH/oh-my-zsh.sh, т.к. это инициализация,
 #   в которую входит compinit. Некоторые такие болячки можно прощупать, выполнив source ~/.zshrc в терминале
-FPATH=/opt/homebrew/share/zsh/site-functions:${FPATH}
-export FPATH
-
+if [[ ":$FPATH:" != *":/opt/homebrew/share/zsh/site-functions:"* ]] && [[ -d "/opt/homebrew/share/zsh/site-functions" ]]; then
+    export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
+fi
 
 plugins=(git vi-mode brew) 
 
@@ -116,20 +116,27 @@ source <(fzf --zsh)
 
 
 #_______________________________________________ Дефолтные настройки ______________________________
-PATH=/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}
-export PATH
+if [[ ":$PATH:" != *":/Library/Frameworks/Python.framework/Versions/3.12/bin:"* ]] && [[ -d "/Library/Frameworks/Python.framework/Versions/3.12/bin" ]]; then
+    export PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH"
+fi
+
 alias python=python3
 alias python3="/Library/Frameworks/Python.framework/Versions/3.12/bin/python3"
 alias pip="/Library/Frameworks/Python.framework/Versions/3.12/bin/pip3"
 
-PATH=/opt/homebrew/bin:${PATH}
-export PATH
-PATH=/opt/homebrew/sbin:${PATH}
-export PATH
+if [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]] && [[ -d "/opt/homebrew/bin" ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+if [[ ":$PATH:" != *":/opt/homebrew/sbin:"* ]] && [[ -d "/opt/homebrew/sbin" ]]; then
+    export PATH="/opt/homebrew/sbin:$PATH"
+fi
+
 
 ##Рекомендации HomeBrew для PostgreSQL после установки
-PATH=/opt/homebrew/opt/postgresql@15/bin:${PATH} #If you need to have postgresql@15 first in your PATH, run:
-export PATH
+if [[ ":$PATH:" != *":/opt/homebrew/opt/postgresql@15/bin:"* ]] && [[ -d "/opt/homebrew/opt/postgresql@15/bin" ]]; then
+    export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+fi
+
 
 export LDFLAGS="-L/opt/homebrew/opt/postgresql@15/lib" #For compilers to find postgresql@15 you may need to set:
 export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
