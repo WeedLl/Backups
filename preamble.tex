@@ -4,10 +4,39 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english, russian]{babel}
 
+\usepackage{xcolor}    % Гибкая настройка цветов
 \usepackage{graphicx} % Использование графики
+
 \usepackage{listings} % Визуализация кода на языках программирования в tex-документах
+%%Если у listings будут проблемы с не ASCI символами
+\lstset{
+  extendedchars=\true,          % разрешает не‑ASCII символы
+  inputencoding=utf8             % явно указываем кодировку для listings
+}
+\lstdefinestyle{git-style}{
+  language=bash,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  identifierstyle=\color{black},
+  morekeywords={git, config, init, status, add, commit, push, pull, clone, branch},
+  moredelim=[l][\color{purple}\bfseries]{--},
+  stringstyle=\color{orange},
+  showspaces=false,
+  showstringspaces=false,
+  frame=single,
+  breaklines=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  captionpos=b,
+  alsoletter={-}
+}
+
+%%\begin{lstlisting}[style=git-style ...]
+
+\usepackage{minted}
+
 \usepackage{multicol} % Написание текста в несколько колонок
-\usepackage{color}    % Гибкая настройка цветов
 \usepackage{tocloft}  % Гибкая настройка содержания страниц
 \usepackage{wrapfig}  % Размещение "плавающих" объектов (таблиц и тп.)
 
