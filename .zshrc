@@ -179,33 +179,131 @@ alias psqlc=pgcli
 
 #_______________________________________________ Function __________________________________________
 ## Backup
-function backup_bzvp() {
-cp -R ~/.bash_profile ~/Documents/For\ Sys/Backup/
-cp -R ~/.zshrc ~/Documents/For\ Sys/Backup/
-cp -R ~/.vimrc ~/Documents/For\ Sys/Backup/
-cp -R ~/.ideavimrc ~/Documents/For\ Sys/Backup/
-cp -R ~/.psqlrc ~/Documents/For\ Sys/Backup/
-cp -R ~/.config/pgcli/config ~/Documents/For\ Sys/Backup/config_pgcli
-cp -R ~/.vim/UltiSnips/ ~/Documents/For\ Sys/Backup/.vim/UltiSnips/
-cp -R ~/.oh-my-zsh/custom/ ~/Documents/For\ Sys/Backup/.oh-my-zsh/custom/
-cp -R ~/.gitconfig ~/Documents/For\ Sys/Backup/
+function backup_mySysFile() {
+  local dest="~/Documents/For Sys/Backup"
+  dest=${~dest}
+  mkdir -p "$dest"
+
+  typeset -A items
+  items=(
+    bash      "~/.bash_profile"
+    zsh       "~/.zshrc"
+    vim       "~/.vimrc"
+    ideavim   "~/.ideavimrc"
+    psql      "~/.psqlrc"
+    git       "~/.gitconfig"
+    pgcli     "~/.config/pgcli/config:$dest/config_pgcli"
+    ultisnips "~/.vim/UltiSnips/:$dest/.vim/UltiSnips"
+    omz       "~/.oh-my-zsh/custom/:$dest/.oh-my-zsh/custom"
+  )
+
+  if [[ $# -eq 0 ]]; then
+    echo "Использование: backup_mySysFile [bash|zsh|vim|ideavim|psql|git|pgcli|ultisnips|omz|all]"
+    return 1
+  fi
+
+  for arg in "$@"; do
+    if [[ $arg = "all" ]]; then
+      for key in "${(k)items[@]}"; do
+        _backup_item "$key" "$dest" "$items[$key]"
+      done
+      return
+    fi
+
+    if [[ -z "${items[$arg]+x}" ]]; then
+      echo "Неизвестный компонент: $arg"
+      continue
+    fi
+    _backup_item "$arg" "$dest" "${items[$arg]}"
+  done
 }
 
-function unload_bzvp() {
-mkdir -pv ~/.config/pgcli/config
-mkdir -pv ~/.vim/UltiSnips/
-mkdir -pv ~/.oh-my-zsh/custom
-cp -R ~/Documents/For\ Sys/Backup/.bash_profile ~/
-cp -R ~/Documents/For\ Sys/Backup/.zshrc ~/
-cp -R ~/Documents/For\ Sys/Backup/.vimrc ~/
-cp -R ~/Documents/For\ Sys/Backup/.ideavimrc ~/
-cp -R ~/Documents/For\ Sys/Backup/.psqlrc ~/
-cp -R ~/Documents/For\ Sys/Backup/config_pgcli ~/.config/pgcli/config
-cp -R ~/Documents/For\ Sys/Backup/.vim/UltiSnips/ ~/.vim/UltiSnips/
-cp -R ~/Documents/For\ Sys/Backup/.oh-my-zsh/custom/ ~/.oh-my-zsh/custom/
-cp -R ~/Documents/For\ Sys/Backup/.gitconfig ~/
+function _backup_item() {
+  local key=$1 dest=$2 spec=$3
+  local src dst
+
+  if [[ "$spec" = *":"* ]]; then
+    src=${spec%:*}
+    dst=${spec#*:}
+  else
+    src=$spec
+    dst=$dest
+  fi
+
+  src=${~src}
+  dst=${~dst}
+
+  if [[ ! -e "$src" && ! -L "$src" ]]; then
+    echo "Пропущено (не найдено): $src"
+    return
+  fi
+
+  mkdir -p "${dst%/*}" 2>/dev/null
+  cp -R "$src" "$dst"
+  echo "Скопировано: $src -> $dst"
 }
 
+function unload_mySysFile() {
+  local src="~/Documents/For Sys/Backup"
+  src=${~src}
+
+  if [[ ! -d "$src" ]]; then
+    echo "Папка бэкапа не найдена: $src"
+    return 1
+  fi
+  typeset -A items
+  items=(
+    bash      "$src/.bash_profile:~/"
+    zsh       "$src/.zshrc:~/"
+    vim       "$src/.vimrc:~/"
+    ideavim   "$src/.ideavimrc:~/"
+    psql      "$src/.psqlrc:~/"
+    git       "$src/.gitconfig:~/"
+    pgcli     "$src/config_pgcli:~/.config/pgcli/config"
+    ultisnips "$src/.vim/UltiSnips:~/.vim/UltiSnips"
+    omz       "$src/.oh-my-zsh/custom:~/.oh-my-zsh/custom"
+  )
+
+  if [[ $# -eq 0 ]]; then
+    echo "Использование: unload_mySysFile [bash|zsh|vim|ideavim|psql|git|pgcli|ultisnips|omz|all]"
+    return 1
+  fi
+
+  for arg in "$@"; do
+    if [[ $arg = "all" ]]; then
+      for key in "${(k)items[@]}"; do
+        _unload_item "$key" "${items[$key]}"
+      done
+      return
+    fi
+
+    if [[ -z "${items[$arg]+x}" ]]; then
+      echo "Неизвестный компонент: $arg"
+      continue
+    fi
+    _unload_item "$arg" "${items[$arg]}"
+  done
+}
+
+function _unload_item() {
+  local key=$1 spec=$2
+  local src dst
+
+  src=${spec%:*}
+  dst=${spec#*:}
+
+  src=${~src}
+  dst=${~dst}
+
+  if [[ ! -e "$src" && ! -L "$src" ]]; then
+    echo "Пропущено (нет в бэкапе): $src"
+    return
+  fi
+
+  mkdir -p "${dst%/*}" 2>/dev/null
+  cp -R "$src" "$dst"
+  echo "Восстановлено: $src -> $dst"
+}
 
 #_______________________________________________ ZSH-vim-status ____________________________________
 ###Рекомендация из видео https://www.youtube.com/watch?v=hIJh-KlQ7io
