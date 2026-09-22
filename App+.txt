@@ -4,7 +4,7 @@ ________________________________________________ MUSTHAVE ______________________
 3. HomeBrew - менеджер пакетов;
 4. Vim (brew with macvim) + vim-plug(git);
 5. Mac Vim (brew);
-6. ZSH (brew?) + brew OhMyZsh (+ zsh-syntax-highkighting);
+6. ZSH (brew?) + brew OhMyZsh + Plug;
 7. FZF (brew);
 8. PostgreSQL (brew);
 9. PgAdmin 4;

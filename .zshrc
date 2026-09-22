@@ -181,6 +181,7 @@ cp -R ~/.psqlrc ~/Documents/For\ Sys/Backup/
 cp -R ~/.config/pgcli/config ~/Documents/For\ Sys/Backup/config_pgcli
 cp -R ~/.vim/UltiSnips/ ~/Documents/For\ Sys/Backup/.vim/UltiSnips/
 cp -R ~/.oh-my-zsh/custom/ ~/Documents/For\ Sys/Backup/.oh-my-zsh/custom/
+cp -R ~/.gitconfig ~/Documents/For\ Sys/Backup/
 }
 
 function unload_bzvp() {
@@ -195,6 +196,7 @@ cp -R ~/Documents/For\ Sys/Backup/.psqlrc ~/
 cp -R ~/Documents/For\ Sys/Backup/config_pgcli ~/.config/pgcli/config
 cp -R ~/Documents/For\ Sys/Backup/.vim/UltiSnips/ ~/.vim/UltiSnips/
 cp -R ~/Documents/For\ Sys/Backup/.oh-my-zsh/custom/ ~/.oh-my-zsh/custom/
+cp -R ~/Documents/For\ Sys/Backup/.gitconfig ~/
 }
 
 

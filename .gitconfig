@@ -1,0 +1,14 @@
+[user]
+	name = Weed Lakmar
+	email = weedlable@gmail.com
+[color]
+	ui = true
+#Также указан жесткий путь
+[core]
+	editor = /Applications/MacVim.app/Contents/MacOS/Vim
+#Название своего варианта
+[diff]
+	tool = shvimdiff
+#Сделал "кастомный" vimdiff - казал жеский путь к vimdiff MacVim, так как обычный не дружил с UltiSnips
+[difftool "shvimdiff"]
+	cmd = sh -c \"/Applications/MacVim.app/Contents/MacOS/Vim -d \\\"$LOCAL\\\" \\\"$REMOTE\\\"\"

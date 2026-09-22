@@ -1,16 +1,43 @@
-snippet be "begin & end" b
-\begin{${1:blockname}}
-	${2:something}
+snippet be "begin & end"
+\begin{${1:"blockname"}}
+	${2:"something"}
 \end{$1}
 endsnippet
 
-snippet betab "begin & end in tabl" b
-\begin{tabular}{${1:Столбцы}}
-	${2:Линия и сеп &}\\\
+snippet betab "begin & end in tabl"
+\begin{tabular}{${1:"| or ||, c or l or r, also p={x cm}"}}
+	\hline
+	${2:"Line and sep &"}\\\
+	\hline
 \end{tabular}
 endsnippet
 
-snippet tabl "tabl line" b
+snippet tabl "tabl line"
 \hline
-${1:Линия и сеп &}\\\
+${1:"Line and sep &"}\\\
+endsnippet
+
+#Listings
+snippet lstg "lst in line git-style"
+\lstinline[style=git-style]|$1|
+endsnippet
+
+snippet belst "begin & end lstlisting"
+\begin{lstlisting}
+	$1
+\end{lstlisting}
+endsnippet
+
+snippet belstg "begin & end lstlisting git-style"
+\begin{lstlisting}[style=git-style]
+	$1
+\end{lstlisting}
+endsnippet
+
+#XColor
+snippet col "color string"
+{\color{${1:"Color"}}${2:Text}} ${3:"Next"}
+endsnippet
+snippet tcol "text color if color string doesn't work"
+\textcolor{${1:"Color"}}{${2:"Text"}} ${3:"Next"}
 endsnippet
