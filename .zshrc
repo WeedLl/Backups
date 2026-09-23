@@ -238,9 +238,20 @@ function _backup_item() {
     return
   fi
 
+  local src_display="$src"
+
+  if [[ -d "$src" ]]; then
+    src="$src/"
+  fi
+
   mkdir -p "${dst%/*}" 2>/dev/null
-  cp -R "$src" "$dst"
-  echo "Скопировано: $src -> $dst"
+  cp -Rf "$src" "$dst"
+
+  if [[ -d "$dst" && -f "$src_display" ]]; then
+    echo "Скопировано: $src_display -> $dst/${src_display:t}"
+  else
+    echo "Скопировано: $src_display -> $dst"
+  fi
 }
 
 function unload_mySysFile() {
@@ -260,8 +271,8 @@ function unload_mySysFile() {
     psql      "$src/.psqlrc:~/"
     git       "$src/.gitconfig:~/"
     pgcli     "$src/config_pgcli:~/.config/pgcli/config"
-    ultisnips "$src/.vim/UltiSnips:~/.vim/UltiSnips"
-    omz       "$src/.oh-my-zsh/custom:~/.oh-my-zsh/custom"
+    ultisnips "$src/.vim/UltiSnips/:~/.vim/UltiSnips"
+    omz       "$src/.oh-my-zsh/custom/:~/.oh-my-zsh/custom"
   )
 
   if [[ $# -eq 0 ]]; then
@@ -300,9 +311,233 @@ function _unload_item() {
     return
   fi
 
+  local src_display="$src"
+
+  if [[ -d "$src" ]]; then
+    src="$src/"
+  fi
+
   mkdir -p "${dst%/*}" 2>/dev/null
-  cp -R "$src" "$dst"
-  echo "Восстановлено: $src -> $dst"
+  cp -Rf "$src" "$dst"
+
+  if [[ -d "$dst" && -f "$src_display" ]]; then
+    echo "Восстановлено: $src_display -> ${dst%/}/${src_display:t}"
+  else
+    echo "Восстановлено: $src_display -> $dst"
+  fi
+}
+#Сравнивает различия. Без аргументов - только отчёт по всем файлам.
+#diff_bzvp                  # проверить всё, только отчёт
+#diff_bzvp zsh git          # проверить только zsh и git
+#diff_bzvp diff             # проверить всё + vimdiff для отличающихся
+#diff_bzvp diff zsh vim     # vimdiff только для zsh и vim (если они отличаются)
+function diff_mySysFile() {
+  local dest="~/Documents/For Sys/Backup"
+  dest=${~dest}
+
+  if [[ ! -d "$dest" ]]; then
+    echo "Папка бэкапа не найдена: $dest"
+    return 1
+  fi
+
+  local use_vimdiff=false
+  local components=()
+
+  for arg in "$@"; do
+    if [[ $arg = "diff" ]]; then
+      use_vimdiff=true
+    else
+      components+=$arg
+    fi
+  done
+
+  # Маппинг: ключ => "текущий_файл:файл_в_бэкапе"
+  typeset -A items
+  items=(
+    bash      "~/.bash_profile:$dest/.bash_profile"
+    zsh       "~/.zshrc:$dest/.zshrc"
+    vim       "~/.vimrc:$dest/.vimrc"
+    ideavim   "~/.ideavimrc:$dest/.ideavimrc"
+    psql      "~/.psqlrc:$dest/.psqlrc"
+    git       "~/.gitconfig:$dest/.gitconfig"
+    pgcli     "~/.config/pgcli/config:$dest/config_pgcli"
+    ultisnips "~/.vim/UltiSnips:$dest/.vim/UltiSnips"
+    omz       "~/.oh-my-zsh/custom:$dest/.oh-my-zsh/custom"
+  )
+  typeset -A diff_details
+
+  # Если компоненты не указаны — проверяем все
+  if [[ ${#components} -eq 0 ]]; then
+    components=("${(k)items[@]}")
+  fi
+
+  local found_diff=false
+  local missing_home=()
+  local missing_backup=()
+  local different=()
+  local identical=()
+  local diff_output
+
+  for key in "${components[@]}"; do
+    if [[ -z "${items[$key]+x}" ]]; then
+      echo "Неизвестный компонент: $key"
+      continue
+    fi
+
+    local spec="${items[$key]}"
+    local current="${spec%:*}"
+    local backup="${spec#*:}"
+    current=${~current}
+    backup=${~backup}
+
+    local home_exists=true
+    local backup_exists=true
+
+    [[ ! -e "$current" && ! -L "$current" ]] && home_exists=false
+    [[ ! -e "$backup" && ! -L "$backup" ]] && backup_exists=false
+
+    if [[ $home_exists = false && $backup_exists = false ]]; then
+      missing_home+=$key
+      missing_backup+=$key
+      continue
+    fi
+
+    if [[ $home_exists = false ]]; then
+      missing_home+=$key
+      continue
+    fi
+
+    if [[ $backup_exists = false ]]; then
+      missing_backup+=$key
+      continue
+    fi
+    # Сравнение
+    diff_output=$(command diff -rq "$current" "$backup" 2>/dev/null)
+    if [[ $? -eq 0 ]]; then
+      identical+=$key
+    else
+      different+=$key
+      found_diff=true
+      # Для директорий собираем детали
+      if [[ -d "$current" && -d "$backup" ]]; then
+        local details=()
+        while IFS= read -r line; do
+          [[ -z "$line" ]] && continue
+          if [[ "$line" = *" differ" ]]; then
+            local f="$line"
+            f="${f#Files }"
+            f="${f#Binary files }"
+            f="${f% differ}"
+            f="${f%% and *}"
+            f="${f#"$current"/}"
+            details+="    отличается: $f"
+          elif [[ "$line" = "Only in "* ]]; then
+            details+="    $line"
+          fi
+        done <<< "$diff_output"
+        diff_details[$key]="${(F)details}"
+      else
+        diff_details[$key]="    $diff_output"
+      fi
+    fi
+
+  done
+
+  # Отчёт
+  echo "=== Проверка конфигов ==="
+  echo ""
+
+  if [[ ${#identical} -gt 0 ]]; then
+    echo "Без изменений:"
+    for k in "${identical[@]}"; do
+      echo "  $k"
+    done
+    echo ""
+  fi
+
+  if [[ ${#different} -gt 0 ]]; then
+    echo "Отличаются:"
+    for k in "${different[@]}"; do
+      echo "  $k"
+      [[ -n "${diff_details[$k]}" ]] && echo "${diff_details[$k]}"
+    done
+    echo ""
+  fi
+
+  if [[ ${#missing_home} -gt 0 ]]; then
+    echo "Нет текущего файла (только в бэкапе):"
+    for k in "${missing_home[@]}"; do
+      echo "  $k"
+    done
+    echo ""
+  fi
+
+  if [[ ${#missing_backup} -gt 0 ]]; then
+    echo "Нет в бэкапе (только текущий):"
+    for k in "${missing_backup[@]}"; do
+      echo "  $k"
+    done
+    echo ""
+  fi
+
+  if [[ $found_diff = false ]]; then
+    echo "Различий нет."
+  fi
+
+# vimdiff для отличающихся
+  if [[ $use_vimdiff = true && ${#different} -gt 0 ]]; then
+    echo ""
+    echo "Открытие vimdiff для отличающихся файлов..."
+    for key in "${different[@]}"; do
+      local spec="${items[$key]}"
+      local current="${spec%:*}"
+      local backup="${spec#*:}"
+      current=${~current}
+      backup=${~backup}
+      if [[ -d "$current" && -d "$backup" ]]; then
+        # Для директорий — находим отличающиеся файлы
+        local diff_files=()
+        local only_in=()
+        while IFS= read -r line; do
+          [[ -z "$line" ]] && continue
+          if [[ "$line" = *" differ" ]]; then
+            # "Files A and B differ" или "Binary files A and B differ"
+            local f="$line"
+            f="${f#Files }"
+            f="${f#Binary files }"
+            f="${f% differ}"
+            f="${f%% and *}"
+            f="${f#"$current"/}"
+            diff_files+="$f"
+          elif [[ "$line" = "Only in "* ]]; then
+            only_in+="$line"
+          fi
+        done < <(command diff -rq "$current" "$backup" 2>/dev/null)
+        if [[ ${#diff_files} -eq 0 && ${#only_in} -eq 0 ]]; then
+          echo ">>> $key: различий не найдено"
+        else
+          if [[ ${#only_in} -gt 0 ]]; then
+            echo ">>> $key: файлы только с одной стороны:"
+            for line in "${only_in[@]}"; do
+              echo "    $line"
+            done
+          fi
+          for f in "${diff_files[@]}"; do
+            echo ""
+            echo ">>> $key/$f"
+            vimdiff "$current/$f" "$backup/$f"
+          done
+        fi
+      else
+        echo ""
+        echo ">>> $key: $current <-> $backup"
+        vimdiff "$current" "$backup"
+      fi
+    done
+  elif [[ $use_vimdiff = true && ${#different} -eq 0 ]]; then
+    echo ""
+    echo "Отличий нет — vimdiff не нужен."
+  fi
 }
 
 #_______________________________________________ ZSH-vim-status ____________________________________
