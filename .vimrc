@@ -105,9 +105,13 @@ Plug 'SirVer/ultisnips'
 
 "VimTex
 Plug 'lervag/vimtex'
-
+"Python-syntax для красивых подсветок python
+Plug 'vim-python/python-syntax'
 
 call plug#end()
+
+"Разрешить всю подсветку python-syntax
+let g:python_highlight_all = 1
 
 ""MarkDown
 let g:UltiSnipsExpandTrigger="<tab>"
