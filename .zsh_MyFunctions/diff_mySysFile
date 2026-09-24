@@ -6,6 +6,29 @@
 #Пришлось принудительно прописать путь к vimdiff из MacVim, ибо была ошибка UltiSnipps как в git difftool.
 
 diff_mySysFile() {
+  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    cat <<EOF
+diff_mySysFile — сравнить текущие файлы с бэкапом. Все, по одному или попарно vimdiff
+
+Доступные компоненты:
+  diff      - модификатор открытия попарного сравнения в vimdiff
+  bash      - .bash_profile
+  zsh       - .zshrc
+  zshf      - .zsh_MyFunctions/
+  omz       - .oh-my-zsh/custom/
+  ultisnips - .vim/UltiSnips/
+  vim       - .vimrc
+  ideavim   - .ideavimrc
+  psql      - .psqlrc
+  git       - .gitconfig
+  pgcli     - .config/pgcli/config
+
+Пример:
+  diff_mySysFile zsh bash or diff_mySysFile diff (=all) or diff_mySysFile psql omz
+EOF
+    return 0
+  fi
+
   local vimdiff_McV="/Applications/MacVim.app/Contents/bin/vimdiff"
   local dest="~/Documents/For Sys/Backup"
   dest=${~dest}

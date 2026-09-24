@@ -21,3 +21,13 @@ if [[ ":$${1:"PATH of FPATH}:" != *":${2:"custom PATH or FPATH"}:"* ]] && [[ -d 
 	export $1="$1:$$2"
 fi
 endsnippet
+
+#Описание к zsh функциям по -h or --help
+snippet hforfunc "Help for Func"
+  if [[ "$\1" == "-h" || "$\1" == "--help" ]]; then
+    cat <<EOF
+${1:Some text about youre Function}
+EOF
+    return 0
+  fi
+endsnippet

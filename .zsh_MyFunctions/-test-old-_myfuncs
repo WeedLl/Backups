@@ -1,0 +1,71 @@
+Алиска сказала, что такой комплит не сработает из-за особенностей моих функций. Ниже
+отсавлю несколько ее ответов, а сам файл - на память.
+1. Фигурные скобки {...} в опциях — в _arguments они нужны только для алиасов одной опции, например {-h,--help}. У тебя же {all} — это не алиас, а просто имя, и Zsh его не распознает как валидную опцию.
+2. Формат аргументов: твои функции ожидают позиционные аргументы без тире (unload_mySysFile bash zsh), 
+а автокомплит пытается предлагать их как опции (с дефисом или в формате опций). Это не совпадает.
+3. Описание в автокомплите: если использовать _values, описания вроде [.bash_profile] показывать 
+нельзя — он выводит только сами значения (bash, zsh и т.д.).
+4. Поскольку твои функции принимают bash, zsh, all и т.п. без тире, правильный способ — использовать _values.
+Он предложит список допустимых значений, а описания ты можешь дать в справке функции (через -h или прямо в выводе при ошибке).
+_____________________________________________________________________
+
+#compdef backup_mySysFile unload_mySysFile diff_mySysFile
+_myfuncs() {
+    local cmd=$words[1]
+    local -a opts
+
+    case $cmd in
+        backup_mySysFile)
+            opts=(
+                {all}'[сохранить всё]'
+                {bash}'[.bash_profile]'
+                {zsh}'[.zshrc]'
+                {zshf}'[.zsh_MyFunctions/*]'
+                {omz}'[.oh-my-zsh/custom/*]'
+                {ultisnips}'[UltiSnips/*]'
+                {vim}'{.vimrc}'
+                {git}'[.gitconfig]'
+                {ideavim}'[.ideavimrc]'
+                {psql}'[.psqlrc]'
+                {pgcli}'[config_pgcli]'
+            )
+            ;;
+        unload_mySysFile)
+            opts=(
+                {all}'[выгрузить всё]'
+                {bash}'[.bash_profile]'
+                {zsh}'[.zshrc]'
+                {zshf}'[.zsh_MyFunctions/*]'
+                {omz}'[.oh-my-zsh/custom/*]'
+                {ultisnips}'[UltiSnips/*]'
+                {vim}'{.vimrc}'
+                {git}'[.gitconfig]'
+                {ideavim}'[.ideavimrc]'
+                {psql}'[.psqlrc]'
+                {pgcli}'[config_pgcli]'
+            )
+            ;;
+        diff_mySysFile)
+            opts=(
+                {diff}'[vimdiff режим, сочетается с другими аргументами, иначе авт. all]'
+                {all}'[выгрузить всё]'
+                {bash}'[.bash_profile]'
+                {zsh}'[.zshrc]'
+                {zshf}'[.zsh_MyFunctions/*]'
+                {omz}'[.oh-my-zsh/custom/*]'
+                {ultisnips}'[UltiSnips/*]'
+                {vim}'{.vimrc}'
+                {git}'[.gitconfig]'
+                {ideavim}'[.ideavimrc]'
+                {psql}'[.psqlrc]'
+                {pgcli}'[config_pgcli]'
+            )
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+    _arguments "$opts[@]"
+}
+
+_myfuncs

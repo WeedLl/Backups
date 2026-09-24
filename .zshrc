@@ -71,6 +71,13 @@ DISABLE_AUTO_TITLE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
+
+#FPATH моих функций
+if [[ ":$FPATH:" != *"$HOME/.zsh_MyFunctions:"* ]] && [[ -d "$HOME/.zsh_MyFunctions" ]]; then
+    export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
+    autoload -Uz ~/.zsh_MyFunctions/*(.:t)
+fi
+
 #!!!! ДЛЯ КОРРЕКТНОЙ РАБОТЫ FZF-TAB И КОМПЛИТА С BREW !!!!
 #Некоторые обновления переменных PATH и FPATH необходимо делать до source #ZSH/oh-my-zsh.sh, т.к. это инициализация,
 #   в которую входит compinit. Некоторые такие болячки можно прощупать, выполнив source ~/.zshrc в терминале
@@ -214,11 +221,6 @@ function _vi-mode-set-cursor-shape-for-keymap() {
 PS1+="\${ZVIMMODE}"
 export PS1
 #________________________________________________ Другое главное __________________________________
-#FPATH моих функций
-if [[ ":$FPATH:" != *"$HOME/.zsh_MyFunctions:"* ]] && [[ -d "$HOME/.zsh_MyFunctions" ]]; then
-    export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
-    autoload -Uz ~/.zsh_MyFunctions/*(.:t)
-fi
 
 #Страховка от всех дубликатов PATH и FPATH (оставляет только первые вхождения)
 typeset -U PATH

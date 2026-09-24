@@ -1,4 +1,27 @@
 backup_mySysFile() {
+  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    cat <<EOF
+backup_mySysFile — обновить бэкапа
+
+Доступные компоненты:
+  all       - все компоненты
+  bash      - .bash_profile
+  zsh       - .zshrc
+  zshf      - .zsh_MyFunctions/
+  omz       - .oh-my-zsh/custom/
+  ultisnips - .vim/UltiSnips/
+  vim       - .vimrc
+  ideavim   - .ideavimrc
+  psql      - .psqlrc
+  git       - .gitconfig
+  pgcli     - .config/pgcli/config
+
+Пример:
+  backup_mySysFile zsh bash or backup_mySysFile all
+EOF
+    return 0
+  fi
+
   local dest="~/Documents/For Sys/Backup"
   dest=${~dest}
   mkdir -p "$dest"
