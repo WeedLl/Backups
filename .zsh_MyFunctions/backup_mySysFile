@@ -30,7 +30,7 @@ EOF
   items=(
     bash      "~/.bash_profile"
     zsh       "~/.zshrc"
-    zshf      "~/.zsh_MyFunctions"
+    zshf      "~/.zsh_MyFunctions/:$dest/.zsh_MyFunctions"
     vim       "~/.vimrc"
     ideavim   "~/.ideavimrc"
     psql      "~/.psqlrc"
