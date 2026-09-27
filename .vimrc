@@ -52,7 +52,7 @@ set foldcolumn=2 "Специальный столбец сгиба
 set foldenable
 set foldmethod=indent
 set foldminlines=4
-set foldnestmax=4
+set foldnestmax=6
 let g:markdown_folding=1
 
 ""Правописание
