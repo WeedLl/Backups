@@ -80,7 +80,14 @@ DISABLE_AUTO_TITLE="true"
 #Не работало, ибо мои функции содержали подфункции? Из-за этого приходилось вызывать их по два раза в новом окне.
 #Переделал под source.
 if [[ -d "$HOME/.zsh_MyFunctions" ]]; then
-    for f in ~/.zsh_MyFunctions/*; do
+    # Добавляем папку в FPATH только если её там ещё нет
+    if [[ ":$FPATH:" != *":$HOME/.zsh_MyFunctions:"* ]]; then
+        export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
+    fi
+
+    # Функции (всё, кроме _*) — загружаем через source
+    for f in ~/.zsh_MyFunctions/*(N); do
+        [[ "$(basename "$f")" == _* ]] && continue
         source "$f"
     done
 fi
