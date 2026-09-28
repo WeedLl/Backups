@@ -5,6 +5,9 @@ language en_US                 " sets the language of the messages / ui (vim)
 set termencoding=utf-8 "Кодировка терминала
 set encoding=utf-8 " Кодировка файлов по умолчанию
 set fileencodings=utf8,cp1251
+" Вырубаем .swp и ~ (резервные) файлы
+set nobackup
+set noswapfile
 ""Меню
 set number relativenumber "" Нумерация строк на полях
 set ruler ""Статус в правом нижнем углу
@@ -38,16 +41,11 @@ set smartcase
 set undolevels=1000
 set history=1000
 
-" Вырубаем .swp и ~ (резервные) файлы
-set nobackup
-set noswapfile
-
 ""Запоминание вкладок (сворачиваний текста / vim folding)
 nnoremap <space> za
 set foldcolumn=2 "Специальный столбец сгиба
 "Есть возможность изменять фолдметод автоматичски + также запоминать фолдинги при ручном вводе
 
-""####Markdown
 ""Folding
 set foldenable
 set foldmethod=indent
@@ -57,6 +55,7 @@ let g:markdown_folding=1
 
 ""Правописание
 set spell spelllang=ru_ru,en_us
+hi SpellBad cterm=underline ctermfg=red
 
 ""####Питонячие фишки
 " Настройки табов для Python, согласно рекомендациям
@@ -72,7 +71,7 @@ autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,
 
 ""Подсветка синтаксиса
 syntax on 
-let python_highlight_all = 1 
+let g:python_highlight_all = 1
 " Включаем 256 цветов в терминале, мы ведь работаем из иксов?
 " Нужно во многих терминалах, например в gnome-terminal
 set t_Co=256
@@ -82,60 +81,38 @@ set t_Co=256
 call plug#begin()
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-""Показывает статут гит файлов
 Plug 'Xuyuanp/nerdtree-git-plugin'
-""Подсветка SQL
 Plug 'shmup/vim-sql-syntax'
-""Возможность читать PDF в вим
 Plug 'makerj/vim-pdf'
 
-""Цветовые схемы colorscheme
 Plug 'morhetz/gruvbox'
-set background=dark
 
-""MarkDown
+Plug 'SirVer/ultisnips'
 Plug 'godlygeek/tabular'
 Plug 'preservim/vim-markdown'
-
-""UltiSnips
-" Track the engine.
-Plug 'SirVer/ultisnips'
-" Snippets are separated from the engine. Add this if you want them:
-"Plugin 'honza/vim-snippets'
-
-"VimTex
 Plug 'lervag/vimtex'
-"Python-syntax для красивых подсветок python
 Plug 'vim-python/python-syntax'
 
 call plug#end()
 
-"Разрешить всю подсветку python-syntax
-let g:python_highlight_all = 1
+set background=dark
+colorscheme gruvbox
 
-""MarkDown
+""UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
-""Включение цветовой темы
-colorscheme gruvbox
-""Насильное включение подсветки Spelllang
-hi SpellBad cterm=underline ctermfg=red
-
+"" NerdTree
 "" Отображение скрытых файлов и папок в NTree по умолчанию
 let NERDTreeShowHidden=1
 ""Отображение количества строк
 let g:NERDTreeFileLines = 1 
 ""Автоматическое закрытие Vim, если NerdTree является последним окном
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
-
 ""####Mappings
-
 map <C-n> :NERDTreeToggle<CR>
-
 ""Перемещение по окнам Ctrl+клв-а:
 map <silent> <C-h> :call WinMove('h')<CR>
 map <silent> <C-j> :call WinMove('j')<CR>

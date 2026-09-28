@@ -89,10 +89,11 @@ plugins=(git vi-mode brew)
 
 source $ZSH/oh-my-zsh.sh
 source /opt/homebrew/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 #Для работы fzf сочетаний клавиш в zsh
 source <(fzf --zsh)
+#По документации должен стоять крайним?
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 # User configuration
