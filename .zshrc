@@ -200,40 +200,51 @@ alias psqlc=pgcli
 
 #_______________________________________________ ZSH-vim-status ____________________________________
 ###Рекомендация из видео https://www.youtube.com/watch?v=hIJh-KlQ7io
-bindkey -v          #Нахуя эти две строки не ясно
-export KEYTIMEOUT=1
-#Переключение по списку предложенных к автозаполнению через TAB клавишами vim
+# Настройки vi-mode
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+VI_MODE_SET_CURSOR=true
+MODE_INDICATOR="%F{red}--NORMAL--%f "
+INSERT_MODE_INDICATOR="%F{green}--INSERT--%f "
+
+stty intr undef
+# Ctrl+C → Normal
+function _ctrl-c-smart() {
+  if [[ -z "$BUFFER" ]]; then
+    zle send-break
+  else
+    zle vi-cmd-mode
+  fi
+}
+zle -N _ctrl-c-smart
+bindkey -M viins '^C' _ctrl-c-smart
+
+# Навигация в меню автодополнения
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 
-###
-VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
-VI_MODE_SET_CURSOR=true
-MODE_INDICATOR="%F{red}+%f"
-INSERT_MODE_INDICATOR="%F{green}+%f"
-
-## Моя функция для обновления PS1
-function _vi-mode-set-cursor-shape-for-keymap() {
-  [[ "$VI_MODE_SET_CURSOR" = true ]] || return
-  local _shape=0
-  case "${1:-${VI_KEYMAP:-main}}" in
-    main)    _shape="%F{red}--NORMAL--%f " ;; # vi insert: line
-    viins)   _shape="%F{green}--INSERT--%f " ;; # vi insert: line
-    isearch) _shape="%F{green}--INSERT--%f " ;; # inc search: line
-    command) _shape="%F{yellow}----%f " ;; # read a command name
-    vicmd)   _shape="%F{green}--INSERT--%f " ;; # vi cmd: block
-    visual)  _shape="%F{white}--VISUAL--%f " ;; # vi visual mode: block
-    viopp)   _shape="%F{black}--BLINKING--%f " ;; # vi operation pending: blinking block
-    *)       _shape="%F{blue}>>>%f " ;;
-  esac
-  ZVIMMODE=${_shape}
-  export ZVIMMODE
+function _visual-mode {
+  typeset -g VI_KEYMAP=visual
+  _vi-mode-set-cursor-shape-for-keymap "$VI_KEYMAP"
+  zle .visual-mode
+  zle reset-prompt
+  zle -R
 }
-# Бывают случаи, что для интерактивной переменной необходимо прописывать \$ вначале, но иногда,
-# достаточно просто значка $. Не знаю, с чем это связанно.
-PS1+="\${ZVIMMODE}"
+zle -N visual-mode _visual-mode
+
+function vi_mode_prompt_info() {
+  case "${VI_KEYMAP:-$KEYMAP}" in
+    vicmd)   echo "%F{red}--NORMAL--%f " ;;
+    visual)  echo "%F{white}--VISUAL--%f " ;;
+    viopp)   echo "%F{black}--BLINKING--%f " ;;
+    isearch) echo "%F{green}--INSERT--%f " ;;
+    command) echo "%F{yellow}----%f " ;;
+    *)       echo "%F{green}--INSERT--%f " ;;
+  esac
+}
+# Индикатор режима в промпт
+PS1+='$(vi_mode_prompt_info)'
 export PS1
 #________________________________________________ Другое главное __________________________________
 

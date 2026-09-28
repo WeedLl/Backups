@@ -55,7 +55,6 @@ let g:markdown_folding=1
 
 ""Правописание
 set spell spelllang=ru_ru,en_us
-hi SpellBad cterm=underline ctermfg=red
 
 ""####Питонячие фишки
 " Настройки табов для Python, согласно рекомендациям
@@ -71,7 +70,7 @@ autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,
 
 ""Подсветка синтаксиса
 syntax on 
-let g:python_highlight_all = 1
+let python_highlight_all = 1
 " Включаем 256 цветов в терминале, мы ведь работаем из иксов?
 " Нужно во многих терминалах, например в gnome-terminal
 set t_Co=256
@@ -97,6 +96,8 @@ call plug#end()
 
 set background=dark
 colorscheme gruvbox
+"" Нужно, если есть проблеимы с подсветкой ошибок? Ставится после выбора темы!
+hi SpellBad cterm=underline ctermfg=red
 
 ""UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
