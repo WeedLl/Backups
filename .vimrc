@@ -8,6 +8,8 @@ set fileencodings=utf8,cp1251
 " Вырубаем .swp и ~ (резервные) файлы
 set nobackup
 set noswapfile
+"" Сторонний шрифт для MacVim от NerdFont - JetBrainsMono NFM
+set guifont=JetBrainsMono\ NFM:h14
 ""Меню
 set number relativenumber "" Нумерация строк на полях
 set ruler ""Статус в правом нижнем углу
