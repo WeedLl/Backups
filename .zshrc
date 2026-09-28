@@ -73,9 +73,16 @@ DISABLE_AUTO_TITLE="true"
 
 
 #FPATH моих функций
-if [[ ":$FPATH:" != *"$HOME/.zsh_MyFunctions:"* ]] && [[ -d "$HOME/.zsh_MyFunctions" ]]; then
-    export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
-    autoload -Uz ~/.zsh_MyFunctions/*(.:t)
+#if [[ ":$FPATH:" != *"$HOME/.zsh_MyFunctions:"* ]] && [[ -d "$HOME/.zsh_MyFunctions" ]]; then
+#    export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
+#    autoload -Uz ~/.zsh_MyFunctions/*(.:t)
+#fi
+#Не работало, ибо мои функции содержали подфункции? Из-за этого приходилось вызывать их по два раза в новом окне.
+#Переделал под source.
+if [[ -d "$HOME/.zsh_MyFunctions" ]]; then
+    for f in ~/.zsh_MyFunctions/*; do
+        source "$f"
+    done
 fi
 
 #!!!! ДЛЯ КОРРЕКТНОЙ РАБОТЫ FZF-TAB И КОМПЛИТА С BREW !!!!
