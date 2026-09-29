@@ -15,6 +15,9 @@ _myfuncs() {
     ideavim
     psql
     pgcli
+    btop
+    kitty
+    alacritty
   )
 
   local -a diff_components=()

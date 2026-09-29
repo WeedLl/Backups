@@ -11,17 +11,21 @@ diff_mySysFile() {
 diff_mySysFile — сравнить текущие файлы с бэкапом. Все, по одному или попарно vimdiff
 
 Доступные компоненты:
-  diff      - модификатор открытия попарного сравнения в vimdiff
-  bash      - .bash_profile
-  zsh       - .zshrc
-  zshf      - .zsh_MyFunctions/
-  omz       - .oh-my-zsh/custom/
-  ultisnips - .vim/UltiSnips/
-  vim       - .vimrc
-  ideavim   - .ideavimrc
-  psql      - .psqlrc
-  git       - .gitconfig
-  pgcli     - .config/pgcli/config
+  diff       - модификатор открытия попарного сравнения в vimdiff
+  bash       - .bash_profile
+  zsh        - .zshrc
+  zshf       - .zsh_MyFunctions/
+  omz        - .oh-my-zsh/custom/
+  ultisnips  - .vim/UltiSnips/
+  vim        - .vimrc
+  ideavim    - .ideavimrc
+  psql       - .psqlrc
+  git        - .gitconfig
+  pgcli      - .config/pgcli/config
+  btop       - .config/btop/btop.conf
+  kitty      - .config/kitty/kitty.conf
+  alacritty - .config/alacritty/alacritty.toml
+
 
 Пример:
   diff_mySysFile zsh bash or diff_mySysFile diff (=all) or diff_mySysFile psql omz
@@ -52,17 +56,19 @@ EOF
   # Маппинг: ключ => "текущий_файл:файл_в_бэкапе"
   typeset -A items
   items=(
-    bash      "~/.bash_profile:$dest/.bash_profile"
-    zsh       "~/.zshrc:$dest/.zshrc"
-    zshf      "~/.zsh_MyFunctions:$dest/.zsh_MyFunctions"
-    vim       "~/.vimrc:$dest/.vimrc"
-    ideavim   "~/.ideavimrc:$dest/.ideavimrc"
-    psql      "~/.psqlrc:$dest/.psqlrc"
-    git       "~/.gitconfig:$dest/.gitconfig"
-    pgcli     "~/.config/pgcli/config:$dest/.config/pgcli/config"
-    ultisnips "~/.vim/UltiSnips:$dest/.vim/UltiSnips"
-    omz       "~/.oh-my-zsh/custom:$dest/.oh-my-zsh/custom"
-    btop      "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
+    bash       "~/.bash_profile:$dest/.bash_profile"
+    zsh        "~/.zshrc:$dest/.zshrc"
+    zshf       "~/.zsh_MyFunctions:$dest/.zsh_MyFunctions"
+    vim        "~/.vimrc:$dest/.vimrc"
+    ideavim    "~/.ideavimrc:$dest/.ideavimrc"
+    psql       "~/.psqlrc:$dest/.psqlrc"
+    git        "~/.gitconfig:$dest/.gitconfig"
+    pgcli      "~/.config/pgcli/config:$dest/.config/pgcli/config"
+    ultisnips  "~/.vim/UltiSnips:$dest/.vim/UltiSnips"
+    omz        "~/.oh-my-zsh/custom:$dest/.oh-my-zsh/custom"
+    btop       "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
+    kitty      "~/.config/kitty/kitty.conf:$dest/.config/kitty/kitty.conf"
+    alacritty "~/.config/alacritty/alacritty.toml:$dest/.config/alacritty/alacritty.toml"
   )
   typeset -A diff_details
 

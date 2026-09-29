@@ -4,18 +4,20 @@ unload_mySysFile() {
 unload_mySysFile — восстановить конфиги из бэкапа
 
 Доступные компоненты:
-  all       - все компоненты
-  bash      - .bash_profile
-  zsh       - .zshrc
-  zshf      - .zsh_MyFunctions/
-  omz       - .oh-my-zsh/custom/
-  ultisnips - .vim/UltiSnips/
-  vim       - .vimrc
-  ideavim   - .ideavimrc
-  psql      - .psqlrc
-  git       - .gitconfig
-  pgcli     - .config/pgcli/config
-  btop      - .config/btop/btop.conf
+  all        - все компоненты
+  bash       - .bash_profile
+  zsh        - .zshrc
+  zshf       - .zsh_MyFunctions/
+  omz        - .oh-my-zsh/custom/
+  ultisnips  - .vim/UltiSnips/
+  vim        - .vimrc
+  ideavim    - .ideavimrc
+  psql       - .psqlrc
+  git        - .gitconfig
+  pgcli      - .config/pgcli/config
+  btop       - .config/btop/btop.conf
+  kitty      - .config/kitty/kitty.conf
+  alacritty - .config/alacritty/alacritty.toml
 
 Пример:
   unload_mySysFile zsh bash или unload_mySysFile all
@@ -32,17 +34,19 @@ EOF
   fi
   typeset -A items
   items=(
-    bash      "$src/.bash_profile:~/"
-    zsh       "$src/.zshrc:~/"
-    zshf      "$src/.zsh_MyFunctions/:~/.zsh_MyFunctions"
-    vim       "$src/.vimrc:~/"
-    ideavim   "$src/.ideavimrc:~/"
-    psql      "$src/.psqlrc:~/"
-    git       "$src/.gitconfig:~/"
-    pgcli     "$src/.config/pgcli/config:~/.config/pgcli/config"
-    ultisnips "$src/.vim/UltiSnips/:~/.vim/UltiSnips"
-    omz       "$src/.oh-my-zsh/custom/:~/.oh-my-zsh/custom"
-    btop      "$src/.config/btop/btop.conf:~/.config/btop/btop.conf"
+    bash       "$src/.bash_profile:~/"
+    zsh        "$src/.zshrc:~/"
+    zshf       "$src/.zsh_MyFunctions/:~/.zsh_MyFunctions"
+    vim        "$src/.vimrc:~/"
+    ideavim    "$src/.ideavimrc:~/"
+    psql       "$src/.psqlrc:~/"
+    git        "$src/.gitconfig:~/"
+    pgcli      "$src/.config/pgcli/config:~/.config/pgcli/config"
+    ultisnips  "$src/.vim/UltiSnips/:~/.vim/UltiSnips"
+    omz        "$src/.oh-my-zsh/custom/:~/.oh-my-zsh/custom"
+    btop       "$src/.config/btop/btop.conf:~/.config/btop/btop.conf"
+    kitty      "$src/.config/kitty/kitty.conf:~/.config/kitty/kitty.conf"
+    alacritty "$src/.config/alacritty/alacritty.toml:~/.config/alacritty/alacritty.toml"
   )
 
   if [[ $# -eq 0 ]]; then

@@ -4,18 +4,20 @@ backup_mySysFile() {
 backup_mySysFile — обновить бэкапа
 
 Доступные компоненты:
-  all       - все компоненты
-  bash      - .bash_profile
-  zsh       - .zshrc
-  zshf      - .zsh_MyFunctions/
-  omz       - .oh-my-zsh/custom/
-  ultisnips - .vim/UltiSnips/
-  vim       - .vimrc
-  ideavim   - .ideavimrc
-  psql      - .psqlrc
-  git       - .gitconfig
-  pgcli     - .config/pgcli/config
-  btop      - .config/btop/btop.conf
+  all        - все компоненты
+  bash       - .bash_profile
+  zsh        - .zshrc
+  zshf       - .zsh_MyFunctions/
+  omz        - .oh-my-zsh/custom/
+  ultisnips  - .vim/UltiSnips/
+  vim        - .vimrc
+  ideavim    - .ideavimrc
+  psql       - .psqlrc
+  git        - .gitconfig
+  pgcli      - .config/pgcli/config
+  btop       - .config/btop/btop.conf
+  kitty      - .config/kitty/kitty.conf
+  alacritty - .config/alacritty/alacritty.toml
 
 Пример:
   backup_mySysFile zsh bash or backup_mySysFile all
@@ -29,17 +31,19 @@ EOF
 
   typeset -A items
   items=(
-    bash      "~/.bash_profile"
-    zsh       "~/.zshrc"
-    zshf      "~/.zsh_MyFunctions/:$dest/.zsh_MyFunctions"
-    vim       "~/.vimrc"
-    ideavim   "~/.ideavimrc"
-    psql      "~/.psqlrc"
-    git       "~/.gitconfig"
-    pgcli     "~/.config/pgcli/config:$dest/.config/pgcli/config"
-    ultisnips "~/.vim/UltiSnips/:$dest/.vim/UltiSnips"
-    omz       "~/.oh-my-zsh/custom/:$dest/.oh-my-zsh/custom"
-    btop      "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
+    bash       "~/.bash_profile"
+    zsh        "~/.zshrc"
+    zshf       "~/.zsh_MyFunctions/:$dest/.zsh_MyFunctions"
+    vim        "~/.vimrc"
+    ideavim    "~/.ideavimrc"
+    psql       "~/.psqlrc"
+    git        "~/.gitconfig"
+    pgcli      "~/.config/pgcli/config:$dest/.config/pgcli/config"
+    ultisnips  "~/.vim/UltiSnips/:$dest/.vim/UltiSnips"
+    omz        "~/.oh-my-zsh/custom/:$dest/.oh-my-zsh/custom"
+    btop       "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
+    kitty      "~/.config/kitty/kitty.conf:$dest/.config/kitty/kitty.conf"
+    alacritty "~/.config/alacritty/alacritty.toml:$dest/.config/alacritty/alacritty.toml"
   )
 
   if [[ $# -eq 0 ]]; then
