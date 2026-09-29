@@ -17,7 +17,8 @@ backup_mySysFile — обновить бэкапа
   pgcli      - .config/pgcli/config
   btop       - .config/btop/btop.conf
   kitty      - .config/kitty/kitty.conf
-  alacritty - .config/alacritty/alacritty.toml
+  alacritty  - .config/alacritty/alacritty.toml
+  yazi       - .config/yazi/
 
 Пример:
   backup_mySysFile zsh bash or backup_mySysFile all
@@ -43,7 +44,8 @@ EOF
     omz        "~/.oh-my-zsh/custom/:$dest/.oh-my-zsh/custom"
     btop       "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
     kitty      "~/.config/kitty/kitty.conf:$dest/.config/kitty/kitty.conf"
-    alacritty "~/.config/alacritty/alacritty.toml:$dest/.config/alacritty/alacritty.toml"
+    alacritty  "~/.config/alacritty/alacritty.toml:$dest/.config/alacritty/alacritty.toml"
+    yazi       "~/.config/yazi/:$dest/.config/yazi"
   )
 
   if [[ $# -eq 0 ]]; then

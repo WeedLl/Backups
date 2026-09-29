@@ -18,6 +18,7 @@ _myfuncs() {
     btop
     kitty
     alacritty
+    yazi
   )
 
   local -a diff_components=()

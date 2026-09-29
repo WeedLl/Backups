@@ -17,7 +17,8 @@ unload_mySysFile — восстановить конфиги из бэкапа
   pgcli      - .config/pgcli/config
   btop       - .config/btop/btop.conf
   kitty      - .config/kitty/kitty.conf
-  alacritty - .config/alacritty/alacritty.toml
+  alacritty  - .config/alacritty/alacritty.toml
+  yazi       - .config/yazi/
 
 Пример:
   unload_mySysFile zsh bash или unload_mySysFile all
@@ -46,7 +47,8 @@ EOF
     omz        "$src/.oh-my-zsh/custom/:~/.oh-my-zsh/custom"
     btop       "$src/.config/btop/btop.conf:~/.config/btop/btop.conf"
     kitty      "$src/.config/kitty/kitty.conf:~/.config/kitty/kitty.conf"
-    alacritty "$src/.config/alacritty/alacritty.toml:~/.config/alacritty/alacritty.toml"
+    alacritty  "$src/.config/alacritty/alacritty.toml:~/.config/alacritty/alacritty.toml"
+    yazi       "$src/.config/yazi/:~/.config/yazi"
   )
 
   if [[ $# -eq 0 ]]; then

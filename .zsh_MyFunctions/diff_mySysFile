@@ -23,8 +23,8 @@ diff_mySysFile — сравнить текущие файлы с бэкапом.
   git        - .gitconfig
   pgcli      - .config/pgcli/config
   btop       - .config/btop/btop.conf
-  kitty      - .config/kitty/kitty.conf
-  alacritty - .config/alacritty/alacritty.toml
+  alacritty  - .config/alacritty/alacritty.toml
+  yazi       - .config/yazi/
 
 
 Пример:
@@ -68,7 +68,8 @@ EOF
     omz        "~/.oh-my-zsh/custom:$dest/.oh-my-zsh/custom"
     btop       "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
     kitty      "~/.config/kitty/kitty.conf:$dest/.config/kitty/kitty.conf"
-    alacritty "~/.config/alacritty/alacritty.toml:$dest/.config/alacritty/alacritty.toml"
+    alacritty  "~/.config/alacritty/alacritty.toml:$dest/.config/alacritty/alacritty.toml"
+    yazi       "~/.config/yazi:$dest/.config/yazi"
   )
   typeset -A diff_details
 
