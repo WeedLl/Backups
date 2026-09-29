@@ -16,7 +16,7 @@ backup_mySysFile — обновить бэкапа
   git        - .gitconfig
   pgcli      - .config/pgcli/config
   btop       - .config/btop/btop.conf
-  kitty      - .config/kitty/kitty.conf
+  kitty      - .config/kitty/
   alacritty  - .config/alacritty/
   yazi       - .config/yazi/
 
@@ -43,7 +43,7 @@ EOF
     ultisnips  "~/.vim/UltiSnips/:$dest/.vim/UltiSnips"
     omz        "~/.oh-my-zsh/custom/:$dest/.oh-my-zsh/custom"
     btop       "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
-    kitty      "~/.config/kitty/kitty.conf:$dest/.config/kitty/kitty.conf"
+    kitty      "~/.config/kitty/:$dest/.config/kitty"
     alacritty  "~/.config/alacritty/:$dest/.config/alacritty/"
     yazi       "~/.config/yazi/:$dest/.config/yazi"
   )

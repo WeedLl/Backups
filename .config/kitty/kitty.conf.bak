@@ -3526,6 +3526,6 @@ draw_bold_text_with_bright_colors yes
 
 
 # BEGIN_KITTY_THEME
-# Mytheme
+# Gruvbox Dark Hard
 include current-theme.conf
 # END_KITTY_THEME

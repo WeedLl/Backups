@@ -1,8 +1,12 @@
 # Подключение темы Catppuccin Mocha — скачивается отдельно в ~/.config/alacritty/
-general.import = ["~/.config/alacritty/catppuccin-mocha.toml"]
+#general.import = ["~/.config/alacritty/catppuccin-mocha.toml"]
+general.import = ["~/.config/alacritty/gitgub_dark.toml"]
 
 [env]
 TERM = "xterm-256color"
+
+[colors]
+draw_bold_text_with_bright_colors = true     # Нормальное отображение жирных цветов
 
                                              # --- Окно ---
 [window]
