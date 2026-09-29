@@ -1,13 +1,53 @@
+# Подключение темы Catppuccin Mocha — скачивается отдельно в ~/.config/alacritty/
+general.import = ["~/.config/alacritty/catppuccin-mocha.toml"]
+
 [env]
 TERM = "xterm-256color"
 
+                                             # --- Окно ---
 [window]
-padding.x = 5
-padding.y = 5
+opacity = 0.98                               # Прозрачность фона: 1.0 — непрозрачно,
+                                             # 0.0 — полностью прозрачно. 0.92 — лёгкая, текст остаётся читаемым
+blur = true                                  # Размытие фона за окном (эффект матового стекла, только macOS)
+padding = { x = 8, y = 8 }                   # Отступы текста от краёв окна в пикселях — чтобы текст не прилипал к рамке
+option_as_alt = "Both"                       # На macOS Option работает как Alt — нужно для сочетаний
+                                             # клавиш в zsh, vim и других TUI-приложениях
+startup_mode = "windowed"                    # Открывать окно в окне
+                                             # (не полноэкранный режим, а просто максимизированное)
+[window.dimensions]
+columns = 126
+lines = 40
 
-opacity = 0.95
-blur = true
-
+                                             # --- Шрифт ---
 [font]
-normal.family = "JetBrainsMono NFM"
-size = 14
+size = 14.0                                  # Базовый размер шрифта в пунктах
+
+[font.normal]
+family = "JetBrainsMono NFM"                 # Nerd Font нужен для иконок в промпте, Yazi и других TUI-приложениях.
+                                             # Обычный JetBrains Mono иконки не покажет
+style = "Regular"
+
+[font.bold]
+family = "JetBrainsMono NFM"
+style = "Bold"
+
+[font.italic]
+family = "JetBrainsMono NFM"
+style = "Italic"
+
+                                             # --- Курсор ---
+[cursor]
+style = { shape = "Block", blinking = "On" } # Форма курсора — блочный, с миганием.
+                                             # Block удобнее, чем Beam или Underline
+unfocused_hollow = true                      # Когда окно не в фокусе, курсор становится пустым контуром
+                                             # — видно, где курсор, но не отвлекает миганием
+
+                                             # --- Мышь ---
+[mouse]
+hide_when_typing = true                      # Скрывает курсор мыши при наборе
+                                             # текста — не мешает и не перекрывает символы
+
+                                             # --- История прокрутки ---
+[scrolling]
+history = 100000                             # Сколько строк хранить в буфере прокрутки.
+                                             # 100 000 — с запасом для длинных логов и вывода
