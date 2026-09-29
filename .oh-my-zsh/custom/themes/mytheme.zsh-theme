@@ -1,3 +1,5 @@
+zmodload zsh/datetime
+autoload -Uz add-zsh-hook
 # Включаем подстановку переменных и функций внутри PROMPT
 setopt prompt_subst
 # Загружаем встроенный модуль zsh для работы с VCS
@@ -9,7 +11,7 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*:*' check-for-changes true
 # Unstaged — жёлтый !
 zstyle ':vcs_info:*:*' unstagedstr '%F{yellow}!'
-# Staged — зелёный +
+# Staged — зелёный 
 zstyle ':vcs_info:*:*' stagedstr '%F{green}+'
 # Формат: только ветка + staged/unstaged (без обёртки)
 # msg_0 — ветка+статус, msg_1 — действие (rebase/merge)
@@ -43,21 +45,24 @@ function _prompt_path_git() {
 
 # Время выполнения команды > 5 сек
 function _cmd_exec_time() {
-  local stop=$EPOCHSECONDS
-  local start=${_cmd_timestamp:-$stop}
-  local elapsed=$((stop - start))
-  (( elapsed > 5 )) && echo "%F{yellow}${elapsed}s%f"
+  (( _cmd_elapsed > 5 )) && echo "%F{yellow}${_cmd_elapsed}s%f"
 }
 
 # Хук перед выполнением команды
-preexec() { _cmd_timestamp=$EPOCHSECONDS }
+_cmd_timestamp_preexec() { _cmd_timestamp=$EPOCHSECONDS }
 
 # Хук перед отрисовкой промпта
-precmd() {
+_cmd_timestamp_precmd() {
   vcs_info
+  local stop=$EPOCHSECONDS
+  local start=${_cmd_timestamp:-$stop}
+  _cmd_elapsed=$((stop - start))
   unset _cmd_timestamp
   vcs_info_msg_1_=''
 }
+
+add-zsh-hook preexec _cmd_timestamp_preexec
+add-zsh-hook precmd _cmd_timestamp_precmd
 
 # Первая строка: ➜ + путь/git + время
 PROMPT='%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) $(_prompt_path_git) $(_cmd_exec_time)'
