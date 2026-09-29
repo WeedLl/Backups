@@ -11,3 +11,14 @@ image_filter = "lanczos3"  # лучший фильтр для превью из�
 image_quality = 90
 max_width = 600
 max_height = 900
+
+#Plugins
+[[plugin.prepend_fetchers]]
+url   = "*"
+run   = "git"
+group = "git"
+
+[[plugin.prepend_fetchers]]
+url   = "*/"
+run   = "git"
+group = "git"

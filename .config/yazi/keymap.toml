@@ -1,0 +1,6 @@
+#Plugins
+#git-files.yazi
+[[mgr.prepend_keymap]]
+on = ["g", "c"]
+run = "plugin git-files"
+desc = "Show Git file changes"
