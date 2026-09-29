@@ -1,0 +1,42 @@
+# Github Dark — тема для Alacritty (TOML)
+#Изменил цвета
+
+# Основные цвета
+[colors.primary]
+#background = "#30363d"
+background = "#000000"
+#foreground = "#e6edf3"
+foreground = "#00ff00"
+
+# Курсор
+[colors.cursor]
+text = "#30363d"
+cursor = "#e6edf3"
+
+# Обычные цвета (0–7)
+[colors.normal]
+black = "#484f58"
+#red = "#ff7b72"
+red = "#ff5b50"
+#green = "#3fb950"
+green = "#2fa055"
+#yellow = "#d29922"
+yellow = "#d6a323"
+#blue = "#58a6ff"
+blue = "#4a8cff"
+magenta = "#bc8cff"
+#cyan = "#39c5cf"
+cyan = "#2fb0c0"
+white = "#b1bac4"
+
+# Яркие цвета (8–15)
+[colors.bright]
+black = "#6e7681"
+red = "#ffa198"
+green = "#56d364"
+yellow = "#e3b341"
+blue = "#79c0ff"
+magenta = "#bc8cff"
+cyan = "#39c5cf"
+white = "#b1bac4"
+

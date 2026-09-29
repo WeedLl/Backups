@@ -1,6 +1,7 @@
 # Подключение темы Catppuccin Mocha — скачивается отдельно в ~/.config/alacritty/
 #general.import = ["~/.config/alacritty/catppuccin-mocha.toml"]
-general.import = ["~/.config/alacritty/gitgub_dark.toml"]
+#general.import = ["~/.config/alacritty/gitgub_dark.toml"]
+general.import = ["~/.config/alacritty/mytheme.toml"]
 
 [env]
 TERM = "xterm-256color"
