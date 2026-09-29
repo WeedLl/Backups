@@ -113,6 +113,8 @@ source <(fzf --zsh)
 #По документации должен стоять крайним?
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+eval "$(zoxide init zsh)"
+
 
 # User configuration
 
@@ -201,6 +203,15 @@ alias glog='git log --graph'
 
 ## PGCLI
 alias psqlc=pgcli
+
+### Пока не знаю как назвать
+#LSDeluxe
+alias ls='lsd'
+alias l='lsd -la'
+alias la='lsd -a'
+alias lt='lsd --tree'
+#Bat
+alias cat='bat'
 
 #_______________________________________________ ZSH-vim-status ____________________________________
 ###Рекомендация из видео https://www.youtube.com/watch?v=hIJh-KlQ7io

@@ -15,6 +15,7 @@ backup_mySysFile — обновить бэкапа
   psql      - .psqlrc
   git       - .gitconfig
   pgcli     - .config/pgcli/config
+  btop      - .config/btop/btop.conf
 
 Пример:
   backup_mySysFile zsh bash or backup_mySysFile all
@@ -35,9 +36,10 @@ EOF
     ideavim   "~/.ideavimrc"
     psql      "~/.psqlrc"
     git       "~/.gitconfig"
-    pgcli     "~/.config/pgcli/config:$dest/config_pgcli"
+    pgcli     "~/.config/pgcli/config:$dest/.config/pgcli/config"
     ultisnips "~/.vim/UltiSnips/:$dest/.vim/UltiSnips"
     omz       "~/.oh-my-zsh/custom/:$dest/.oh-my-zsh/custom"
+    btop      "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
   )
 
   if [[ $# -eq 0 ]]; then

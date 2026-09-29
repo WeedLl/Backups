@@ -5,6 +5,10 @@ ________________________________________________ MUSTHAVE ______________________
 4. Mac Vim (brew);
 5. ZSH (brew?) + brew OhMyZsh + Plug;
     5.1 Из brew - JetBrainsMono NFM (regular 14)
+    5.2 Из brew - lsd (LSDeluxe)
+    5.3 Из brew - bat (cat с подсветкой)
+    5.4 Из brew - btop (крутой top)
+    5.5 Из brew - zoxide (умный cd по последним папкам?)
 6. FZF (brew);
 7. Fork - GUI для git;
 8. PostgreSQL (brew);
