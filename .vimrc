@@ -94,6 +94,7 @@ Plug 'preservim/vim-markdown'
 Plug 'lervag/vimtex'
 Plug 'vim-python/python-syntax'
 
+Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clang-completer' }
 call plug#end()
 
 set background=dark
@@ -101,8 +102,56 @@ colorscheme gruvbox
 "" Нужно, если есть проблеимы с подсветкой ошибок? Ставится после выбора темы!
 hi SpellBad cterm=underline ctermfg=red
 
+"" YCM
+"В .vimrc — простая проверка для statusline
+let s:ycm_alive = 0
+
+function! s:CheckYcm(...) abort
+    try
+        call youcompleteme#GetErrorCount()
+        let s:ycm_alive = 1
+    catch
+        let s:ycm_alive = 0
+    endtry
+    call timer_start(10000, function('s:CheckYcm'))
+endfunction
+
+call timer_start(3000, function('s:CheckYcm'))
+
+function! YcmStatus()
+    return s:ycm_alive ? "YCM✓ " : "YCM✗ "
+endfunction
+
+set statusline+=%{YcmStatus()}
+set statusline+=%f\ %m%r%h%w\ %=%l:%c\ %p%%
+
+" Не спрашивать каждый раз про .ycm_extra_conf.py
+let g:ycm_confirm_extra_conf = 0
+
+" Открывать документацию в превью, а не закрывать попап
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+
+" Триггеры дополнения (по умолчанию довольно консервативно)
+let g:ycm_min_num_of_chars_for_completion = 2
+
+" Включить дополнение из буферов и словарей для текстовых файлов
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+
+" Включить диагностику
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_enable_diagnostic_highlighting = 1
+" Показывать ошибки в location list (:lopen)
+let g:ycm_always_populate_location_list = 1
+" Открыть список ошибок
+nnoremap <leader>d :YcmDiags<CR>
+" Показать ошибку под курсором в всплывающем окне
+nnoremap <leader>e :YcmShowDetailedDiagnostic<CR>
+
 ""UltiSnips
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
