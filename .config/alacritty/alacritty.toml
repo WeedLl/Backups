@@ -56,3 +56,20 @@ hide_when_typing = true                      # Скрывает курсор м�
 [scrolling]
 history = 100000                             # Сколько строк хранить в буфере прокрутки.
                                              # 100 000 — с запасом для длинных логов и вывода
+#Visual mode
+[[keyboard.bindings]]
+key = "Space"
+mods = "Control|Shift"
+action = "ToggleViMode"
+[[keyboard.bindings]]
+key = "Y"
+mods = "Control"
+action = "Copy"
+[[keyboard.bindings]]
+key = "U"
+mods = "Control"
+action = "ScrollPageUp"
+[[keyboard.bindings]]
+key = "D"
+mods = "Control"
+action = "ScrollPageDown"
