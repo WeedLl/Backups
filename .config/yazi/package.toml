@@ -8,5 +8,7 @@ use = "ktunprasert/git-files"
 rev = "529444e"
 hash = "a028c3c06630a33b068f4d5bd714a795"
 
-[flavor]
-deps = []
+[[flavor.deps]]
+use = "bennyyip/gruvbox-dark"
+rev = "619fdc5"
+hash = "d4c7003ec6dc4efd5d3a050d5c2f2575"

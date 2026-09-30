@@ -12,7 +12,9 @@ ________________________________________________ MUSTHAVE ______________________
     5.6 Из brew - yazi - файловый менеджер для терминала
         5.6.1 Из brew - ripgrep - замена grep, поставил чисто для yazi
         5.6.2 Из brew - fd - замена find, поставил чисто для yazi
+        #ya pkg add
         5.6.3 Из ya - git.yazi и git-files.yazi - подсветка git файлов в yazi
+        5.6.4 Из ya - bennyyip/gruvbox-dark - тема для yazi
 6. FZF (brew);
 7. Fork - GUI для git;
 8. PostgreSQL (brew);
