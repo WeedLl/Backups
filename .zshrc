@@ -144,35 +144,24 @@ eval "$(zoxide init zsh)"
 
 
 #_______________________________________________ Дефолтные настройки ______________________________
-if [[ ":$PATH:" != *":/Library/Frameworks/Python.framework/Versions/3.12/bin:"* ]] && [[ -d "/Library/Frameworks/Python.framework/Versions/3.12/bin" ]]; then
-    export PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH"
-fi
-
-alias python=python3
-alias python3="/Library/Frameworks/Python.framework/Versions/3.12/bin/python3"
-alias pip="/Library/Frameworks/Python.framework/Versions/3.12/bin/pip3"
-
 if [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]] && [[ -d "/opt/homebrew/bin" ]]; then
     export PATH="/opt/homebrew/bin:$PATH"
 fi
+
 if [[ ":$PATH:" != *":/opt/homebrew/sbin:"* ]] && [[ -d "/opt/homebrew/sbin" ]]; then
     export PATH="/opt/homebrew/sbin:$PATH"
 fi
-
 
 ##Рекомендации HomeBrew для PostgreSQL после установки
 if [[ ":$PATH:" != *":/opt/homebrew/opt/postgresql@15/bin:"* ]] && [[ -d "/opt/homebrew/opt/postgresql@15/bin" ]]; then
     export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 fi
 
-
 export LDFLAGS="-L/opt/homebrew/opt/postgresql@15/lib" #For compilers to find postgresql@15 you may need to set:
 export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
 
-
 export PSQL_EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
 export EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
-
 
 #_______________________________________________ SysVAR ____________________________________________
 RPS1="%T"
@@ -180,8 +169,7 @@ export RPS1
 
 
 #_______________________________________________ SmartMooving ______________________________________
-alias Dpython='cd ~/Documents/Python'
-alias Dpycharm='cd ~/PycharmProjects'
+alias Dpython='cd ~/Documents/For\ Sys/Python'
 alias Dbackup='cd ~/Documents/For\ Sys/Backup'
 
 
@@ -264,7 +252,11 @@ function vi_mode_prompt_info() {
 PS1+='$(vi_mode_prompt_info)'
 export PS1
 #________________________________________________ Другое главное __________________________________
-
+#Global VENV - Python, который должен везде использоваться и его pip
+if [[ ":$PATH:" != *":$HOME/.global_venv/bin:"* ]] && [[ -d "$HOME/.global_venv/bin" ]]; then
+    export PATH="$HOME/.global_venv/bin:$PATH"
+fi
+#alias python='python3'
 #Страховка от всех дубликатов PATH и FPATH (оставляет только первые вхождения)
 typeset -U PATH
 typeset -U FPATH
