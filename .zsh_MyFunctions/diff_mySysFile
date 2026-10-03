@@ -8,16 +8,17 @@
 diff_mySysFile() {
   if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     cat <<EOF
-diff_mySysFile — сравнить текущие файлы с бэкапом. Все, по одному или попарно vimdiff
+diff_mySysFile — сравнить текущие файлы с бэкапом. Все, по одному или попарно "nVim -d"
 
 Доступные компоненты:
-  diff       - модификатор открытия попарного сравнения в vimdiff
+  diff       - модификатор открытия попарного сравнения в "nVim -d"
   bash       - .bash_profile
   zsh        - .zshrc
   zshf       - .zsh_MyFunctions/
   omz        - .oh-my-zsh/custom/
   ultisnips  - .vim/UltiSnips/
   vim        - .vimrc
+  nvim       - .config/nvim/
   ideavim    - .ideavimrc
   psql       - .psqlrc
   git        - .gitconfig
@@ -34,7 +35,7 @@ EOF
     return 0
   fi
 
-  local vimdiff_McV="/Applications/MacVim.app/Contents/bin/vimdiff"
+  local vimdiff_McV="/opt/homebrew/bin/nvim"
   local dest="~/Documents/For Sys/Backup"
   dest=${~dest}
 
@@ -61,6 +62,7 @@ EOF
     zsh        "~/.zshrc:$dest/.zshrc"
     zshf       "~/.zsh_MyFunctions:$dest/.zsh_MyFunctions"
     vim        "~/.vimrc:$dest/.vimrc"
+    nvim       "~/.config/nvim:$dest/.config/nvim"
     ideavim    "~/.ideavimrc:$dest/.ideavimrc"
     psql       "~/.psqlrc:$dest/.psqlrc"
     git        "~/.gitconfig:$dest/.gitconfig"
@@ -195,7 +197,7 @@ EOF
 # vimdiff_McV для отличающихся
   if [[ $use_vimdiff_McV = true && ${#different} -gt 0 ]]; then
     echo ""
-    echo "Открытие vimdiff_McV для отличающихся файлов..."
+    echo "Открытие nVim -d для отличающихся файлов..."
     for key in "${different[@]}"; do
       local spec="${items[$key]}"
       local current="${spec%:*}"
@@ -233,17 +235,17 @@ EOF
           for f in "${diff_files[@]}"; do
             echo ""
             echo ">>> $key/$f"
-            $vimdiff_McV "$current/$f" "$backup/$f"
+            $vimdiff_McV -d "$current/$f" "$backup/$f"
           done
         fi
       else
         echo ""
         echo ">>> $key: $current <-> $backup"
-        $vimdiff_McV "$current" "$backup"
+        $vimdiff_McV -d "$current" "$backup"
       fi
     done
   elif [[ $use_vimdiff_McV = true && ${#different} -eq 0 ]]; then
     echo ""
-    echo "Отличий нет — vimdiff_McV не нужен."
+    echo "Отличий нет — nVim -d не нужен."
   fi
 }

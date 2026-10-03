@@ -11,6 +11,7 @@ backup_mySysFile — обновить бэкапа
   omz        - .oh-my-zsh/custom/
   ultisnips  - .vim/UltiSnips/
   vim        - .vimrc
+  nvim       - .config/nvim/
   ideavim    - .ideavimrc
   psql       - .psqlrc
   git        - .gitconfig
@@ -36,6 +37,7 @@ EOF
     zsh        "~/.zshrc"
     zshf       "~/.zsh_MyFunctions/:$dest/.zsh_MyFunctions"
     vim        "~/.vimrc"
+    nvim       "~/.config/nvim/:$dest/.config/nvim"
     ideavim    "~/.ideavimrc"
     psql       "~/.psqlrc"
     git        "~/.gitconfig"
@@ -49,7 +51,7 @@ EOF
   )
 
   if [[ $# -eq 0 ]]; then
-    echo "Использование: backup_mySysFile [bash|zsh|vim|ideavim|psql|git|pgcli|ultisnips|omz|all]"
+    echo "Использование: backup_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|all]"
     return 1
   fi
 

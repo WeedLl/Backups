@@ -11,6 +11,7 @@ _myfuncs() {
     omz
     ultisnips
     vim
+    nvim
     git
     ideavim
     psql

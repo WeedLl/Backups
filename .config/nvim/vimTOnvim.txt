@@ -1,0 +1,534 @@
+План перехода
+
+Шаг 1. Установка Neovim
+bash
+# macOS (если используете Homebrew)
+brew install neovim
+
+# Или скачайте AppImage/binary с GitHub releases
+# https://github.com/neovim/neovim/releases
+Шаг 2. Структура конфигурации
+Neovim использует XDG-директории. Ваш .vimrc переезжает в ~/.config/nvim/init.lua.
+
+Рекомендуемая структура:
+
+text
+~/.config/nvim/
+├── init.lua              # точка входа
+├── lua/
+│   ├── options.lua       # настройки редактора
+│   ├── autocmds.lua      # автокоманды
+│   ├── keymaps.lua       # горячие клавиши
+│   └── plugins/
+│       ├── init.lua      # lazy.nvim bootstrap + список плагинов
+│       ├── lsp.lua       # LSP-конфигурация
+│       ├── cmp.lua       # автодополнение
+│       └── ...            # по одному файлу на крупный плагин
+Шаг 3. Миграция настроек
+Вот полный адаптированный init.lua с пояснениями по каждому блоку:
+
+lua
+-- ============================================================
+-- init.lua — точка входа
+-- ============================================================
+
+-- Leader key (должен быть установлен до lazy.nvim)
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+-- Загружаем модули
+require("options")
+require("autocmds")
+require("keymaps")
+require("plugins.init")
+~/.config/nvim/lua/options.lua — основные настройки:
+
+lua
+local opt = vim.opt
+
+-- Кодировка (Neovim использует UTF-8 по умолчанию, но явно не повредит)
+opt.encoding = "utf-8"
+opt.fileencoding = "utf-8"
+opt.fileencodings = { "utf-8", "cp1251" }
+opt.termencoding = "utf-8"
+
+-- Резервные файлы
+opt.backup = false
+opt.swapfile = false
+
+-- Нумерация строк
+opt.number = true
+opt.relativenumber = true
+
+-- Статус-строка
+-- В Neovim laststatus=2 работает, но есть laststatus=3 (глобальная строка)
+opt.laststatus = 2
+
+-- Отображение вводимой команды
+opt.showcmd = true
+-- В Neovim 0.12+ showcmd заменён на showcmdloc, но showcmd всё ещё работает
+
+-- Вертикальная линия
+opt.colorcolumn = "120"
+
+-- Мышь
+opt.mouse = "a"
+opt.mousehide = true
+
+-- Прокрутка
+opt.scrolloff = 15
+
+-- Подсветка строки курсора
+opt.cursorline = true
+
+-- Перенос строк
+opt.wrap = true
+opt.linebreak = true
+opt.autoindent = true
+
+-- Табы
+opt.showtabline = 1
+opt.backspace = { "indent", "eol", "start" }
+opt.whichwrap:append("<,>,[,]")
+
+-- Поиск
+opt.hlsearch = true
+opt.incsearch = true
+opt.ignorecase = true
+opt.smartcase = true
+
+-- Undo/redo
+opt.undolevels = 1000
+opt.history = 1000
+
+-- Folding
+-- В Neovim 0.10+ есть опция foldmethod="expr" с foldexpr=vim.treesitter.foldexpr()
+-- Но для начала оставим indent, как у вас
+opt.foldenable = true
+opt.foldmethod = "indent"
+opt.foldminlines = 4
+opt.foldnestmax = 6
+opt.foldcolumn = "2"  -- В Neovim foldcolumn — строка, а не число (поддерживает "auto")
+
+-- Правописание
+opt.spell = true
+opt.spelllang = { "ru_ru", "en_us" }
+
+-- Python: отступы
+opt.tabstop = 4
+opt.shiftwidth = 4
+opt.smarttab = true
+opt.expandtab = true
+opt.softtabstop = 4
+Что изменилось и почему:
+
+set t_Co=256 — удалено. Neovim автоматически поддерживает 256 цветов и true color. Эта опция была нужна только в старых терминалах.
+syntax on — удалено. В Neovim синтаксис включается автоматически. С Tree-sitter он заменяется на более точную подсветку.
+let python_highlight_all = 1 — заменено на Tree-sitter.
+set guifont=JetBrainsMono\ NFM:h14 — актуально только для GUI (Neovim-qt, Neovide). Если используете GUI, вынесите в отдельный конфиг GUI-фронтенда.
+language en_US и set langmenu — в Neovim langmenu не релевантен (нет встроенного GUI-меню), но language messages C можно оставить, если нужны английские сообщения.
+opt.foldcolumn = "2" — в Neovim это строковый параметр (может быть "auto", "auto:1" и т. д.).
+~/.config/nvim/lua/autocmds.lua — автокоманды:
+
+lua
+local augroup = vim.api.nvim_create_augroup("UserAutocmds", { clear = true })
+
+-- Переключение cursorline в режиме Insert
+vim.api.nvim_create_autocmd({ "InsertEnter", "InsertLeave" }, {
+  group = augroup,
+  callback = function()
+    vim.opt.cursorline = false
+  end,
+  pattern = "*",
+})
+-- Возвращаем cursorline при выходе из Insert
+vim.api.nvim_create_autocmd("InsertLeave", {
+  group = augroup,
+  callback = function()
+    vim.opt.cursorline = true
+  end,
+  pattern = "*",
+})
+
+-- Python: обрезка пробелов перед сохранением
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = augroup,
+  pattern = "*.py",
+  callback = function()
+    local save = vim.fn.winsaveview()
+    vim.cmd([[%s/\s\+$//e]])
+    vim.fn.winrestview(save)
+  end,
+})
+
+-- Python: умные отступы
+vim.api.nvim_create_autocmd("BufRead", {
+  group = augroup,
+  pattern = "*.py",
+  callback = function()
+    vim.opt.smartindent = true
+    vim.opt.cinwords = "if,elif,else,for,while,try,except,finally,def,class"
+  end,
+})
+
+-- Закрытие Neovim, если последнее окно — файловое дерево
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = augroup,
+  pattern = "*",
+  callback = function()
+    local bufname = vim.api.nvim_buf_get_name(0)
+    -- Работает для neo-tree и nvim-tree
+    if vim.fn.tabpagenr("$") == 1 and vim.fn.winnr("$") == 1
+       and (bufname:match("neo%-tree") or bufname:match("NvimTree")) then
+      vim.cmd("quit")
+    end
+  end,
+})
+Что изменилось:
+
+Вместо autocmd используется vim.api.nvim_create_autocmd — это Lua API, типобезопасный и с группами.
+Ваш исходный autocmd для cursorline просто переключал cursorline! (toggle), что могло давать непредсказуемое поведение. Я разделил на чёткое «выключить в Insert, включить при выходе».
+Обрезка пробелов: вместо normal m...я используюwinsaveview()/winrestview()` — надёжнее и не зависит от меток.
+Автозакрытие при последнем окне: адаптировано под neo-tree/nvim-tree вместо NERDTree.
+~/.config/nvim/lua/keymaps.lua — горячие клавиши:
+
+lua
+local map = vim.keymap.set
+
+-- Folding
+map("n", "<space>", "za", { silent = true, desc = "Toggle fold" })
+
+-- Neo-tree toggle (вместо NERDTree)
+map("n", "<C-n>", "<cmd>Neotree toggle<CR>", { silent = true, desc = "Toggle file tree" })
+
+-- Перемещение по окнам с авто-созданием split
+map("n", "<C-h>", function()
+  local winnr = vim.fn.winnr()
+  vim.cmd("wincmd h")
+  if vim.fn.winnr() == winnr then
+    vim.cmd("wincmd v")
+    vim.cmd("wincmd h")
+  end
+end, { silent = true })
+
+map("n", "<C-j>", function()
+  local winnr = vim.fn.winnr()
+  vim.cmd("wincmd j")
+  if vim.fn.winnr() == winnr then
+    vim.cmd("wincmd s")
+    vim.cmd("wincmd j")
+  end
+end, { silent = true })
+
+map("n", "<C-k>", function()
+  local winnr = vim.fn.winnr()
+  vim.cmd("wincmd k")
+  if vim.fn.winnr() == winnr then
+    vim.cmd("wincmd s")
+    vim.cmd("wincmd k")
+  end
+end, { silent = true })
+
+map("n", "<C-l>", function()
+  local winnr = vim.fn.winnr()
+  vim.cmd("wincmd l")
+  if vim.fn.winnr() == winnr then
+    vim.cmd("wincmd v")
+    vim.cmd("wincmd l")
+  end
+end, { silent = true })
+Что изменилось:
+
+vim.keymap.set — современный API для маппингов. Поддерживает desc для which-key.nvim.
+Ваша функция WinMove() переписана на Lua-замыкания. Логика та же: если после wincmd окно не сменилось, создаём split и переходим.
+<C-n> теперь вызывает neo-tree вместо NERDTree.
+<space> za — без изменений, просто в Lua-синтаксисе.
+Шаг 4. Миграция плагинов
+Вот сравнительная таблица замены:
+
+Плагин Vim	Замена в Neovim	Зачем менять
+YouCompleteMe	nvim-lspconfig + blink.cmp + mason.nvim	Встроенный LSP, не нужна компиляция, быстрее, гибче
+NERDTree + nerdtree-git-plugin	neo-tree.nvim	Lua, асинхронность, иконки, git-статус встроен
+UltiSnips	LuaSnip	UltiSnips медленно работает в Neovim (Python-интерфейс), LuaSnip — нативный Lua
+gruvbox (morhetz)	gruvbox.nvim (ellisonleao)	Поддержка Tree-sitter и LSP semantic highlights
+python-syntax	nvim-treesitter (parser: python)	Tree-sitter даёт точную подсветку через AST, а не regex
+vim-sql-syntax	nvim-treesitter (parser: sql)	То же самое
+preservim/vim-markdown	render-markdown.nvim + treesitter markdown	Более современный рендеринг, заголовки, чекбоксы
+tabular	mini.align или оставить tabular	Tabular работает в Neovim, но mini.align — Lua-native
+vimtex	vimtex (не менять!)	Полностью совместим с Neovim 0.12+
+vim-pdf	vim-pdf (работает) или не нужен	Neovim открывает PDF в терминале через netrw
+~/.config/nvim/lua/plugins/init.lua — bootstrap lazy.nvim и список плагинов:
+
+lua
+-- ============================================================
+-- Bootstrap lazy.nvim
+-- ============================================================
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git", "clone", "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- ============================================================
+-- Плагины
+-- ============================================================
+require("lazy").setup({
+  -- --------------------------------------------------------
+  -- Цветовая схема
+  -- --------------------------------------------------------
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,  -- загрузить первой
+    config = function()
+      require("gruvbox").setup({
+        terminal_colors = true,
+        undercurl = true,
+        underline = true,
+        italic = {
+          strings = true,
+          emphasis = true,
+          comments = true,
+          folds = true,
+        },
+      })
+      vim.o.background = "dark"
+      vim.cmd("colorscheme gruvbox")
+      -- Аналог hi SpellBad из .vimrc
+      vim.api.nvim_set_hl(0, "SpellBad", { cterm = { underline = true }, ctermfg = "Red" })
+    end,
+  },
+
+  -- --------------------------------------------------------
+  -- Tree-sitter (замена python-syntax, vim-sql-syntax)
+  -- --------------------------------------------------------
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "python", "sql", "markdown", "markdown_inline",
+                             "lua", "vim", "vimdoc", "bash", "json", "yaml" },
+        highlight = { enable = true },
+        indent = { enable = true },
+      })
+    end,
+  },
+
+  -- --------------------------------------------------------
+  -- Neo-tree (замена NERDTree + nerdtree-git-plugin)
+  -- --------------------------------------------------------
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    lazy = false,
+    config = function()
+      require("neo-tree").setup({
+        filesystem = {
+          filtered_items = {
+            visible = true,  -- аналог NERDTreeShowHidden=1
+            hide_dotfiles = false,
+            hide_gitignored = false,
+          },
+          follow_current_file = { enabled = true },
+          use_libuv_file_watcher = true,
+        },
+        window = {
+          width = 30,
+        },
+        git_status = true,  -- встроенный git-статус (замена nerdtree-git-plugin)
+      })
+    end,
+  },
+
+  -- --------------------------------------------------------
+  -- LSP (замена YouCompleteMe)
+  -- --------------------------------------------------------
+  {
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end,
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "mason.nvim" },
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = { "pyright", "clangd" },
+      })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = { "mason-lspconfig.nvim" },
+    config = function()
+      local lspconfig = require("lspconfig")
+      -- Python
+      lspconfig.pyright.setup({})
+      -- C/C++ (замена YCM --clang-completer)
+      lspconfig.clangd.setup({})
+
+      -- Диагностика (замена YCM diagnostic signs)
+      vim.diagnostic.config({
+        virtual_text = true,
+        signs = true,
+        underline = true,
+        update_in_insert = false,
+      })
+
+      -- Клавиши диагностики (замена <leader>d и <leader>e)
+      vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist,
+        { desc = "Open diagnostic list" })
+      vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float,
+        { desc = "Show diagnostic under cursor" })
+
+      -- LSP-маппинги
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
+      vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover docs" })
+      vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "References" })
+      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
+      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+    end,
+  },
+
+  -- --------------------------------------------------------
+  -- Автодополнение (замена YCM)
+  -- blink.cmp — современная альтернатива nvim-cmp, работает "из коробки"
+  -- --------------------------------------------------------
+  {
+    "saghen/blink.cmp",
+    version = "v1.*",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+      require("blink.cmp").setup({
+        keymap = {
+          preset = "default",
+          -- Аналог YCM: автодополнение после 2 символов
+        },
+        sources = {
+          default = { "lsp", "path", "snippets", "buffer" },
+        },
+        completion = {
+          menu = {
+            auto_show = true,
+          },
+          documentation = {
+            auto_show = true,  -- аналог ycm_add_preview_to_completeopt
+            auto_show_delay_ms = 0,
+          },
+        },
+      })
+    end,
+  },
+
+  -- --------------------------------------------------------
+  -- Сниппеты (замена UltiSnips)
+  -- --------------------------------------------------------
+  {
+    "L3MON4D3/LuaSnip",
+    version = "v2.*",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+      -- Загрузка сниппетов в SnipMate-формате (совместимых с UltiSnips-стилем)
+      require("luasnip.loaders.from_snipmate").lazy_load()
+      -- Каталог для ваших собственных сниппетов:
+      -- ~/.config/nvim/snippets/
+
+      -- Клавиши (аналог UltiSnips-конфига)
+      vim.keymap.set({ "i", "s" }, "<C-l>", function()
+        require("luasnip").expand_or_jump()
+      end, { desc = "Expand/jump snippet" })
+      vim.keymap.set({ "i", "s" }, "<C-b>", function()
+        require("luasnip").jump(1)
+      end, { desc = "Jump forward" })
+      vim.keymap.set({ "i", "s" }, "<C-z>", function()
+        require("luasnip").jump(-1)
+      end, { desc = "Jump backward" })
+    end,
+  },
+
+  -- --------------------------------------------------------
+  -- VimTeX (без изменений, работает в Neovim)
+  -- --------------------------------------------------------
+  {
+    "lervag/vimtex",
+    lazy = false,  -- НЕ ленивая загрузка! См. доку vimtex
+    init = function()
+      vim.g.vimtex_view_method = "zathura"  -- или ваш просмотрщик
+      vim.g.tex_flavor = "latex"
+    end,
+  },
+
+  -- --------------------------------------------------------
+  -- Markdown (замена preservim/vim-markdown)
+  -- --------------------------------------------------------
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    opts = {},
+  },
+
+  -- --------------------------------------------------------
+  -- Tabular (оставляем, работает в Neovim)
+  -- Или можно заменить на mini.align:
+  -- { "echasnovski/mini.align", version = false, config = function() require("mini.align").setup() end }
+  -- --------------------------------------------------------
+  { "godlygeek/tabular" },
+
+  -- --------------------------------------------------------
+  -- PDF (оставляем, работает в Neovim)
+  -- --------------------------------------------------------
+  { "makerj/vim-pdf" },
+}, {
+  -- Глобальные опции lazy.nvim
+  install = { colorscheme = { "gruvbox" } },
+  checker = { enabled = true, notify = false },
+})
+Шаг 5. Что произошло с YCM-специфичным конфигом
+Ваш .vimrc содержал немало YCM-настроек. Вот как они переносятся:
+
+YCM настройка	Что в Neovim
+ycm_confirm_extra_conf = 0	Не нужна — LSP не требует extra conf
+ycm_add_preview_to_completeopt	blink.cmp → documentation.auto_show = true
+ycm_autoclose_preview_window_after_completion	blink.cmp автоматически закрывает
+ycm_min_num_of_chars_for_completion = 2	blink.cmp работает с 1 символа, но можно настроить
+ycm_collect_identifiers_from_comments_and_strings	LSP + buffer source делают это автоматически
+ycm_enable_diagnostic_signs	vim.diagnostic.config({ signs = true })
+ycm_enable_diagnostic_highlighting	vim.diagnostic.config({ underline = true })
+ycm_always_populate_location_list	vim.diagnostic.setloclist на <leader>d
+YcmDiags	vim.diagnostic.setloclist
+YcmShowDetailedDiagnostic	vim.diagnostic.open_float
+Функция YcmStatus() + таймер	LSP-статус в statusline через lualine.nvim или vim.lsp.get_clients()
+--clang-completer	lspconfig.clangd.setup({}) (через mason)
+Statusline: вместо вашей ручной YcmStatus() рекомендую поставить lualine.nvim — она умеет показывать LSP-статус, диагностику и многое другое без таймеров:
+
+lua
+-- добавить в plugins/init.lua:
+{
+  "nvim-lualine/lualine.nvim",
+  dependencies = { "nvim-tree/nvim-web-devicons" },
+  config = function()
+    require("lualine").setup({
+      sections = {
+        lualine_a = { "mode" },
+        lualine_b = { { "filename", path = 1 }, "modified", "readonly" },
+        lualine_c = { "diagnostics" },
+        lualine_x = { "encoding", "fileformat", "filetype" },
+        lualine_y = { "progress" },
+        lualine_z = { "location" },
+      },
+    })
+  end,
+},
+Это заменяет ваш set statusline+=%{YcmStatus()}\ %f\ %m%r%h%w\ %=%l:%c\ %p%% и заодно set ruler.

@@ -11,6 +11,7 @@ unload_mySysFile — восстановить конфиги из бэкапа
   omz        - .oh-my-zsh/custom/
   ultisnips  - .vim/UltiSnips/
   vim        - .vimrc
+  nvim       - .config/nvim/
   ideavim    - .ideavimrc
   psql       - .psqlrc
   git        - .gitconfig
@@ -39,6 +40,7 @@ EOF
     zsh        "$src/.zshrc:~/"
     zshf       "$src/.zsh_MyFunctions/:~/.zsh_MyFunctions"
     vim        "$src/.vimrc:~/"
+    nvim       "$src/.config/nvim/:~/.config/nvim"
     ideavim    "$src/.ideavimrc:~/"
     psql       "$src/.psqlrc:~/"
     git        "$src/.gitconfig:~/"
@@ -52,7 +54,7 @@ EOF
   )
 
   if [[ $# -eq 0 ]]; then
-    echo "Использование: unload_mySysFile [bash|zsh|vim|ideavim|psql|git|pgcli|ultisnips|omz|all]"
+    echo "Использование: unload_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|all]"
     return 1
   fi
 
