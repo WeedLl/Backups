@@ -1,0 +1,35 @@
+snippet be "begin & end"
+	\begin{${1:blockname}}
+	${2:something}
+	\end{${1}}
+
+snippet betab "begin & end in tabl"
+	\begin{tabular}{${1:| or ||, c or l or r, also p={x cm}}}
+		\hline
+		${2:Line and sep &}\\
+		\hline
+	\end{tabular}
+
+snippet tabl "tabl line"
+	\hline
+	${1:Line and sep &}\\
+
+snippet lstg "lst in line git-style"
+	\lstinline[style=git-style]|${1}|
+
+snippet belst "begin & end lstlisting"
+	\begin{lstlisting}
+	${1}
+	\end{lstlisting}
+
+snippet belstg "begin & end lstlisting git-style"
+	\begin{lstlisting}[style=git-style]
+	${1}
+	\end{lstlisting}
+
+snippet col "color string"
+	{\color{${1:Color}}${2:Text}} ${3:Next}
+
+snippet tcol "text color if color string doesn't work"
+	\textcolor{${1:Color}}{${2:Text}} ${3:Next}
+

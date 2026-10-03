@@ -160,8 +160,8 @@ fi
 export LDFLAGS="-L/opt/homebrew/opt/postgresql@15/lib" #For compilers to find postgresql@15 you may need to set:
 export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
 
-export PSQL_EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
-export EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
+export PSQL_EDITOR="/opt/homebrew/bin/nvim"
+export EDITOR="/opt/homebrew/bin/nvim"
 
 #_______________________________________________ SysVAR ____________________________________________
 RPS1="%T"
@@ -174,12 +174,16 @@ alias Dbackup='cd ~/Documents/For\ Sys/Backup'
 
 
 #_______________________________________________ ShortCat __________________________________________
-## Vim
+## Vim and nVim
+#Vim
 alias default_vim='/usr/bin/vim'
 alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 alias mvim='open -a /Applications/MacVim.app'
-alias vimdiff="/Applications/MacVim.app/Contents/bin/vimdiff"
+#alias vimdiff="/Applications/MacVim.app/Contents/bin/vimdiff"
 alias vimtutor="/Applications/MacVim.app/Contents/bin/vimtutor"
+#nVim
+alias v='/opt/homebrew/bin/nvim'
+alias vimdiff='nvim -d'
 
 ## FZF
 alias fopen='open $(fzf)'

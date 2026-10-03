@@ -1,0 +1,396 @@
+Вот итоговая структура и все файлы:
+
+text
+~/.config/nvim/
+├── init.lua
+├── lua/
+│   ├── core/
+│   │   ├── options.lua
+│   │   ├── autocmds.lua
+│   │   └── keymaps.lua
+│   ├── plugins/
+│   │   ├── init.lua      -- bootstrap lazy.nvim
+│   │   ├── ui.lua         -- gruvbox, lualine
+│   │   ├── editor.lua    -- treesitter, tabular, vim-pdf
+│   │   ├── tree.lua       -- neo-tree
+│   │   ├── lsp.lua        -- mason, lspconfig
+│   │   ├── cmp.lua        -- blink.cmp, luasnip
+│   │   └── lang.lua       -- vimtex, render-markdown
+│   └── configs/
+│       ├── gruvbox.lua
+│       ├── lualine.lua
+│       ├── treesitter.lua
+│       ├── neo-tree.lua
+│       ├── lsp.lua
+│       ├── blink.lua
+│       ├── luasnip.lua
+│       ├── vimtex.lua
+│       └── render-markdown.lua
+└── after/
+init.lua
+lua
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+require("core.options")
+require("core.autocmds")
+require("core.keymaps")
+require("plugins.init")
+lua/plugins/init.lua — bootstrap
+Здесь только установка lazy.nvim и запуск. Строка "plugins" указывает lazy.nvim автоматически собрать все .lua-файлы из lua/plugins/.
+
+lua
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git", "clone", "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup("plugins", {
+  install = { colorscheme = { "gruvbox" } },
+  checker = { enabled = true, notify = false },
+})
+lua/plugins/ui.lua — цветовая схема и статусная строка
+lua
+return {
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    lazy = false,
+    config = function()
+      require("configs.gruvbox")
+    end,
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    event = "VeryLazy",
+    config = function()
+      require("configs.lualine")
+    end,
+  },
+}
+lua/plugins/editor.lua — treesitter, tabular, vim-pdf
+lua
+return {
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("configs.treesitter")
+    end,
+  },
+  { "godlygeek/tabular" },
+  { "makerj/vim-pdf" },
+}
+lua/plugins/tree.lua — neo-tree
+lua
+return {
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    cmd = "Neotree",
+    keys = {
+      { "<C-n>", "<cmd>Neotree toggle<CR>", desc = "Toggle file tree" },
+    },
+    config = function()
+      require("configs.neo-tree")
+    end,
+  },
+}
+lua/plugins/lsp.lua — mason, lspconfig
+lua
+return {
+  {
+    "williamboman/mason.nvim",
+    cmd = "Mason",
+    config = function()
+      require("mason").setup()
+    end,
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "mason.nvim" },
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = { "pyright", "clangd" },
+      })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "mason-lspconfig.nvim" },
+    config = function()
+      require("configs.lsp")
+    end,
+  },
+}
+lua/plugins/cmp.lua — blink.cmp, luasnip
+lua
+return {
+  {
+    "saghen/blink.cmp",
+    version = "v1.*",
+    event = "InsertEnter",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+      require("configs.blink")
+    end,
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    version = "v2.*",
+    event = "InsertEnter",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+      require("configs.luasnip")
+    end,
+  },
+}
+lua/plugins/lang.lua — vimtex, render-markdown
+lua
+return {
+  {
+    "lervag/vimtex",
+    lazy = false,
+    init = function()
+      require("configs.vimtex")
+    end,
+  },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("configs.render-markdown")
+    end,
+  },
+}
+А теперь все файлы из lua/configs/:
+
+lua/configs/gruvbox.lua
+lua
+local ok, gruvbox = pcall(require, "gruvbox")
+if not ok then
+  return
+end
+
+gruvbox.setup({
+  terminal_colors = true,
+  undercurl = true,
+  underline = true,
+  italic = {
+    strings = true,
+    emphasis = true,
+    comments = true,
+    folds = true,
+  },
+})
+
+vim.o.background = "dark"
+vim.cmd("colorscheme gruvbox")
+
+-- Аналог hi SpellBad из .vimrc
+vim.api.nvim_set_hl(0, "SpellBad", {
+  cterm = { underline = true },
+  ctermfg = "Red",
+})
+lua/configs/lualine.lua
+lua
+local ok, lualine = pcall(require, "lualine")
+if not ok then
+  return
+end
+
+lualine.setup({
+  sections = {
+    lualine_a = { "mode" },
+    lualine_b = { { "filename", path = 1 }, "modified", "readonly" },
+    lualine_c = { "diagnostics" },
+    lualine_x = { "encoding", "fileformat", "filetype" },
+    lualine_y = { "progress" },
+    lualine_z = { "location" },
+  },
+})
+lua/configs/treesitter.lua
+lua
+local ok, configs = pcall(require, "nvim-treesitter.configs")
+if not ok then
+  return
+end
+
+configs.setup({
+  ensure_installed = {
+    "python", "sql", "markdown", "markdown_inline",
+    "lua", "vim", "vimdoc", "bash", "json", "yaml",
+  },
+  highlight = { enable = true },
+  indent = { enable = true },
+})
+lua/configs/neo-tree.lua
+lua
+local ok, neo_tree = pcall(require, "neo-tree")
+if not ok then
+  return
+end
+
+neo_tree.setup({
+  filesystem = {
+    filtered_items = {
+      visible = true,      -- аналог NERDTreeShowHidden=1
+      hide_dotfiles = false,
+      hide_gitignored = false,
+    },
+    follow_current_file = { enabled = true },
+    use_libuv_file_watcher = true,
+  },
+  window = { width = 30 },
+  git_status = true,       -- встроенный git-статус (замена nerdtree-git-plugin)
+})
+lua/configs/lsp.lua
+lua
+local ok, lspconfig = pcall(require, "lspconfig")
+if not ok then
+  return
+end
+
+-- Python (замена YCM для Python)
+lspconfig.pyright.setup({})
+
+-- C/C++ (замена YCM --clang-completer)
+lspconfig.clangd.setup({})
+
+-- Диагностика (замена ycm_enable_diagnostic_signs / highlighting)
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+})
+
+-- Клавиши (замена <leader>d, <leader>e из YCM)
+vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist,
+  { desc = "Open diagnostic list" })
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float,
+  { desc = "Show diagnostic under cursor" })
+
+-- LSP-маппинги (замена YCM go-to-definition и т.д.)
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover docs" })
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "References" })
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+lua/configs/blink.lua
+lua
+local ok, blink = pcall(require, "blink.cmp")
+if not ok then
+  return
+end
+
+blink.setup({
+  keymap = {
+    preset = "default",
+  },
+  sources = {
+    default = { "lsp", "path", "snippets", "buffer" },
+  },
+  completion = {
+    menu = { auto_show = true },
+    documentation = {
+      auto_show = true,        -- аналог ycm_add_preview_to_completeopt
+      auto_show_delay_ms = 0,
+    },
+  },
+})
+lua/configs/luasnip.lua
+lua
+local ok, luasnip = pcall(require, "luasnip")
+if not ok then
+  return
+end
+
+require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_snipmate").lazy_load()
+
+-- Клавиши (аналог UltiSnips-конфига)
+-- Expand / jump — <C-l> (как UltiSnipsExpandTrigger)
+vim.keymap.set({ "i", "s" }, "<C-l>", function()
+  luasnip.expand_or_jump()
+end, { desc = "Expand/jump snippet" })
+
+-- Jump forward — <C-b> (как UltiSnipsJumpForwardTrigger)
+vim.keymap.set({ "i", "s" }, "<C-b>", function()
+  luasnip.jump(1)
+end, { desc = "Jump forward" })
+
+-- Jump backward — <C-z> (как UltiSnipsJumpBackwardTrigger)
+vim.keymap.set({ "i", "s" }, "<C-z>", function()
+  luasnip.jump(-1)
+end, { desc = "Jump backward" })
+lua/configs/vimtex.lua
+lua
+-- vimtex использует init, а не config, потому что
+-- плагин читает vim.g-переменные при загрузке
+vim.g.vimtex_view_method = "zathura"
+vim.g.tex_flavor = "latex"
+lua/configs/render-markdown.lua
+lua
+local ok, render_md = pcall(require, "render-markdown")
+if not ok then
+  return
+end
+
+render_md.setup({})
+Как это работает
+
+Поток загрузки:
+
+init.lua → загружает core/options, core/autocmds, core/keymaps, plugins/init
+plugins/init.lua → бутстрапит lazy.nvim, вызывает require("lazy").setup("plugins")
+lazy.nvim автоматически читает все .lua-файлы из lua/plugins/ (кроме init.lua, который уже отработал как бутстрап)
+Каждый файл в lua/plugins/ возвращает таблицу спецификаций плагинов
+Когда плагин загружается (сразу или лениво), lazy.nvim вызывает его config-функцию
+config-функция делает require("configs.xxx") — загружает файл из lua/configs/
+Почему config, а не opts:
+
+opts — сокращение для function() require("plugin").setup(opts) end. Удобно для простых плагинов, где нужно передать только таблицу с настройками. Но в ваших плагинах (gruvbox, lsp, neo-tree) после setup() идут дополнительные действия (colorscheme, маппинги, highlight) — поэтому config с отдельным файлом гибче.
+
+Почему init у vimtex, а не config:
+
+vimtex — vimscript-плагин. Он читает vim.g.vimtex_* переменные в момент загрузки, а не через setup(). Поэтому переменные нужно выставить до того, как плагин загрузится. Поле init выполняется до загрузки, а config — после. Для vimscript-плагинов это ключевое различие.
+
+Защита pcall:
+
+В каждом файле из lua/configs/ первая строка — pcall(require, "plugin"). Если плагин ещё не установлен (первый запуск), require вернёт ошибку, а pcall её перехватит. Neovim не упадёт, а просто пропустит конфиг.
+
+Ленивая загрузка:
+
+Обратите внимание на поля event, cmd, ft, keys в спецификациях — они определяют, когда плагин загрузится:
+
+Плагин	Триггер	Почему
+gruvbox	сразу (lazy = false)	нужна до отрисовки UI
+lualine	VeryLazy	после старта, не блокирует UI
+treesitter	BufReadPost	при открытии файла
+neo-tree	cmd, keys	при вызове :Neotree или <C-n>
+lspconfig	BufReadPre	при открытии файла, до чтения
+blink.cmp	InsertEnter	при входе в insert-режим
+LuaSnip	InsertEnter	там же
+vimtex	сразу (lazy = false)	документация вимтекса требует
+render-markdown	ft = markdown	только для markdown-файлов
+Это даёт быстрый старт — тяжелые плагины грузятся только когда реально нужны.
+
+Создайте все файлы и запустите nvim — lazy.nvim скачает и установит всё автоматически.

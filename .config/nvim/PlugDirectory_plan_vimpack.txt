@@ -1,0 +1,311 @@
+Отличный выбор — vim.pack появился в Neovim 0.12 и не требует сторонних менеджеров. Главное отличие от lazy.nvim: нет встроенной ленивой загрузки (нужно делать вручную через автокоманды), нет полей config, opts, dependencies, event, cmd, keys, ft — конфиг плагина пишется просто после vim.pack.add(). Зато ничего не нужно бутстрапить — всё уже встроено. 
+
+Структура остаётся вашей, только plains → plugins:
+
+text
+~/.config/nvim/
+├── init.lua
+├── lua/
+│   ├── core/
+│   │   ├── options.lua
+│   │   ├── autocmds.lua
+│   │   └── keymaps.lua
+│   ├── plugins/
+│   │   ├── init.lua      -- точка входа, требует все файлы
+│   │   ├── ui.lua
+│   │   ├── editor.lua
+│   │   ├── tree.lua
+│   │   ├── lsp.lua
+│   │   ├── cmp.lua
+│   │   └── lang.lua
+│   └── configs/
+│       ├── gruvbox.lua
+│       ├── lualine.lua
+│       ├── treesitter.lua
+│       ├── neo-tree.lua
+│       ├── lsp.lua
+│       ├── blink.lua
+│       ├── luasnip.lua
+│       ├── vimtex.lua
+│       └── render-markdown.lua
+└── after/
+init.lua
+lua
+-- Обязательно первая строка: байткеш для быстрого старта
+vim.loader.enable()
+
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+require("core.options")
+require("core.autocmds")
+require("core.keymaps")
+
+-- Хук для TSUpdate: должен быть ДО vim.pack.add
+vim.api.nvim_create_autocmd("PackChanged", {
+  callback = function(ev)
+    local name, kind = ev.data.spec.name, ev.data.kind
+    if name == "nvim-treesitter" and kind == "update" then
+      if not ev.data.active then
+        vim.cmd.packadd("nvim-treesitter")
+      end
+      vim.cmd("TSUpdate")
+    end
+  end,
+})
+
+require("plugins.init")
+Что изменилось по сравнению с lazy.nvim:
+
+vim.loader.enable() — байткеш, аналог «тёмной магии» lazy.nvim для ускорения стартапа. 
+PackChanged autocmd заменяет build = ":TSUpdate" из lazy.nvim. Срабатывает при установке/обновлении treesitter.
+Никакого бутстрапа — vim.pack уже встроен в Neovim 0.12.
+lua/plugins/init.lua — точка входа для плагинов
+Вместо require("lazy").setup("plugins") — просто последовательный require файлов. Порядок важен: зависимости грузятся раньше.
+
+lua
+-- Порядок важен: сначала базовые, потом зависящие от них
+require("plugins.ui")       -- gruvbox, lualine (без зависимостей)
+require("plugins.editor")    -- treesitter, tabular, vim-pdf
+require("plugins.tree")      -- neo-tree + plenary + nui + devicons
+require("plugins.lsp")       -- mason, lspconfig
+require("plugins.cmp")       -- blink.cmp, luasnip
+require("plugins.lang")      -- vimtex, render-markdown
+lua/plugins/ui.lua
+В vim.pack нет полей priority, lazy, config. Плагин грузится сразу, конфиг — следующей строкой.
+
+lua
+-- gruvbox: грузим сразу, нужна до отрисовки UI
+vim.pack.add({
+  "https://github.com/ellisonleao/gruvbox.nvim",
+})
+require("configs.gruvbox")
+
+-- lualine: откладываем через vim.schedule, чтобы не тормозить старт
+-- Регистрируем (установим если нет), но не загружаем
+vim.pack.add({
+  "https://github.com/nvim-lualine/lualine.nvim",
+  "https://github.com/nvim-tree/nvim-web-devicons",  -- зависимость
+}, { load = function() end })
+
+-- Загружаем после старта (аналог event = "VeryLazy" из lazy.nvim)
+vim.schedule(function()
+  vim.cmd.packadd("lualine.nvim")
+  vim.cmd.packadd("nvim-web-devicons")
+  require("configs.lualine")
+end)
+Различия с lazy.nvim:
+
+Нет priority = 1000 — порядок определяется последовательностью вызовов vim.pack.add().
+Нет config = function() ... end — конфиг вызывается обычным require("configs.xxx") после vim.pack.add().
+load = function() end — регистрирует плагин (скачивает если нужно), но не загружает. Потом vim.cmd.packadd() загружает его вручную. 
+vim.schedule() — аналог event = "VeryLazy": откладывает загрузку на следующий тик event loop.
+Зависимости (nvim-web-devicons) перечисляются в том же вызове vim.pack.add() — грузятся последовательно.
+lua/plugins/editor.lua
+lua
+-- Treesitter: ленивая загрузка при открытии файла
+vim.pack.add({
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "master" },
+}, { load = function() end })
+
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+  group = vim.api.nvim_create_augroup("TreesitterLazy", { clear = true }),
+  once = true,
+  callback = function()
+    vim.cmd.packadd("nvim-treesitter")
+    require("configs.treesitter")
+  end,
+})
+
+-- Tabular и vim-pdf: лёгкие vimscript-плагины, грузим сразу
+vim.pack.add({
+  "https://github.com/godlygeek/tabular",
+  "https://github.com/makerj/vim-pdf",
+})
+Различия:
+
+{ src = "url", version = "master" } — аналог branch = "master" из lazy.nvim. vim.pack использует поле version для branch/tag/commit. 
+Ленивая загрузка treesitter через autocmd с once = true — аналог event = { "BufReadPost", "BufNewFile" }.
+TSUpdate обрабатывается в init.lua через PackChanged (см. выше) — аналог build = ":TSUpdate".
+lua/plugins/tree.lua
+lua
+-- Зависимости грузим ПЕРВЫМИ в том же вызове
+vim.pack.add({
+  "https://github.com/nvim-lua/plenary.nvim",
+  "https://github.com/MunifTanjim/nui.nvim",
+  "https://github.com/nvim-tree/nvim-web-devicons",
+  { src = "https://github.com/nvim-neo-tree/neo-tree.nvim", version = "v3.x" },
+}, { load = function() end })
+
+-- Ленивая загрузка: по команде или по клавише
+vim.keymap.set("n", "<C-n>", function()
+  vim.cmd.packadd("neo-tree.nvim")
+  vim.cmd.packadd("plenary.nvim")
+  vim.cmd.packadd("nui.nvim")
+  vim.cmd.packadd("nvim-web-devicons")
+  require("configs.neo-tree")
+  vim.cmd("Neotree toggle")
+end, { desc = "Toggle file tree" })
+Различия:
+
+Нет cmd = "Neotree" и keys = { ... } — вместо этого ручной vim.keymap.set с функцией, которая делает packadd + конфиг + команду.
+Зависимости (plenary, nui, devicons) перечислены перед neo-tree в одном вызове vim.pack.add(). При packadd их тоже нужно подключить вручную.
+load = function() end — регистрирует всё, но не грузит. Первый <C-n> загрузит и настроит, последующие — просто Neotree toggle (плагин уже активен).
+Оптимизация: чтобы не делать packadd при каждом нажатии, можно проверить:
+
+lua
+vim.keymap.set("n", "<C-n>", function()
+  if vim.pack.get("neo-tree.nvim") and vim.pack.get("neo-tree.nvim")[1].active then
+    vim.cmd("Neotree toggle")
+  else
+    vim.cmd.packadd("plenary.nvim")
+    vim.cmd.packadd("nui.nvim")
+    vim.cmd.packadd("nvim-web-devicons")
+    vim.cmd.packadd("neo-tree.nvim")
+    require("configs.neo-tree")
+    vim.cmd("Neotree toggle")
+  end
+end, { desc = "Toggle file tree" })
+lua/plugins/lsp.lua
+lua
+-- mason: грузим сразу (нужен для установки LSP-серверов)
+vim.pack.add({
+  "https://github.com/williamboman/mason.nvim",
+  "https://github.com/williamboman/mason-lspconfig.nvim",
+})
+require("mason").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = { "pyright", "clangd" },
+})
+
+-- lspconfig: ленивая загрузка при открытии файла
+vim.pack.add({
+  "https://github.com/neovim/nvim-lspconfig",
+}, { load = function() end })
+
+vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
+  group = vim.api.nvim_create_augroup("LspLazy", { clear = true }),
+  once = true,
+  callback = function()
+    vim.cmd.packadd("nvim-lspconfig")
+    require("configs.lsp")
+  end,
+})
+Различия:
+
+Нет dependencies = { "mason-lspconfig.nvim" } — mason и mason-lspconfig грузятся раньше явно.
+LSP грузится по BufReadPre — аналог event = { "BufReadPre", "BufNewFile" }.
+lua/plugins/cmp.lua
+lua
+-- Blink.cmp: ленивая загрузка при входе в Insert
+vim.pack.add({
+  { src = "https://github.com/saghen/blink.cmp", version = "v1.*" },
+  "https://github.com/rafamadriz/friendly-snippets",
+}, { load = function() end })
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+  group = vim.api.nvim_create_augroup("BlinkLazy", { clear = true }),
+  once = true,
+  callback = function()
+    vim.cmd.packadd("blink.cmp")
+    vim.cmd.packadd("friendly-snippets")
+    require("configs.blink")
+  end,
+})
+
+-- LuaSnip: ленивая загрузка при входе в Insert
+vim.pack.add({
+  { src = "https://github.com/L3MON4D3/LuaSnip", version = "v2.*" },
+}, { load = function() end })
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+  group = vim.api.nvim_create_augroup("LuasnipLazy", { clear = true }),
+  once = true,
+  callback = function()
+    vim.cmd.packadd("LuaSnip")
+    vim.cmd.packadd("friendly-snippets")  -- уже может быть загружен blink, это ок
+    require("configs.luasnip")
+  end,
+})
+Различия:
+
+Нет event = "InsertEnter" — ручной autocmd с once = true.
+friendly-snippets — общая зависимость для обоих. vim.pack.add для уже активного плагина ничего не делает, так что второй packadd безопасен.
+version = "v1.*" / "v2.*" — аналог version = "v1.*" из lazy.nvim.
+lua/plugins/lang.lua
+lua
+-- vimtex: грузим сразу (нужен для .tex файлов с самого начала)
+vim.pack.add({
+  "https://github.com/lervag/vimtex",
+})
+require("configs.vimtex")
+
+-- render-markdown: ленивая загрузка по filetype
+vim.pack.add({
+  "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+}, { load = function() end })
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("RenderMdLazy", { clear = true }),
+  pattern = "markdown",
+  callback = function()
+    vim.cmd.packadd("render-markdown.nvim")
+    -- treesitter должен быть загружен к этому моменту
+    if not vim.pack.get("nvim-treesitter") or not vim.pack.get("nvim-treesitter")[1].active then
+      vim.cmd.packadd("nvim-treesitter")
+      require("configs.treesitter")
+    end
+    require("configs.render-markdown")
+  end,
+})
+Различия:
+
+Нет ft = { "markdown" } — ручной autocmd по FileType.
+vimtex конфиг вызывается через require("configs.vimtex") (а не init-поле, как в lazy.nvim). Для vimtex это работает, потому что vim.g.vimtex_* переменные читаются при открытии .tex файла, а не при загрузке плагина.
+render-markdown проверяет, загружен ли treesitter — аналог dependencies.
+Файлы lua/configs/ — без изменений
+Все файлы конфигов в lua/configs/ остаются точно такими же, как в версии с lazy.nvim. Они не зависят от менеджера плагинов — это просто вызовы require("plugin").setup(...).
+
+Единственное исключение — lua/configs/vimtex.lua. В версии с lazy.nvim я использовал init (выполняется до загрузки). С vim.pack конфиг вызывается после vim.pack.add(), но vimtex — vimscript-плагин и читает vim.g при source. vim.pack.add загружает плагин через :packadd, который source-ит plugin/ скрипты. Поэтому vim.g нужно выставить до vim.pack.add:
+
+lua
+-- lua/configs/vimtex.lua
+vim.g.vimtex_view_method = "zathura"
+vim.g.tex_flavor = "latex"
+А в lua/plugins/lang.lua вызов должен быть до vim.pack.add:
+
+lua
+-- vimtex: переменные ДО загрузки, потом грузим
+require("configs.vimtex")  -- выставит vim.gvimtex_*
+vim.pack.add({
+  "https://github.com/lervag/vimtex",
+})
+-- vimtex загрузится и прочитает vim.g
+Сводная таблица: lazy.nvim → vim.pack
+lazy.nvim	vim.pack	Как
+require("lazy").setup("plugins")	require("plugins.init")	ручной require
+Bootstrap lazy.nvim (git clone)	не нужен	встроено в Neovim 0.12
+{ "user/repo" }	"https://github.com/user/repo"	полный URL
+branch = "v3.x"	version = "v3.x"	поле version
+priority = 1000	порядок вызовов vim.pack.add()	раньше вызов = раньше грузится
+config = function() ... end	require("configs.xxx") после vim.pack.add()	просто код
+opts = { ... }	require("plugin").setup({ ... })	вручную
+dependencies = { ... }	перечислить раньше в vim.pack.add()	порядок в списке
+event = "InsertEnter"	autocmd + load = function() end	ручная ленивая загрузка
+cmd = "Neotree"	keymap/function + packadd	ручная ленивая загрузка
+ft = { "markdown" }	autocmd FileType + packadd	ручная ленивая загрузка
+keys = { ... }	vim.keymap.set + packadd	ручная ленивая загрузка
+build = ":TSUpdate"	PackChanged autocmd	в init.lua
+lazy = false	не указывать load = function() end	грузится сразу
+:Lazy install	:lua vim.pack.update()	обновить все
+:Lazy update	:lua vim.pack.update()	то же
+Lockfile lazy-lock.json	nvim-pack-lock.json	автогенерация
+Команды vim.pack
+Команда	Что делает
+:lua vim.pack.update()	обновить все плагины
+:lua vim.pack.update({ "neo-tree.nvim" })	обновить конкретный
+:lua vim.pack.del("old-plugin")	удалить плагин
+:lua vim.pack.get()	список установленных
+При первом запуске nvim спросит подтверждение установки — нажмите a (разрешить все подтверждения в этой сессии).
+
+Хотите, чтобы я собрал всё в готовые файлы на диске?
