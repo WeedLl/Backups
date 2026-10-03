@@ -192,6 +192,7 @@ alias nopen='open "$(PWD)"'
 ## GIT
 alias glol='git log --pretty=format:"%h %an %ad %s" --name-only --graph'
 alias glog='git log --graph'
+alias gbranch='git log --oneline --graph --decorate --all'
 
 ## PGCLI
 alias psqlc=pgcli
