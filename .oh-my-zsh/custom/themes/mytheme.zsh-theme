@@ -64,8 +64,9 @@ _cmd_timestamp_precmd() {
 add-zsh-hook preexec _cmd_timestamp_preexec
 add-zsh-hook precmd _cmd_timestamp_precmd
 
+PROMPT=$'\n'
 # Первая строка: ➜ + путь/git + время
-PROMPT='%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) $(_prompt_path_git) $(_cmd_exec_time)'
+PROMPT+='%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) $(_prompt_path_git) $(_cmd_exec_time)'
 # Перенос строки
 PROMPT+=$'\n'
 # Вторая строка: >>>
