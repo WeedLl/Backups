@@ -6,7 +6,7 @@ end
 conform.setup({
   formatters_by_ft = {
     python = { "ruff_format" },  -- форматер из ruff (аналог black, но быстрее)
-    -- lua = { "stylua" },      -- если хотите форматировать и Lua
+    lua = { "stylua" },      -- если хотите форматировать и Lua
   },
   format_on_save = {
     timeout_ms = 1000,    -- ждать форматер максимум 1 секунду
