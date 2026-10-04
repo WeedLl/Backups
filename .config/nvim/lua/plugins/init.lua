@@ -26,9 +26,15 @@ require("plugins.tree")
 -- mason.nvim — установщик LSP-серверов, linters, formatters
 --   Замена ручной компиляции YCM (./install.py --clang-completer)
 -- mason-lspconfig.nvim — мост между mason и lspconfig
---   Автоустановка pyright (Python) и clangd (C/C++)
+--   Автоустановка pyright (Python), clangd (C/C++), ruff (Python linter),
+--   lua_ls (Lua, для редактирования конфига Neovim)
+-- mason-tool-installer.nvim — автоустановка non-LSP инструментов
+--   Автоустановка stylua (форматтер Lua)
+-- lazydev.nvim — настройка lua_ls для понимания Neovim API
+--   Подключает типы vim.api, vim.fn, vim.opt и т.д.
 -- nvim-lspconfig — конфигурация встроенного LSP-клиента Neovim
 --   Замена YouCompleteMe: go-to-definition, hover, rename, diagnostics
+--   Теперь работает и в .lua файлах конфига Neovim
 require("plugins.lsp")
 
 -- blink.cmp — движок автодополнения на Rust
@@ -44,4 +50,3 @@ require("plugins.cmp")
 -- render-markdown.nvim — рендеринг markdown в буфере
 --   Замена preservim/vim-markdown: заголовки, чекбоксы, таблицы
 require("plugins.lang")
-
