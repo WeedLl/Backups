@@ -45,6 +45,7 @@ vim.lsp.enable("ruff")
 vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
+			runtime = { version = "LuaJIT" }, -- проверка lua кода по стандартку LuaJIT, а не Lua 5.4
 			completion = { callSnippet = "Replace" },
 			diagnostics = { globals = { "vim" } },
 			workspace = {
