@@ -74,38 +74,44 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-
-
-#FPATH моих функций
-#if [[ ":$FPATH:" != *"$HOME/.zsh_MyFunctions:"* ]] && [[ -d "$HOME/.zsh_MyFunctions" ]]; then
-#    export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
-#    autoload -Uz ~/.zsh_MyFunctions/*(.:t)
-#fi
-#Не работало, ибо мои функции содержали подфункции? Из-за этого приходилось вызывать их по два раза в новом окне.
-#Переделал под source.
-if [[ -d "$HOME/.zsh_MyFunctions" ]]; then
-    # Добавляем папку в FPATH только если её там ещё нет
-    if [[ ":$FPATH:" != *":$HOME/.zsh_MyFunctions:"* ]]; then
-        export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
-    fi
-
-    # Функции (всё, кроме _*) — загружаем через source
-    for f in ~/.zsh_MyFunctions/*(N); do
-        [[ "$(basename "$f")" == _* ]] && continue
-        source "$f"
-    done
+#___________________________________________________________ PATH FPATH до CompInit ____________________________________
+## Позволяет попасть автодополнениям в пул, если они типа (мы файлы в папке, отсканируй нас в FPATH)
+# Позволяем brew самому расставить пути в path для себя
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
 fi
-
 #!!!! ДЛЯ КОРРЕКТНОЙ РАБОТЫ FZF-TAB И КОМПЛИТА С BREW !!!!
 #Некоторые обновления переменных PATH и FPATH необходимо делать до source #ZSH/oh-my-zsh.sh, т.к. это инициализация,
 #   в которую входит compinit. Некоторые такие болячки можно прощупать, выполнив source ~/.zshrc в терминале
 if [[ ":$FPATH:" != *":/opt/homebrew/share/zsh/site-functions:"* ]] && [[ -d "/opt/homebrew/share/zsh/site-functions" ]]; then
     export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
 fi
+#Добавление моих функций
+if [[ -d "$HOME/.zsh_MyFunctions" ]]; then
+    # Добавляем папку в FPATH только если её там ещё нет
+    if [[ ":$FPATH:" != *":$HOME/.zsh_MyFunctions:"* ]]; then
+        export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
+    fi
+    # Функции (всё, кроме _*) — загружаем через source
+    for f in ~/.zsh_MyFunctions/*(N); do
+        [[ "$(basename "$f")" == _* ]] && continue
+        source "$f"
+    done
+fi
+##Рекомендации HomeBrew для PostgreSQL после установки
+if [[ ":$PATH:" != *":/opt/homebrew/opt/postgresql@15/bin:"* ]] && [[ -d "/opt/homebrew/opt/postgresql@15/bin" ]]; then
+    export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+fi
+#Global VENV - Python, который должен везде использоваться и его pip
+if [[ ":$PATH:" != *":$HOME/.global_venv/bin:"* ]] && [[ -d "$HOME/.global_venv/bin" ]]; then
+    export PATH="$HOME/.global_venv/bin:$PATH"
+fi
+#_______________________________________________________________________________________________________________________
+plugins=(git vi-mode) 
 
-plugins=(git vi-mode brew) 
-
-source $ZSH/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh #COMPINIT для автодополнений (все автодополнения до - не будут работать)
 source /opt/homebrew/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 #Для работы fzf сочетаний клавиш в zsh
@@ -113,9 +119,19 @@ source <(fzf --zsh)
 #По документации должен стоять крайним?
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+#___________________________________________________________ PATH FPATH после CompInit _________________________________
+## Для приоритетности добавленных в начало PATH или FPATH
+## Уже без проверки. Это необходимо, чтобы при повторных source .zshrc произвольно не менялся порядок.
 eval "$(zoxide init zsh)"
-
-
+##Рекомендации HomeBrew для PostgreSQL после установки
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+#Global VENV - Python, который должен везде использоваться и его pip
+export PATH="$HOME/.global_venv/bin:$PATH"
+#!!!! ДЛЯ КОРРЕКТНОЙ РАБОТЫ FZF-TAB И КОМПЛИТА С BREW !!!!
+export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
+#Добавление моих функций
+export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
+#_______________________________________________________________________________________________________________________
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -144,19 +160,6 @@ eval "$(zoxide init zsh)"
 
 
 #_______________________________________________ Дефолтные настройки ______________________________
-if [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]] && [[ -d "/opt/homebrew/bin" ]]; then
-    export PATH="/opt/homebrew/bin:$PATH"
-fi
-
-if [[ ":$PATH:" != *":/opt/homebrew/sbin:"* ]] && [[ -d "/opt/homebrew/sbin" ]]; then
-    export PATH="/opt/homebrew/sbin:$PATH"
-fi
-
-##Рекомендации HomeBrew для PostgreSQL после установки
-if [[ ":$PATH:" != *":/opt/homebrew/opt/postgresql@15/bin:"* ]] && [[ -d "/opt/homebrew/opt/postgresql@15/bin" ]]; then
-    export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
-fi
-
 export LDFLAGS="-L/opt/homebrew/opt/postgresql@15/lib" #For compilers to find postgresql@15 you may need to set:
 export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
 
@@ -257,11 +260,6 @@ function vi_mode_prompt_info() {
 PS1+='$(vi_mode_prompt_info)'
 export PS1
 #________________________________________________ Другое главное __________________________________
-#Global VENV - Python, который должен везде использоваться и его pip
-if [[ ":$PATH:" != *":$HOME/.global_venv/bin:"* ]] && [[ -d "$HOME/.global_venv/bin" ]]; then
-    export PATH="$HOME/.global_venv/bin:$PATH"
-fi
-#alias python='python3'
 #Страховка от всех дубликатов PATH и FPATH (оставляет только первые вхождения)
 typeset -U PATH
 typeset -U FPATH
