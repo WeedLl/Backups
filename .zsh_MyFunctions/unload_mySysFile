@@ -13,9 +13,10 @@ unload_mySysFile — восстановить конфиги из бэкапа
   vim        - .vimrc
   nvim       - .config/nvim/
   ideavim    - .ideavimrc
-  psql       - .psqlrc
   git        - .gitconfig
+  psql       - .config/psql/.psqlrc
   pgcli      - .config/pgcli/config
+  mycli      - .config/mycli/.myclirc
   btop       - .config/btop/btop.conf
   kitty      - .config/kitty/
   alacritty  - .config/alacritty/
@@ -42,9 +43,10 @@ EOF
     vim        "$src/.vimrc:~/"
     nvim       "$src/.config/nvim/:~/.config/nvim"
     ideavim    "$src/.ideavimrc:~/"
-    psql       "$src/.psqlrc:~/"
     git        "$src/.gitconfig:~/"
+    psql       "$src/.config/psql/.psqlrc:~/.config/psql/.psqlrc"
     pgcli      "$src/.config/pgcli/config:~/.config/pgcli/config"
+    mycli      "$src/.config/mycli/.myclirc:~/.config/mycli/.myclirc"
     ultisnips  "$src/.vim/UltiSnips/:~/.vim/UltiSnips"
     omz        "$src/.oh-my-zsh/custom/:~/.oh-my-zsh/custom"
     btop       "$src/.config/btop/btop.conf:~/.config/btop/btop.conf"

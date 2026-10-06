@@ -20,9 +20,10 @@ diff_mySysFile — сравнить текущие файлы с бэкапом.
   vim        - .vimrc
   nvim       - .config/nvim/
   ideavim    - .ideavimrc
-  psql       - .psqlrc
   git        - .gitconfig
+  psql       - .config/psql/.psqlrc
   pgcli      - .config/pgcli/config
+  mycli      - .config/mycli/.myclirc
   btop       - .config/btop/btop.conf
   kitty      - .config/kitty/
   alacritty  - .config/alacritty/
@@ -64,9 +65,10 @@ EOF
     vim        "~/.vimrc:$dest/.vimrc"
     nvim       "~/.config/nvim:$dest/.config/nvim"
     ideavim    "~/.ideavimrc:$dest/.ideavimrc"
-    psql       "~/.psqlrc:$dest/.psqlrc"
     git        "~/.gitconfig:$dest/.gitconfig"
+    psql       "~/.config/psql/.psqlrc:$dest/.config/psql/.psqlrc"
     pgcli      "~/.config/pgcli/config:$dest/.config/pgcli/config"
+    mycli      "~/.config/mycli/.myclirc:$dest/.config/mycli/.myclirc"
     ultisnips  "~/.vim/UltiSnips:$dest/.vim/UltiSnips"
     omz        "~/.oh-my-zsh/custom:$dest/.oh-my-zsh/custom"
     btop       "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
