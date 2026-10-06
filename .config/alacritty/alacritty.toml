@@ -28,16 +28,16 @@ lines = 40
 size = 14.0                                  # Базовый размер шрифта в пунктах
 
 [font.normal]
-family = "JetBrainsMono NFM"                 # Nerd Font нужен для иконок в промпте, Yazi и других TUI-приложениях.
+family = "JetBrainsMono NF"                 # Nerd Font нужен для иконок в промпте, Yazi и других TUI-приложениях.
                                              # Обычный JetBrains Mono иконки не покажет
 style = "Regular"
 
 [font.bold]
-family = "JetBrainsMono NFM"
+family = "JetBrainsMono NF"
 style = "Bold"
 
 [font.italic]
-family = "JetBrainsMono NFM"
+family = "JetBrainsMono NF"
 style = "Italic"
 
                                              # --- Курсор ---
