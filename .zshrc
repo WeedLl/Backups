@@ -163,6 +163,7 @@ export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
 export LDFLAGS="-L/opt/homebrew/opt/postgresql@15/lib" #For compilers to find postgresql@15 you may need to set:
 export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
 
+export PSQLRC="$HOME/.config/psql/.psqlrc"
 export PSQL_EDITOR="/opt/homebrew/bin/nvim"
 export EDITOR="/opt/homebrew/bin/nvim"
 

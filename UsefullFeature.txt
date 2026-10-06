@@ -208,6 +208,7 @@ ____________________________________________________________ PostgreSQL ________
     psql;
     pg_ctl; #Для управления сервером PSQL. Аналог комманды ~ brew services start/stop postgresql@15
     postgres;
+    pgcli - psql с python, подсветками и всем крутым.
 ____________________________________________________________ Brew _____________________________________________________
     brew services;
     brew services (start / stop) (service name).

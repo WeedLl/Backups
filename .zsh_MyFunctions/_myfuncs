@@ -16,6 +16,7 @@ _myfuncs() {
     ideavim
     psql
     pgcli
+    mycli
     btop
     kitty
     alacritty
