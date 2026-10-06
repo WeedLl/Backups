@@ -7,6 +7,7 @@
 --   Поддержка Tree-sitter и LSP semantic highlights
 -- lualine.nvim — статусная строка, замена ручной set statusline + YcmStatus()
 -- nvim-web-devicons — иконки файлов (нужен NerdFont)
+-- which-key.nvim - подсказки-дополнения для операторов в nVim
 require("plugins.ui")
 
 -- nvim-treesitter — подсветка синтаксиса через AST

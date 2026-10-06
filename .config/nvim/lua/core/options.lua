@@ -1,4 +1,9 @@
 local opt = vim.opt
+-- Отключаем неиспользуемое, чтобы Health не ругался
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- Кодировка (Neovim использует UTF-8 по умолчанию, но явно не повредит)
 opt.fileencoding = "utf-8"
 opt.fileencodings = { "utf-8", "cp1251" }
@@ -56,7 +61,7 @@ opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldminlines = 4
 opt.foldnestmax = 6
-opt.foldcolumn = "2"  -- В Neovim foldcolumn — строка, а не число (поддерживает "auto")
+opt.foldcolumn = "2" -- В Neovim foldcolumn — строка, а не число (поддерживает "auto")
 
 -- Правописание
 opt.spell = true
