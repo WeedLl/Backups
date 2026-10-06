@@ -47,7 +47,7 @@ vim.lsp.config("lua_ls", {
 		Lua = {
 			runtime = { version = "LuaJIT" }, -- проверка lua кода по стандартку LuaJIT, а не Lua 5.4
 			completion = { callSnippet = "Replace" },
-			diagnostics = { globals = { "vim" } },
+			diagnostics = { globals = { "vim", "require", "pcall" } },
 			workspace = {
 				checkThirdParty = false,
 			},
@@ -88,8 +88,18 @@ vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagn
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic under cursor" })
 
 -- LSP-маппинги (замена YCM)
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover docs" })
-vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "References" })
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+--  c привязкой к моменту подключения LSP
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("LspKeymaps", { clear = true }),
+	callback = function(event)
+		local map = function(keys, fn, desc)
+			vim.keymap.set("n", keys, fn, { buffer = event.buf, desc = "LSP: " .. desc })
+		end
+
+		map("gd", vim.lsp.buf.definition, "Go to definition")
+		map("K", vim.lsp.buf.hover, "Hover docs")
+		map("gr", vim.lsp.buf.references, "References")
+		map("<leader>rn", vim.lsp.buf.rename, "Rename")
+		map("<leader>ca", vim.lsp.buf.code_action, "Code action")
+	end,
+})

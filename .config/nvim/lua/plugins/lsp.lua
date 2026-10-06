@@ -23,6 +23,10 @@ require("lazydev").setup({
 	library = {
 		{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 	},
+	integrations = {
+		cmp = false, -- нет nvim-cmp, используем blink.cmp
+		lspconfig = false, -- используем vim.lsp.config, не lspconfig.setup()
+	},
 })
 -- lspconfig: ленивая загрузка при открытии файла
 vim.pack.add({
