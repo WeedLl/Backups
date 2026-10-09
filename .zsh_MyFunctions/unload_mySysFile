@@ -21,6 +21,7 @@ unload_mySysFile — восстановить конфиги из бэкапа
   kitty      - .config/kitty/
   alacritty  - .config/alacritty/
   yazi       - .config/yazi/
+  tmux       - .config/tmux/tmux.conf
 
 Пример:
   unload_mySysFile zsh bash или unload_mySysFile all
@@ -53,6 +54,7 @@ EOF
     kitty      "$src/.config/kitty/:~/.config/kitty"
     alacritty  "$src/.config/alacritty/:~/.config/alacritty"
     yazi       "$src/.config/yazi/:~/.config/yazi"
+    tmux       "$src/.config/tmux/tmux.conf:~/.config/tmux/tmux.conf"
   )
 
   if [[ $# -eq 0 ]]; then
