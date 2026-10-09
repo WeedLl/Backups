@@ -21,6 +21,7 @@ backup_mySysFile — обновить бэкапа
   kitty      - .config/kitty/
   alacritty  - .config/alacritty/
   yazi       - .config/yazi/
+  tmux       - .config/tmux/tmux.conf
 
 Пример:
   backup_mySysFile zsh bash or backup_mySysFile all
@@ -50,6 +51,7 @@ EOF
     kitty      "~/.config/kitty/:$dest/.config/kitty"
     alacritty  "~/.config/alacritty/:$dest/.config/alacritty"
     yazi       "~/.config/yazi/:$dest/.config/yazi"
+    tmux       "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
   )
 
   if [[ $# -eq 0 ]]; then

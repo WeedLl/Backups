@@ -21,6 +21,7 @@ _myfuncs() {
     kitty
     alacritty
     yazi
+    tmux
   )
 
   local -a diff_components=()
