@@ -22,6 +22,7 @@ backup_mySysFile — обновить бэкапа
   alacritty  - .config/alacritty/
   yazi       - .config/yazi/
   tmux       - .config/tmux/tmux.conf
+  aerospace  - .config/aerospace/aerospace.toml
 
 Пример:
   backup_mySysFile zsh bash or backup_mySysFile all
@@ -52,6 +53,7 @@ EOF
     alacritty  "~/.config/alacritty/:$dest/.config/alacritty"
     yazi       "~/.config/yazi/:$dest/.config/yazi"
     tmux       "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
+    aerospace  "~/.config/aerospace/aerospace.toml:$dest/.config/aerospace/aerospace.toml"
   )
 
   if [[ $# -eq 0 ]]; then

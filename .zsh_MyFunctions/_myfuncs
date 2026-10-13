@@ -22,6 +22,7 @@ _myfuncs() {
     alacritty
     yazi
     tmux
+    aerospace
   )
 
   local -a diff_components=()
