@@ -167,6 +167,9 @@ export PSQLRC="$HOME/.config/psql/.psqlrc"
 export PSQL_EDITOR="/opt/homebrew/bin/nvim"
 export EDITOR="/opt/homebrew/bin/nvim"
 
+#Красивое отображение системной информации в терминале при запуске
+fastfetch
+
 #_______________________________________________ SysVAR ____________________________________________
 RPS1="%T"
 export RPS1

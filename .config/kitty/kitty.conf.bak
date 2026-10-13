@@ -3476,20 +3476,9 @@
 #: }}}
 #
 #Ну что народ, погнали накуй. Мои минимальные настройки.
-#https://www.youtube.com/watch?v=UzWOX7-Tye8&t=1084s
-#font_family JetBrainsMono NFM
-#font_size 14.0
-#
-#cursor_shape beam
-#cursor_trail 1
-#
-#window_margin 22
-#
-#confirm_os_window_close 0
-#
 #Настраивал с Алисой
 # --- Окно ---
-remember_window_size yes
+remember_window_size no
 initial_window_width 130c
 initial_window_height 40c
 window_padding_width 3
@@ -3499,10 +3488,10 @@ window_padding_height 3
 macos_blur 20
 
 # --- Шрифт (Nerd Font для иконок) ---
-font_family JetBrainsMono NFM
-bold_font JetBrainsMono NFM Bold
-italic_font JetBrainsMono NFM Italic
-bold_italic_font JetBrainsMono NFM Bold Italic
+font_family JetBrainsMono Nerd Font Mono
+bold_font JetBrainsMono Nerd Font Mono Bold
+italic_font JetBrainsMono Nerd Font Mono Italic
+bold_italic_font JetBrainsMono Nerd Font Mono Italic
 font_size 14.0
 
 # Опционально: лигатуры можно отключать, когда курсор стоит на символе
@@ -3523,9 +3512,33 @@ scrollback_lines 100000
 # --- Цвета и жирный текст ---
 draw_bold_text_with_bright_colors yes
 
+#Вкладки и окна (сплиты) как на macOS
+enabled_layouts splits
 
+map cmd+t new_tab
+map cmd+w close_tab
+map cmd+shift+] next_tab
+map cmd+shift+[ previous_tab
+map cmd+1 goto_tab 1
+map cmd+2 goto_tab 2
+map cmd+3 goto_tab 3
+map cmd+4 goto_tab 4
+map cmd+5 goto_tab 5
+
+map cmd+d launch --location=vsplit --cwd=current
+map cmd+shift+d launch --location=hsplit --cwd=current
+map cmd+] next_window
+map cmd+[ previous_window
+map cmd+w close_window
+map cmd+shift+k move_window up
+map cmd+shift+j move_window down
+map cmd+shift+h move_window left
+map cmd+shift+l move_window right
+
+#Plugins
+map cmd+e kitten kitty_grab/grab.py
 
 # BEGIN_KITTY_THEME
-# Gruvbox Dark Hard
+# Mytheme
 include current-theme.conf
 # END_KITTY_THEME
