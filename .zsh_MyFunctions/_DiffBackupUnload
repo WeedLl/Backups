@@ -4,6 +4,8 @@ _myfuncs() {
   local cmd=$words[1]
 
   local -a components=(
+    -h
+    --Help
     all
     bash
     zsh
