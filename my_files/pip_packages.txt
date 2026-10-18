@@ -1,0 +1,9 @@
+greenlet==3.5.6
+msgpack==1.2.3
+pdftotext==4.0.0
+Pygments==2.21.0
+pygments-git==1.9.0
+pynvim==0.6.0
+regex==2026.9.29
+setuptools==84.0.0
+watchdog==6.0.0

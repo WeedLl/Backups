@@ -1,0 +1,56 @@
+# ==============================================================================
+# MacOS : Путь: ~/Library/Application Support/rs.mdfried/config.toml
+# Linux : Путь: ~.config/mdfried/config.tovl
+# mdfried — Gruvbox Dark (Vim-style palette)
+# ==============================================================================
+
+font_family = "your-font-name"
+stdio_query_timeout_ms = 2000
+ignore_text_sizing_protocol = false
+max_image_height = 30
+watch_debounce_milliseconds = 100
+enable_mouse_capture = false
+osc8_links = true
+url_transform_command = "readable | html2text"
+mermaid = "mmdc -i - -o - -e png"
+
+[padding]
+type = "centered"
+width = 100
+
+[theme]
+blockquote_bar = "▌ "
+link_desc_open = ""
+link_desc_close = ""
+link_url_open = "◖"
+link_url_close = "◗"
+horizontal_rule_char = "─"
+task_checked_mark = "[✓] "
+
+# Градиент цитат: используем яркие акценты Gruvbox
+# (если ваша версия mdfried не принимает HEX в этом поле, оставьте ANSI-коды)
+blockquote_colors = [
+    "#fb4934",  # bright red
+    "#fe8019",  # bright orange
+    "#fabd2f",  # bright yellow
+    "#b8bb26",  # bright green
+    "#83a598",  # bright blue
+    "#d3869b",  # bright purple
+]
+
+# --- Основные акценты (канонические цвета Gruvbox Dark) ---
+link_bg = "#3c3836"          # bg1 (тёмно-серый фон для ссылок)
+link_fg = "#83a598"          # bright blue
+prefix_color = "#fabd2f"     # bright yellow
+emphasis_color = "#fe8019"   # bright orange
+code_bg = "#3c3836"          # bg1
+code_fg = "#b8bb26"          # bright green
+hr_color = "#504945"         # bg2 (приглушённая линия)
+table_border_color = "#504945" # bg2
+table_header_color = "#ebdbb2" # fg1 (основной светлый текст)
+header_color = "#fabd2f"     # bright yellow (как `Title` в Vim)
+
+hide_urls = true
+preserve_list_ordinals = false
+hide_codeblock_language = false
+code_theme = "Gruvbox Dark"  # подсветка кода через arborium
