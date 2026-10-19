@@ -40,6 +40,7 @@ end
 
 neo_tree.setup({
 	sources = { "filesystem", "buffers", "git_status" },
+	enable_modified_markers = true,
 	filesystem = {
 		filtered_items = {
 			visible = true,
@@ -95,6 +96,8 @@ neo_tree.setup({
 					width = "100%",
 					content = {
 						{ "name", zindex = 10 },
+						-- Добавляем компонент для маркера несохранённых изменений
+						{ "modified", zindex = 20, align = "right" },
 						{ "line_count", zindex = 20, align = "right" },
 					},
 				},

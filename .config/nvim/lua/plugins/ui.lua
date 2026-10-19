@@ -20,3 +20,12 @@ end)
 
 -- Which-key.nvim - показывает подсказки для клавиш по типу операторов в nVim и тп.
 vim.pack.add({ "https://github.com/folke/which-key.nvim" })
+
+-- md-render.nvim: предпросмотр Markdown в отдельном окне
+-- Загружается сразу (не лениво), т.к. нужен для snacks.picker.preview
+-- и для автопредпросмотра на VimEnter
+vim.pack.add({
+	"https://github.com/delphinus/md-render.nvim",
+})
+
+require("configs.md-render")

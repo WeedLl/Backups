@@ -1,0 +1,15 @@
+[ui]
+# Тема оформления (доступны: Nord, OceanDark, Dracula, Solarized, Monokai, Gruvbox, TokyoNight, CatppuccinMocha)
+theme = "Gruvbox" 
+
+# Ширина панели с деревом заголовков (20, 30 или 40)
+outline_width = 30 
+
+# Стиль отрисовки дерева: "spaced" (с отступами) или "compact" (без разрывов)
+tree_style = "compact"
+
+# Показывать символы #, ##, ### в оглавлении. Можно отключить для чистоты.
+outline_heading_markers = true
+
+# Упрощать отображение LaTeX. Символы вроде \alpha будут показаны как α.
+hide_latex = true

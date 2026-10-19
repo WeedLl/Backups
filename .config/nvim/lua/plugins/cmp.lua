@@ -1,6 +1,6 @@
 -- Blink.cmp: ленивая загрузка при входе в Insert
 vim.pack.add({
-  { src = "https://github.com/saghen/blink.cmp", version = "v1" },
+  { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1") },
   "https://github.com/rafamadriz/friendly-snippets",
 }, { load = function() end })
 

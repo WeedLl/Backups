@@ -31,6 +31,7 @@ diff_mySysFile — сравнить текущие файлы с бэкапом.
   yazi       - .config/yazi/
   tmux       - .config/tmux/tmux.conf
   aerospace  - .config/aerospace/aerospace.toml
+  treemd     - .config/treemd/config.toml
 
 
 Пример:
@@ -81,6 +82,7 @@ EOF
     yazi       "~/.config/yazi:$dest/.config/yazi"
     tmux       "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
     aerospace  "~/.config/aerospace/aerospace.toml:$dest/.config/aerospace/aerospace.toml"
+    treemd     "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
   )
   typeset -A diff_details
 
