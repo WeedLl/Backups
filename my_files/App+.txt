@@ -24,11 +24,12 @@ ________________________________________________ MUSTHAVE ______________________
 10. Alacritty (brew) - терминал, тоже не плох, нужен для tmux (kitty сложно подстроить для этого)
 11. Tmux (brew)
 12. AeroSpace - WM для macOS
-13. Fork - GUI для git;
-14. PostgreSQL (brew);
-15. PgAdmin 4;
-16. Pgcli (brew). #Как psql только с автокомплитом и подсветкой синтаксиса
-17. MacTex (brew?)
+13. Raycast - нормальная замена spotlight!
+14. Fork - GUI для git
+15. PostgreSQL (brew)
+16. PgAdmin 4
+17. Pgcli (brew). #Как psql только с автокомплитом и подсветкой синтаксиса
+18. MacTex (brew?)
 
 ________________________________________________ Некоторые утилиты для Mac OS ______________________
 1. CheatSheet;
