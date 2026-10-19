@@ -14,6 +14,7 @@ _myfuncs() {
     ultisnips
     vim
     nvim
+    neovide
     git
     ideavim
     psql

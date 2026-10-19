@@ -12,6 +12,7 @@ backup_mySysFile — обновить бэкапа
   ultisnips  - .vim/UltiSnips/
   vim        - .vimrc
   nvim       - .config/nvim/
+  neovide    - .config/neovide/config.toml
   ideavim    - .ideavimrc
   git        - .gitconfig
   psql       - .config/psql/.psqlrc
@@ -41,6 +42,7 @@ EOF
     zshf       "~/.zsh_MyFunctions/:$dest/.zsh_MyFunctions"
     vim        "~/.vimrc"
     nvim       "~/.config/nvim/:$dest/.config/nvim"
+    neovide    "~/.config/neovide/config.toml:$dest/.config/neovide/config.toml"
     ideavim    "~/.ideavimrc"
     git        "~/.gitconfig"
     psql       "~/.config/psql/.psqlrc:$dest/.config/psql/.psqlrc"
