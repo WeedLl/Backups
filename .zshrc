@@ -191,6 +191,7 @@ alias vimtutor="/Applications/MacVim.app/Contents/bin/vimtutor"
 #nVim
 alias v='/opt/homebrew/bin/nvim'
 alias vimdiff='nvim -d'
+alias mnv='/opt/homebrew/bin/neovide'
 
 ## FZF
 alias fopen='open $(fzf)'
