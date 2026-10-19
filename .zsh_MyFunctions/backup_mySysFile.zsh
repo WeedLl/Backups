@@ -24,6 +24,7 @@ backup_mySysFile — обновить бэкапа
   yazi       - .config/yazi/
   tmux       - .config/tmux/tmux.conf
   aerospace  - .config/aerospace/aerospace.toml
+  treemd     - .config/treemd/config.toml
 
 Пример:
   backup_mySysFile zsh bash or backup_mySysFile all
@@ -56,6 +57,7 @@ EOF
     yazi       "~/.config/yazi/:$dest/.config/yazi"
     tmux       "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
     aerospace  "~/.config/aerospace/aerospace.toml:$dest/.config/aerospace/aerospace.toml"
+    treemd     "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
   )
 
   if [[ $# -eq 0 ]]; then

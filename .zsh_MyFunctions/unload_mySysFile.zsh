@@ -24,6 +24,7 @@ unload_mySysFile — восстановить конфиги из бэкапа
   yazi       - .config/yazi/
   tmux       - .config/tmux/tmux.conf
   aerospace  - .config/aerospace/aerospace.toml
+  treemd     - .config/treemd/config.toml
 
 Пример:
   unload_mySysFile zsh bash или unload_mySysFile all
@@ -59,6 +60,7 @@ EOF
     yazi       "$src/.config/yazi/:~/.config/yazi"
     tmux       "$src/.config/tmux/tmux.conf:~/.config/tmux/tmux.conf"
     aerospace  "$src/.config/aerospace/aerospace.toml:/.config/aerospace/aerospace.toml"
+    treemd     "$src/.config/treemd/config.toml"
   )
 
   if [[ $# -eq 0 ]]; then

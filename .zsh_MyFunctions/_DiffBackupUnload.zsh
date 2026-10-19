@@ -1,6 +1,6 @@
 #compdef backup_mySysFile unload_mySysFile diff_mySysFile
 
-_myfuncs() {
+_DiffBackupUnload() {
   local cmd=$words[1]
 
   local -a components=(
@@ -26,6 +26,7 @@ _myfuncs() {
     yazi
     tmux
     aerospace
+    treemd
   )
 
   local -a diff_components=()
@@ -52,5 +53,5 @@ _myfuncs() {
   esac
 }
 
-_myfuncs
+_DiffBackupUnload
 

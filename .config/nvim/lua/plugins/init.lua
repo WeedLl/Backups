@@ -8,6 +8,7 @@
 -- lualine.nvim — статусная строка, замена ручной set statusline + YcmStatus()
 -- nvim-web-devicons — иконки файлов (нужен NerdFont)
 -- which-key.nvim - подсказки-дополнения для операторов в nVim
+-- md-render.nvim - рендер md в отдельном окне.
 require("plugins.ui")
 
 -- nvim-treesitter — подсветка синтаксиса через AST
@@ -51,3 +52,7 @@ require("plugins.cmp")
 -- render-markdown.nvim — рендеринг markdown в буфере
 --   Замена preservim/vim-markdown: заголовки, чекбоксы, таблицы
 require("plugins.lang")
+-- Прослойка для вызова yazi в nVim
+require("plugins.yazi")
+-- Модуль из lazyVim, беру оттуда поиск и терминал
+require("plugins.snacks")
