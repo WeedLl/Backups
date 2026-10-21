@@ -11,27 +11,28 @@ diff_mySysFile() {
 diff_mySysFile — сравнить текущие файлы с бэкапом. Все, по одному или попарно "nVim -d"
 
 Доступные компоненты:
-  diff       - модификатор открытия попарного сравнения в "nVim -d"
-  bash       - .bash_profile
-  zsh        - .zshrc
-  zshf       - .zsh_MyFunctions/
-  omz        - .oh-my-zsh/custom/
-  ultisnips  - .vim/UltiSnips/
-  vim        - .vimrc
-  nvim       - .config/nvim/
-  neovide    - .config/neovide/config.toml
-  ideavim    - .ideavimrc
-  git        - .gitconfig
-  psql       - .config/psql/.psqlrc
-  pgcli      - .config/pgcli/config
-  mycli      - .config/mycli/.myclirc
-  btop       - .config/btop/btop.conf
-  kitty      - .config/kitty/
-  alacritty  - .config/alacritty/
-  yazi       - .config/yazi/
-  tmux       - .config/tmux/tmux.conf
-  aerospace  - .config/aerospace/aerospace.toml
-  treemd     - .config/treemd/config.toml
+  diff          - модификатор открытия попарного сравнения в "nVim -d"
+  bash          - .bash_profile
+  zsh           - .zshrc
+  zshf          - .zsh_MyFunctions/
+  omz           - .oh-my-zsh/custom/
+  ultisnips     - .vim/UltiSnips/
+  vim           - .vimrc
+  nvim          - .config/nvim/
+  nvim.obsidian - .config/obsidian_nvim/
+  neovide       - .config/neovide/config.toml
+  ideavim       - .ideavimrc
+  git           - .gitconfig
+  psql          - .config/psql/.psqlrc
+  pgcli         - .config/pgcli/config
+  mycli         - .config/mycli/.myclirc
+  btop          - .config/btop/btop.conf
+  kitty         - .config/kitty/
+  alacritty     - .config/alacritty/
+  yazi          - .config/yazi/
+  tmux          - .config/tmux/tmux.conf
+  aerospace     - .config/aerospace/aerospace.toml
+  treemd        - .config/treemd/config.toml
 
 
 Пример:
@@ -63,26 +64,27 @@ EOF
   # Маппинг: ключ => "текущий_файл:файл_в_бэкапе"
   typeset -A items
   items=(
-    bash       "~/.bash_profile:$dest/.bash_profile"
-    zsh        "~/.zshrc:$dest/.zshrc"
-    zshf       "~/.zsh_MyFunctions:$dest/.zsh_MyFunctions"
-    vim        "~/.vimrc:$dest/.vimrc"
-    nvim       "~/.config/nvim:$dest/.config/nvim"
-    neovide    "~/.config/neovide/config.toml:$dest/.config/neovide/config.toml"
-    ideavim    "~/.ideavimrc:$dest/.ideavimrc"
-    git        "~/.gitconfig:$dest/.gitconfig"
-    psql       "~/.config/psql/.psqlrc:$dest/.config/psql/.psqlrc"
-    pgcli      "~/.config/pgcli/config:$dest/.config/pgcli/config"
-    mycli      "~/.config/mycli/.myclirc:$dest/.config/mycli/.myclirc"
-    ultisnips  "~/.vim/UltiSnips:$dest/.vim/UltiSnips"
-    omz        "~/.oh-my-zsh/custom:$dest/.oh-my-zsh/custom"
-    btop       "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
-    kitty      "~/.config/kitty:$dest/.config/kitty"
-    alacritty  "~/.config/alacritty:$dest/.config/alacritty"
-    yazi       "~/.config/yazi:$dest/.config/yazi"
-    tmux       "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
-    aerospace  "~/.config/aerospace/aerospace.toml:$dest/.config/aerospace/aerospace.toml"
-    treemd     "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
+    bash           "~/.bash_profile:$dest/.bash_profile"
+    zsh            "~/.zshrc:$dest/.zshrc"
+    zshf           "~/.zsh_MyFunctions:$dest/.zsh_MyFunctions"
+    vim            "~/.vimrc:$dest/.vimrc"
+    nvim           "~/.config/nvim:$dest/.config/nvim"
+    nvim.obsidian  "~/.config/obsidian_nvim:$dest/.config/obsidian_nvim"
+    neovide        "~/.config/neovide/config.toml:$dest/.config/neovide/config.toml"
+    ideavim        "~/.ideavimrc:$dest/.ideavimrc"
+    git            "~/.gitconfig:$dest/.gitconfig"
+    psql           "~/.config/psql/.psqlrc:$dest/.config/psql/.psqlrc"
+    pgcli          "~/.config/pgcli/config:$dest/.config/pgcli/config"
+    mycli          "~/.config/mycli/.myclirc:$dest/.config/mycli/.myclirc"
+    ultisnips      "~/.vim/UltiSnips:$dest/.vim/UltiSnips"
+    omz            "~/.oh-my-zsh/custom:$dest/.oh-my-zsh/custom"
+    btop           "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
+    kitty          "~/.config/kitty:$dest/.config/kitty"
+    alacritty      "~/.config/alacritty:$dest/.config/alacritty"
+    yazi           "~/.config/yazi:$dest/.config/yazi"
+    tmux           "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
+    aerospace      "~/.config/aerospace/aerospace.toml:$dest/.config/aerospace/aerospace.toml"
+    treemd         "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
   )
   typeset -A diff_details
 

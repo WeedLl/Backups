@@ -1,0 +1,13 @@
+{
+  "defaultViewMode": "preview",
+  "livePreview": false,
+  "strictLineBreaks": true,
+  "showLineNumber": true,
+  "vimMode": false,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "00-SORT",
+  "attachmentFolderPath": "./CASHE",
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": true,
+  "trashOption": "local"
+}

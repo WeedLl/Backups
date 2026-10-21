@@ -1,0 +1,10 @@
+{
+  "attachmentFolderPath": "99-Cashe",
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": true,
+  "trashOption": "local",
+  "livePreview": false,
+  "strictLineBreaks": true,
+  "propertiesInDocument": "visible",
+  "showLineNumber": true
+}
