@@ -4,27 +4,27 @@ unload_mySysFile() {
 unload_mySysFile — восстановить конфиги из бэкапа
 
 Доступные компоненты:
-  all        - все компоненты
-  bash       - .bash_profile
-  zsh        - .zshrc
-  zshf       - .zsh_MyFunctions/
-  omz        - .oh-my-zsh/custom/
-  ultisnips  - .vim/UltiSnips/
-  vim        - .vimrc
-  nvim       - .config/nvim/
-  neovide    - .config/neovide/config.toml
-  ideavim    - .ideavimrc
-  git        - .gitconfig
-  psql       - .config/psql/.psqlrc
-  pgcli      - .config/pgcli/config
-  mycli      - .config/mycli/.myclirc
-  btop       - .config/btop/btop.conf
-  kitty      - .config/kitty/
-  alacritty  - .config/alacritty/
-  yazi       - .config/yazi/
-  tmux       - .config/tmux/tmux.conf
-  aerospace  - .config/aerospace/aerospace.toml
-  treemd     - .config/treemd/config.toml
+  bash          - .bash_profile
+  zsh           - .zshrc
+  zshf          - .zsh_MyFunctions/
+  omz           - .oh-my-zsh/custom/
+  ultisnips     - .vim/UltiSnips/
+  vim           - .vimrc
+  nvim          - .config/nvim/
+  nvim.obsidian - .config/obsidian_nvim/
+  neovide       - .config/neovide/config.toml
+  ideavim       - .ideavimrc
+  git           - .gitconfig
+  psql          - .config/psql/.psqlrc
+  pgcli         - .config/pgcli/config
+  mycli         - .config/mycli/.myclirc
+  btop          - .config/btop/btop.conf
+  kitty         - .config/kitty/
+  alacritty     - .config/alacritty/
+  yazi          - .config/yazi/
+  tmux          - .config/tmux/tmux.conf
+  aerospace     - .config/aerospace/aerospace.toml
+  treemd        - .config/treemd/config.toml
 
 Пример:
   unload_mySysFile zsh bash или unload_mySysFile all
@@ -41,26 +41,27 @@ EOF
   fi
   typeset -A items
   items=(
-    bash       "$src/.bash_profile:~/"
-    zsh        "$src/.zshrc:~/"
-    zshf       "$src/.zsh_MyFunctions/:~/.zsh_MyFunctions"
-    vim        "$src/.vimrc:~/"
-    nvim       "$src/.config/nvim/:~/.config/nvim"
-    neovide    "$src/.config/neovide/config.toml:~/.config/neovide/config.toml"
-    ideavim    "$src/.ideavimrc:~/"
-    git        "$src/.gitconfig:~/"
-    psql       "$src/.config/psql/.psqlrc:~/.config/psql/.psqlrc"
-    pgcli      "$src/.config/pgcli/config:~/.config/pgcli/config"
-    mycli      "$src/.config/mycli/.myclirc:~/.config/mycli/.myclirc"
-    ultisnips  "$src/.vim/UltiSnips/:~/.vim/UltiSnips"
-    omz        "$src/.oh-my-zsh/custom/:~/.oh-my-zsh/custom"
-    btop       "$src/.config/btop/btop.conf:~/.config/btop/btop.conf"
-    kitty      "$src/.config/kitty/:~/.config/kitty"
-    alacritty  "$src/.config/alacritty/:~/.config/alacritty"
-    yazi       "$src/.config/yazi/:~/.config/yazi"
-    tmux       "$src/.config/tmux/tmux.conf:~/.config/tmux/tmux.conf"
-    aerospace  "$src/.config/aerospace/aerospace.toml:/.config/aerospace/aerospace.toml"
-    treemd     "$src/.config/treemd/config.toml"
+    bash           "$src/.bash_profile:~/.bash_profile"
+    zsh            "$src/.zshrc:~/.zshrc"
+    zshf           "$src/.zsh_MyFunctions/:~/.zsh_MyFunctions"
+    vim            "$src/.vimrc:~/.vimrc"
+    nvim           "$src/.config/nvim/:~/.config/nvim"
+    nvim.obsidian  "$src/.config/obsidian_nvim/:~/.config/obsidian_nvim"
+    neovide        "$src/.config/neovide/config.toml:~/.config/neovide/config.toml"
+    ideavim        "$src/.ideavimrc:~/.ideavimrc"
+    git            "$src/.gitconfig:~/.gitconfig"
+    psql           "$src/.config/psql/.psqlrc:~/.config/psql/.psqlrc"
+    pgcli          "$src/.config/pgcli/config:~/.config/pgcli/config"
+    mycli          "$src/.config/mycli/.myclirc:~/.config/mycli/.myclirc"
+    ultisnips      "$src/.vim/UltiSnips/:~/.vim/UltiSnips"
+    omz            "$src/.oh-my-zsh/custom/:~/.oh-my-zsh/custom"
+    btop           "$src/.config/btop/btop.conf:~/.config/btop/btop.conf"
+    kitty          "$src/.config/kitty/:~/.config/kitty"
+    alacritty      "$src/.config/alacritty/:~/.config/alacritty"
+    yazi           "$src/.config/yazi/:~/.config/yazi"
+    tmux           "$src/.config/tmux/tmux.conf:~/.config/tmux/tmux.conf"
+    aerospace      "$src/.config/aerospace/aerospace.toml:/.config/aerospace/aerospace.toml"
+    treemd         "$src/.config/treemd/config.toml"
   )
 
   if [[ $# -eq 0 ]]; then

@@ -1,0 +1,8 @@
+{
+  "openExternalURLs": true,
+  "enableAdblocking": true,
+  "homepage": "ya.ru",
+  "customSearchEngine": "https://duckduckgo.com/?q=%s",
+  "searchEngine": "google",
+  "markdownPath": "02-CASHE/01-WEB"
+}
