@@ -83,7 +83,7 @@
     "replace": "underline",
     "operatorPending": "underline"
   },
-  "clipboard": "",
+  "clipboard": "unnamed",
   "tabstop": 4,
   "shiftwidth": 4,
   "expandtab": true,

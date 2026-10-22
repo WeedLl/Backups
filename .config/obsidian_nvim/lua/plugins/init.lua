@@ -15,6 +15,7 @@ require("plugins.ui")
 --   Парсеры: python, sql, markdown, lua, vim, bash, json, yaml
 -- tabular — выравнивание текста по разделителю (работает из Vim)
 -- vim-pdf — открытие PDF в буфере (работает из Vim)
+-- grug-far - удобная замена сразу по проекту
 require("plugins.editor")
 
 -- mason.nvim — установщик LSP-серверов, linters, formatters

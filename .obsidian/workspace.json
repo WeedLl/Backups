@@ -4,21 +4,31 @@
     "type": "split",
     "children": [
       {
-        "id": "718e2bc14abde389",
+        "id": "fddd44754dbf7632",
         "type": "tabs",
         "children": [
           {
-            "id": "b427a30a80efb75a",
+            "id": "774b2accb568b6a9",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "02-TEMPLATES/Template_DailyNote.md",
+                "file": "05-Important/Accaunts/Поток.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "Template_DailyNote"
+              "title": "Поток"
+            }
+          },
+          {
+            "id": "578aa441c6503293",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Новая вкладка"
             }
           }
         ]
@@ -55,7 +65,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "[\"tag\"]",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -99,13 +109,13 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "02-TEMPLATES/Template_DailyNote.md",
+                "file": "05-Important/Accaunts/Поток.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
-                "backlinkCollapsed": false,
+                "backlinkCollapsed": true,
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
@@ -118,7 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "05-Important/Обслуживание машины.md",
+                "file": "05-Important/Accaunts/Поток.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -182,12 +192,12 @@
               "title": "Сноски"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -202,33 +212,45 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "b427a30a80efb75a",
+  "active": "774b2accb568b6a9",
   "lastOpenFiles": [
+    "05-Important/Сколько нужно откладывать.md",
+    "05-Important/Про подбор одежды.md",
     "05-Important/Обслуживание машины.md",
     "02-TEMPLATES/Template_DailyNote.md",
-    "05-Important/Про подбор одежды.md",
-    "04-OtherNotes/Ремешки для часов.md",
     "02-TEMPLATES/Template_Accaunt.md",
-    "05-Important/Accaunts/DeepSeek.md",
-    "00-SORT/Без названия.md",
-    "05-Important/Сколько нужно откладывать.md",
-    "04-Important/Accaunts/DeepSeek.md",
+    "04-OtherNotes/Ремешки для часов.md",
+    "01-DAYS/2026-10-21.md",
+    "06-Text/HandNotes/Как рисовать кожу.md",
+    "06-Text/HandNotes/CASHE/Как рисовать кожу.jpg",
+    "06-Text/HandNotes/О слоях в Procreate.md",
+    "06-Text/HandNotes/CASHE",
+    "06-Text/HandNotes/Вставка 21.10.2026 в 11:48:29.tiff",
+    "06-Text/HandNotes/Вставка 21.10.2026 в 11-48-29.textClipping",
+    "05-Important/Accaunts/Pinterest.md",
+    "05-Important/Accaunts/RiotGames.md",
+    "05-Important/Accaunts/Steam.md",
+    "05-Important/Accaunts/TuTu.ru.md",
+    "05-Important/Accaunts/Udemy.md",
+    "05-Important/Accaunts/Stepik.md",
+    "05-Important/Accaunts/RockStar Social Club.md",
+    "05-Important/Accaunts/Поток.md",
+    "05-Important/Accaunts/Mos.ru.md",
+    "05-Important/Accaunts/Tinkoff.md",
+    "05-Important/Accaunts/Microsoft.md",
+    "05-Important/Accaunts/Instagram.md",
+    "05-Important/Accaunts/Paradox.md",
+    "05-Important/Accaunts/EveOnline.md",
+    "05-Important/Accaunts/GameNet.md",
+    "05-Important/Accaunts/Anime.md",
+    "05-Important/Accaunts/WargameNet.md",
+    "05-Important/Accaunts/Без названия.base",
     "16-Games/Subnautica",
     "16-Games/SteamGames",
     "16-Games/Rimworld",
     "16-Games/PLayMarket",
     "16-Games/MLBB",
     "16-Games/Factorio",
-    "16-Games/AppStoreGames",
-    "16-Games",
-    "15-English",
-    "14-Home",
-    "04-Important/Про подбор одежды.md",
-    "04-Important/Обслуживание машины.md",
-    "04-Important/Сколько нужно откладывать.md",
-    "03-OtherNotes/Ремешки для часов.md",
-    "00-SORT/202610211350.md",
-    "Без названия.canvas",
-    "2026-10-21.md"
+    "Без названия.canvas"
   ]
 }
