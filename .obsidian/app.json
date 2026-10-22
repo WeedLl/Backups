@@ -9,5 +9,6 @@
   "attachmentFolderPath": "./CASHE",
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true,
-  "trashOption": "local"
+  "trashOption": "local",
+  "spellcheck": true
 }

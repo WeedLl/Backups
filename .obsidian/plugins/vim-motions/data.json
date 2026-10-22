@@ -17,13 +17,13 @@
   "ripgrepBinaryPath": "",
   "ripgrepArgs": "--smart-case --glob \"*.md\"",
   "grepMode": "ripgrep",
-  "neovimRpcEnabled": true,
+  "neovimRpcEnabled": false,
   "neovimToggleInFlight": false,
   "neovimBinaryPath": "/opt/homebrew/bin/nvim",
-  "neovimConfigPath": "~/.config/obsidian_nvim/init.lua",
+  "neovimConfigPath": "/Users/weed/.config/obsidian_nvim/init.lua",
   "neovimConfigExportAutoRefresh": false,
   "neovimConfigExportFingerprint": "",
-  "configMode": "lua-vimrc",
+  "configMode": "settings",
   "enableStatusBar": true,
   "enableChordDisplay": true,
   "enablePowerline": true,
@@ -83,7 +83,7 @@
     "replace": "underline",
     "operatorPending": "underline"
   },
-  "clipboard": "unnamed",
+  "clipboard": "",
   "tabstop": 4,
   "shiftwidth": 4,
   "expandtab": true,
@@ -92,15 +92,15 @@
   "insertmodeescapetimeout": 1000,
   "operatorshadowtimeout": 1000,
   "textwidth": 80,
-  "whichKeyMode": "off",
+  "whichKeyMode": "all",
   "whichKeyGrouping": "grouped",
-  "whichKeyDelay": 500,
+  "whichKeyDelay": 150,
   "whichKeySortOrder": "which-key",
   "whichKeyIcons": true,
   "whichKeyGroupLabels": [],
   "whichKeyCommandLabels": [],
   "vimrcPath": "",
-  "luaConfigPath": "",
+  "luaConfigPath": "/Users/weed/.config/obsidian_nvim/init.lua",
   "showConfigNotifications": true,
   "globalConfigSearch": false,
   "leaderBindings": [],
@@ -175,7 +175,13 @@
   "smearMaxLength": 400,
   "pluginAutoFetch": false,
   "persistedMarks": [],
-  "harpoonPins": [],
+  "harpoonPins": [
+    {
+      "filePath": "06-Text/BigNotes/Кто такие Анимешники.md",
+      "row": 9,
+      "col": 0
+    }
+  ],
   "persistedJumpList": [
     {
       "filePath": "02-TEMPLATES/Template_DailyNote.md",
@@ -191,7 +197,28 @@
       "filePath": "02-TEMPLATES/Template_DailyNote.md",
       "line": 0,
       "ch": 0
+    },
+    {
+      "filePath": "06-Text/Untitled.md",
+      "line": 5,
+      "ch": 24
+    },
+    {
+      "filePath": "06-Text/Untitled.md",
+      "line": 9,
+      "ch": 0
+    },
+    {
+      "filePath": "06-Text/BigNotes/Кто такие Анимешники.md",
+      "line": 0,
+      "ch": 0
     }
   ],
-  "persistedFolds": {}
+  "persistedFolds": {},
+  "configOverrides": {
+    "number": false,
+    "relativenumber": true,
+    "scrolloffLines": 5,
+    "cursorline": true
+  }
 }
