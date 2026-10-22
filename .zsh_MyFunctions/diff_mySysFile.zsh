@@ -19,7 +19,6 @@ diff_mySysFile — сравнить текущие файлы с бэкапом.
   ultisnips     - .vim/UltiSnips/
   vim           - .vimrc
   nvim          - .config/nvim/
-  nvim.obsidian - .config/obsidian_nvim/
   neovide       - .config/neovide/config.toml
   ideavim       - .ideavimrc
   git           - .gitconfig
@@ -69,7 +68,6 @@ EOF
     zshf           "~/.zsh_MyFunctions:$dest/.zsh_MyFunctions"
     vim            "~/.vimrc:$dest/.vimrc"
     nvim           "~/.config/nvim:$dest/.config/nvim"
-    nvim.obsidian  "~/.config/obsidian_nvim:$dest/.config/obsidian_nvim"
     neovide        "~/.config/neovide/config.toml:$dest/.config/neovide/config.toml"
     ideavim        "~/.ideavimrc:$dest/.ideavimrc"
     git            "~/.gitconfig:$dest/.gitconfig"

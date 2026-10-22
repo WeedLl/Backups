@@ -4,10 +4,11 @@
   "strictLineBreaks": true,
   "showLineNumber": true,
   "vimMode": false,
-  "newFileLocation": "folder",
+  "newFileLocation": "current",
   "newFileFolderPath": "00-SORT",
   "attachmentFolderPath": "./CASHE",
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true,
-  "trashOption": "local"
+  "trashOption": "local",
+  "spellcheck": true
 }

@@ -11,7 +11,6 @@ unload_mySysFile — восстановить конфиги из бэкапа
   ultisnips     - .vim/UltiSnips/
   vim           - .vimrc
   nvim          - .config/nvim/
-  nvim.obsidian - .config/obsidian_nvim/
   neovide       - .config/neovide/config.toml
   ideavim       - .ideavimrc
   git           - .gitconfig
@@ -46,7 +45,6 @@ EOF
     zshf           "$src/.zsh_MyFunctions/:~/.zsh_MyFunctions"
     vim            "$src/.vimrc:~/.vimrc"
     nvim           "$src/.config/nvim/:~/.config/nvim"
-    nvim.obsidian  "$src/.config/obsidian_nvim/:~/.config/obsidian_nvim"
     neovide        "$src/.config/neovide/config.toml:~/.config/neovide/config.toml"
     ideavim        "$src/.ideavimrc:~/.ideavimrc"
     git            "$src/.gitconfig:~/.gitconfig"
