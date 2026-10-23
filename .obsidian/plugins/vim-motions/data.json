@@ -199,19 +199,14 @@
       "ch": 0
     },
     {
-      "filePath": "06-Text/Untitled.md",
-      "line": 5,
-      "ch": 24
-    },
-    {
-      "filePath": "06-Text/Untitled.md",
-      "line": 9,
-      "ch": 0
-    },
-    {
       "filePath": "06-Text/BigNotes/Кто такие Анимешники.md",
       "line": 0,
       "ch": 0
+    },
+    {
+      "filePath": "16-Games/Factorio/Factorio.md",
+      "line": 4,
+      "ch": 8
     }
   ],
   "persistedFolds": {},

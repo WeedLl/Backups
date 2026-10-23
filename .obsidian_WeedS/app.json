@@ -1,10 +1,12 @@
 {
-  "attachmentFolderPath": "99-Cashe",
+  "attachmentFolderPath": "./CASHE",
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true,
   "trashOption": "local",
   "livePreview": false,
   "strictLineBreaks": true,
   "propertiesInDocument": "visible",
-  "showLineNumber": true
+  "showLineNumber": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "00-SORT"
 }
