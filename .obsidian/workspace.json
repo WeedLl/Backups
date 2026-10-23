@@ -4,24 +4,39 @@
     "type": "split",
     "children": [
       {
-        "id": "461671839df7f311",
+        "id": "0148224f85fefb35",
         "type": "tabs",
         "children": [
           {
-            "id": "9da7f314bc70db95",
+            "id": "b7ea3a387de286a9",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "06-Text/Untitled.md",
+                "file": "03-Notes/Семейный бюджет.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "Untitled"
+              "title": "Семейный бюджет"
+            }
+          },
+          {
+            "id": "c863e4258c4fa924",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03-Notes/Обучение БПЛА Орёл.md",
+                "mode": "preview",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "Обучение БПЛА Орёл"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -55,7 +70,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "mark",
                 "matchingCase": false,
                 "explainSearch": true,
                 "collapseAll": false,
@@ -63,7 +78,7 @@
                 "sortOrder": "alphabetical"
               },
               "icon": "lucide-search",
-              "title": "Поиск"
+              "title": "Search"
             }
           },
           {
@@ -76,7 +91,7 @@
                 "searchQuery": ""
               },
               "icon": "lucide-bookmark",
-              "title": "Закладки"
+              "title": "Bookmarks"
             }
           }
         ]
@@ -99,17 +114,17 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "06-Text/Joke.canvas",
+                "file": "03-Notes/Обучение БПЛА Орёл.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
-                "backlinkCollapsed": true,
-                "unlinkedCollapsed": true
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
               },
               "icon": "links-coming-in",
-              "title": "Обратные ссылки"
+              "title": "Backlinks"
             }
           },
           {
@@ -118,12 +133,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "06-Text/Joke.canvas",
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
+                "file": "03-Notes/Обучение БПЛА Орёл.md",
+                "linksCollapsed": true,
+                "unlinkedCollapsed": false
               },
               "icon": "links-going-out",
-              "title": "Исходящие ссылки"
+              "title": "Outgoing links"
             }
           },
           {
@@ -138,7 +153,7 @@
                 "searchQuery": ""
               },
               "icon": "lucide-tags",
-              "title": "Теги"
+              "title": "Tags"
             }
           },
           {
@@ -161,13 +176,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "05-Important/Обслуживание машины.md",
+                "file": "03-Notes/Обучение БПЛА Орёл.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Структура"
+              "title": "Outline"
             }
           },
           {
@@ -176,14 +191,14 @@
             "state": {
               "type": "footnotes",
               "state": {
-                "file": "02-TEMPLATES/Template_DailyNote.md"
+                "file": "03-Notes/Обучение БПЛА Орёл.md"
               },
               "icon": "lucide-file-signature",
-              "title": "Сноски"
+              "title": "Footnotes"
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
@@ -202,46 +217,56 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "9da7f314bc70db95",
+  "active": "c863e4258c4fa924",
   "lastOpenFiles": [
-    "06-Text/BigNotes/Кто такие Анимешники.md",
-    "06-Text/Untitled.md",
-    "06-Text/Joke.canvas",
-    "02-TEMPLATES/Template_DailyNote.md",
-    "06-Text/HandNotes/Как рисовать кожу.md",
-    "06-Text/HandNotes/О слоях в Procreate.md",
-    "06-Text/тест.md",
-    "06-Text/Joke/Однажды негр очень смешно пошутил, но все равно никто не выкупил.md",
-    "05-Important/Про подбор одежды.md",
-    "06-Text/HandNotes/CASHE/Как рисовать кожу.jpg",
-    "06-Text/HandNotes/CASHE/О слоях в PC.jpeg",
-    "01-DAYS/2026-10-21.md",
-    "02-TEMPLATES/Template_Accaunt.md",
-    "05-Important/Accaunts/Samsung.md",
-    "05-Important/Accaunts/MoneyOK.md",
-    "05-Important/Accaunts/Mixamo.md",
+    "01-DAYS/2026-10-23.md",
+    "03-Notes/Обучение БПЛА Орёл.md",
+    "03-Notes/Семейный бюджет.md",
+    "09-OS/CASHE/Шпаргалка Vim - EN.png",
+    "09-OS/CASHE/Скорость интернета для просмотра роликов.png",
+    "09-OS/CASHE/Отображение скрытых файлов и папок.png",
+    "09-OS/Остальное.md",
+    "09-OS/Python/Ключи от python курса.md",
+    "09-OS/Python",
+    "09-OS/Markdown guid.md",
+    "04-OtherNotes/Урод..md",
     "05-Important/Accaunts/Microsoft.md",
-    "05-Important/Accaunts/Manga.md",
     "05-Important/Accaunts/Mails.md",
     "05-Important/Accaunts/Gosuslugi.md",
-    "05-Important/Accaunts/Garmin.md",
-    "05-Important/Accaunts/Elite Dangerous.md",
-    "05-Important/Accaunts/DeepSeek.md",
-    "05-Important/Accaunts/Anime.md",
-    "05-Important/Accaunts/Поток.md",
     "05-Important/Сколько нужно откладывать.md",
-    "05-Important/Обслуживание машины.md",
-    "04-OtherNotes/Ремешки для часов.md",
-    "06-Text/HandNotes/CASHE",
-    "06-Text/HandNotes/Вставка 21.10.2026 в 11:48:29.tiff",
-    "06-Text/HandNotes/Вставка 21.10.2026 в 11-48-29.textClipping",
-    "05-Important/Accaunts/Без названия.base",
-    "16-Games/Subnautica",
-    "16-Games/SteamGames",
-    "16-Games/Rimworld",
-    "16-Games/PLayMarket",
-    "16-Games/MLBB",
-    "16-Games/Factorio",
+    "09-OS/Python/Python guid.md",
+    "09-OS/zshSkript/index.md",
+    "09-OS/zshSkript/m01.md",
+    "09-OS/zshSkript/m18.md",
+    "09-OS/zshSkript/m17.md",
+    "09-OS/zshSkript/m16.md",
+    "09-OS/zshSkript/m15.md",
+    "09-OS/zshSkript/m14.md",
+    "09-OS/zshSkript/m13.md",
+    "09-OS/zshSkript/m12.md",
+    "09-OS/zshSkript/m11.md",
+    "09-OS/zshSkript/m10.md",
+    "09-OS/zshSkript/m09.md",
+    "09-OS/zshSkript/m08.md",
+    "09-OS/zshSkript/m07.md",
+    "09-OS/zshSkript",
+    "09-OS/CASHE",
+    "00-SORT/Games image/20260328_231445.jpg",
+    "00-SORT/Games image/Screenshot_20260330_202937_YouTube.jpg",
+    "00-SORT/Games image/Screenshot_20260519_143028_YouTube.jpg",
+    "00-SORT/Games image/Screenshot_20260302_145709_YouTube.jpg",
+    "00-SORT/Games image/i.jpeg",
+    "00-SORT/Games image/Screenshot_20260519_143116_YouTube.jpg",
+    "00-SORT/Games image/Screenshot_20260519_143040_YouTube.jpg",
+    "00-SORT/Games image",
+    "16-Games/Highfleet/CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4.seria",
+    "16-Games/Highfleet/CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4 Б.seria",
+    "16-Games/Highfleet/CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3.seria",
+    "16-Games/Highfleet/CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3 Б.seria",
+    "16-Games/Highfleet/CASHE/Higfleet Ships 07-09-26 19-10/Skylark mk2.seria",
+    "16-Games/Highfleet/CASHE/Higfleet Ships 07-09-26 19-10/Shmel'.seria",
+    "13-Movies/13.00-Kanvas.canvas",
+    "06-Text/Joke && Phrases.canvas",
     "Без названия.canvas"
   ]
 }
