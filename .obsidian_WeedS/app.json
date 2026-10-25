@@ -1,5 +1,5 @@
 {
-  "attachmentFolderPath": "./CASHE",
+  "attachmentFolderPath": "./00-CASHE",
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true,
   "trashOption": "local",
@@ -8,5 +8,7 @@
   "propertiesInDocument": "visible",
   "showLineNumber": true,
   "newFileLocation": "folder",
-  "newFileFolderPath": "00-SORT"
+  "newFileFolderPath": "00-SORT",
+  "openBehavior": "",
+  "defaultViewMode": "preview"
 }

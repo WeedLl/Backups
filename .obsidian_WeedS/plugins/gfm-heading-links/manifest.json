@@ -1,0 +1,10 @@
+{
+  "id": "gfm-heading-links",
+  "name": "GFM Heading Links",
+  "version": "1.4.0",
+  "minAppVersion": "1.0.0",
+  "description": "Resolve GFM-style kebab-case heading links (e.g. #my-heading) at runtime — no export hacks, works in Live Preview and Reading view.",
+  "author": "Lucas Galdino",
+  "authorUrl": "https://github.com/lucasgaldinos",
+  "isDesktopOnly": false
+}

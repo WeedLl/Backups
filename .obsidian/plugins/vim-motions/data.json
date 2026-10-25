@@ -202,18 +202,7 @@
       "filePath": "06-Text/BigNotes/Кто такие Анимешники.md",
       "line": 0,
       "ch": 0
-    },
-    {
-      "filePath": "16-Games/Factorio/Factorio.md",
-      "line": 4,
-      "ch": 8
     }
   ],
-  "persistedFolds": {},
-  "configOverrides": {
-    "number": false,
-    "relativenumber": true,
-    "scrolloffLines": 5,
-    "cursorline": true
-  }
+  "persistedFolds": {}
 }
