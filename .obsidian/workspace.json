@@ -4,24 +4,39 @@
     "type": "split",
     "children": [
       {
-        "id": "1c336fa9f98d9a50",
+        "id": "8955c5a4a58f7efd",
         "type": "tabs",
         "children": [
           {
-            "id": "7903bcbbdbe2188c",
+            "id": "db960caccaa5fef0",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01-DAYS/2026-10-25.md",
-                "mode": "source",
+                "file": "09-OS/Python/Python course.md",
+                "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "2026-10-25"
+              "title": "Python course"
+            }
+          },
+          {
+            "id": "c1e83980a747d70b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "01-DAYS/2026-10-28.md",
+                "mode": "preview",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "2026-10-28"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -55,7 +70,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:#course",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": true,
                 "collapseAll": false,
@@ -99,7 +114,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "09-OS/AI prompt/regex_course.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +132,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "09-OS/AI prompt/regex_course.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -134,7 +147,7 @@
               "state": {
                 "sortOrder": "alphabetical",
                 "useHierarchy": true,
-                "showSearch": false,
+                "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-tags",
@@ -161,7 +174,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "01-DAYS/2026-10-25.md",
+                "file": "01-DAYS/2026-10-28.md",
                 "followCursor": true,
                 "showSearch": false,
                 "searchQuery": ""
@@ -202,54 +215,55 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "7903bcbbdbe2188c",
+  "active": "c1e83980a747d70b",
   "lastOpenFiles": [
-    "09-OS/AI prompt/regex_course.md",
+    "01-DAYS/00-MergeLog/vault_merge_log_20261028_203033.md",
+    "01-DAYS/2026-10-28.md",
+    "01-DAYS/00-MergeLog.md",
+    "02-TEMPLATES/Template_DailyNote.md",
+    "02-TEMPLATES/Template_Accaunt.md",
+    "05-Important/Сколько нужно откладывать.md",
+    "13-Movies/00-WatchList.base",
+    "09-OS/regex-course.obsidian.md",
+    "09-OS/Latex гайд.md",
+    "09-OS/Markdown guid.md",
+    "09-OS/Остальное.md",
+    "00-SORT/Про браузеры.md",
+    "09-OS/Python/Python course.md",
+    "01-DAYS/2026-10-25.md",
+    "01-DAYS/2026-10-23.md",
+    "01-DAYS/2026-10-24.md",
+    "05-Important/Accaunts/Mails.md",
+    "02-TEMPLATES/Template_Movie.md",
+    "01-DAYS/2026-10-21.md",
+    "01-DAYS/2026-10-22.md",
+    "09-OS/Python/Ключи от python курса.md",
+    "09-OS/zshSkript/m02.md",
+    "09-OS/zshSkript/m01.md",
+    "09-OS/zshSkript/index.md",
+    "13-Movies/Murderbot.md",
+    "00-SORT/Games image/20260328_231445.jpg",
+    "00-SORT/Games image/i.jpeg",
+    "00-SORT/Games image/Screenshot_20260302_145709_YouTube.jpg",
+    "00-SORT/Games image/Screenshot_20260330_202937_YouTube.jpg",
+    "16-Games/SnowRunner/SnowRunner.md",
+    "16-Games/Factorio/Factorio.md",
+    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_142857_YouTube.jpg",
+    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_143028_YouTube.jpg",
+    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_143116_YouTube.jpg",
+    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_143040_YouTube.jpg",
+    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_143032_YouTube.jpg",
+    "16-Games/SnowRunner/00-CASHE",
+    "16-Games/SnowRunner",
     "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4.seria",
     "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4.png",
     "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4 Б.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4 Б.png",
     "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3.png",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3 Б.png",
     "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3 Б.seria",
     "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Skylark mk2.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Skylark mk2.png",
     "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Shmel'.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Shmel'.png",
     "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Sevastopol mk1.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Sevastopol mk1.png",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Puss.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Puss.png",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Meteor Mk31.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Meteor Mk31.png",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Lightning mk2.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Lightning mk2.png",
-    "09-OS/Остальное.md",
-    "09-OS/Latex гайд.md",
-    "09-OS/Markdown guid.md",
-    "09-OS/regex-course.obsidian.md",
-    "09-OS/AI prompt/regex_course_fix_with_deepseekpro.md",
-    "09-OS/AI prompt/vault_merge_function_prompt.md",
-    "09-OS/AI prompt/vault_merge_function_prompt_fix.md",
-    "09-OS/AI prompt/zshscript_course.md",
-    "09-OS/Python/Python guid.md",
-    "09-OS/zshSkript/index.md",
-    "09-OS/zshSkript/m04.md",
-    "09-OS/zshSkript/m03.md",
-    "09-OS/zshSkript/m02.md",
-    "09-OS/zshSkript/m01.md",
-    "09-OS/regex-course.md",
-    "09-OS/regex-course_obsidian.md",
-    "09-OS/AI prompt/prompt.md",
-    "09-OS/AI prompt/prompt_fix_with_deepseekpro.md",
-    "01-DAYS/2026-10-25.md",
-    "13-Movies/Парни со стволами.md",
     "06-Text/Joke && Phrases.canvas",
-    "13-Movies/Оружейный барон.md",
-    "13-Movies/Мир дружба жвачка.md",
-    "13-Movies/Игра на понижение.md",
-    "13-Movies/Бедные смеются, богаты плачут.md",
     "13-Movies/13.00-Kanvas.canvas",
     "Без названия.canvas"
   ]

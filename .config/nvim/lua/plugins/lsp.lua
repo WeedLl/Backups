@@ -10,11 +10,15 @@ require("mason").setup()
 -- LSP-серверы — автоустановка через mason-lspconfig
 require("mason-lspconfig").setup({
 	-- ruff — линтер+форматер Python на Rust
-	ensure_installed = { "pyright", "clangd", "ruff", "lua_ls" },
+	-- marksman — LSP для Markdown (ссылки, заголовки, диагностика)
+	-- shuck — единый LSP для Bash и Zsh (Rust, встроенный линтер + форматтер)
+	ensure_installed = { "pyright", "clangd", "ruff", "lua_ls", "marksman", "shuck" },
 })
 -- Форматеры, линтеры и прочие non-LSP инструменты
 require("mason-tool-installer").setup({
-	ensure_installed = { "stylua" },
+	ensure_installed = {
+		"stylua",
+	},
 	auto_update = true,
 })
 -- lazydev: настраивает lua_ls для понимания Neovim API

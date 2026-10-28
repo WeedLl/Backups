@@ -215,6 +215,8 @@ alias lt='lsd --tree'
 alias cat='bat'
 #Yazi
 alias yy='yazi'
+#Treemd
+alias tmd='treemd'
 
 #_______________________________________________ ZSH-vim-status ____________________________________
 ###Рекомендация из видео https://www.youtube.com/watch?v=hIJh-KlQ7io
