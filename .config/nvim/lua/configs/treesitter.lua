@@ -12,6 +12,7 @@ require("nvim-treesitter").install({
 	"vim",
 	"vimdoc",
 	"bash",
+	"zsh",
 	"json",
 	"yaml",
 	"latex",

@@ -1,5 +1,6 @@
 [
   "oz-clear-unused-images",
   "vim-motions",
-  "obsidian-advanced-uri"
+  "obsidian-advanced-uri",
+  "gfm-heading-links"
 ]
