@@ -10,5 +10,8 @@
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true,
   "trashOption": "local",
-  "spellcheck": true
+  "spellcheck": true,
+  "propertiesInDocument": "visible",
+  "openBehavior": "",
+  "uriCallbacks": true
 }
