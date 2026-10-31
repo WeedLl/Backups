@@ -78,38 +78,38 @@ DISABLE_AUTO_TITLE="true"
 ## Позволяет попасть автодополнениям в пул, если они типа (мы файлы в папке, отсканируй нас в FPATH)
 # Позволяем brew самому расставить пути в path для себя
 if [[ -x /opt/homebrew/bin/brew ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+	eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [[ -x /usr/local/bin/brew ]]; then
-  eval "$(/usr/local/bin/brew shellenv)"
+	eval "$(/usr/local/bin/brew shellenv)"
 fi
 #!!!! ДЛЯ КОРРЕКТНОЙ РАБОТЫ FZF-TAB И КОМПЛИТА С BREW !!!!
 #Некоторые обновления переменных PATH и FPATH необходимо делать до source #ZSH/oh-my-zsh.sh, т.к. это инициализация,
 #   в которую входит compinit. Некоторые такие болячки можно прощупать, выполнив source ~/.zshrc в терминале
 if [[ ":$FPATH:" != *":/opt/homebrew/share/zsh/site-functions:"* ]] && [[ -d "/opt/homebrew/share/zsh/site-functions" ]]; then
-    export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
+	export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
 fi
 #Добавление моих функций
 if [[ -d "$HOME/.zsh_MyFunctions" ]]; then
-    # Добавляем папку в FPATH только если её там ещё нет
-    if [[ ":$FPATH:" != *":$HOME/.zsh_MyFunctions:"* ]]; then
-        export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
-    fi
-    # Функции (всё, кроме _*) — загружаем через source
-    for f in ~/.zsh_MyFunctions/*(N); do
-        [[ "$(basename "$f")" == _* ]] && continue
-        source "$f"
-    done
+	# Добавляем папку в FPATH только если её там ещё нет
+	if [[ ":$FPATH:" != *":$HOME/.zsh_MyFunctions:"* ]]; then
+		export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
+	fi
+	# Функции (всё, кроме _*) — загружаем через source
+	for f in ~/.zsh_MyFunctions/*(N); do
+		[[ "$(basename "$f")" == _* ]] && continue
+		source "$f"
+	done
 fi
 ##Рекомендации HomeBrew для PostgreSQL после установки
 if [[ ":$PATH:" != *":/opt/homebrew/opt/postgresql@15/bin:"* ]] && [[ -d "/opt/homebrew/opt/postgresql@15/bin" ]]; then
-    export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+	export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 fi
 #Global VENV - Python, который должен везде использоваться и его pip
 if [[ ":$PATH:" != *":$HOME/.global_venv/bin:"* ]] && [[ -d "$HOME/.global_venv/bin" ]]; then
-    export PATH="$HOME/.global_venv/bin:$PATH"
+	export PATH="$HOME/.global_venv/bin:$PATH"
 fi
 #_______________________________________________________________________________________________________________________
-plugins=(git vi-mode) 
+plugins=(git vi-mode)
 
 source $ZSH/oh-my-zsh.sh #COMPINIT для автодополнений (все автодополнения до - не будут работать)
 source /opt/homebrew/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh
@@ -158,7 +158,6 @@ export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-
 #_______________________________________________ Дефолтные настройки ______________________________
 export LDFLAGS="-L/opt/homebrew/opt/postgresql@15/lib" #For compilers to find postgresql@15 you may need to set:
 export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
@@ -174,11 +173,9 @@ fastfetch
 RPS1="%T"
 export RPS1
 
-
 #_______________________________________________ SmartMooving ______________________________________
 alias Dpython='cd ~/Documents/For\ Sys/Python'
 alias Dbackup='cd ~/Documents/For\ Sys/Backup'
-
 
 #_______________________________________________ ShortCat __________________________________________
 ## Vim and nVim
@@ -201,6 +198,10 @@ alias nopen='open "$(PWD)"'
 alias glol='git log --pretty=format:"%h %an %ad %s" --name-only --graph'
 alias glog='git log --graph'
 alias gbranch='git log --oneline --graph --decorate --all'
+#LazyGit
+alias lg='lazygit'
+#Кастомная директория lazygit для macos
+export XDG_CONFIG_HOME="$HOME/.config"
 
 ## PGCLI
 alias psqlc=pgcli
@@ -229,11 +230,11 @@ INSERT_MODE_INDICATOR="%F{green}--INSERT--%f "
 stty intr undef
 # Ctrl+C → Normal
 function _ctrl-c-smart() {
-  if [[ -z "$BUFFER" ]]; then
-    zle send-break
-  else
-    zle vi-cmd-mode
-  fi
+	if [[ -z "$BUFFER" ]]; then
+		zle send-break
+	else
+		zle vi-cmd-mode
+	fi
 }
 zle -N _ctrl-c-smart
 bindkey -M viins '^C' _ctrl-c-smart
@@ -245,23 +246,23 @@ bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 
 function _visual-mode {
-  typeset -g VI_KEYMAP=visual
-  _vi-mode-set-cursor-shape-for-keymap "$VI_KEYMAP"
-  zle .visual-mode
-  zle reset-prompt
-  zle -R
+	typeset -g VI_KEYMAP=visual
+	_vi-mode-set-cursor-shape-for-keymap "$VI_KEYMAP"
+	zle .visual-mode
+	zle reset-prompt
+	zle -R
 }
 zle -N visual-mode _visual-mode
 
 function vi_mode_prompt_info() {
-  case "${VI_KEYMAP:-$KEYMAP}" in
-    vicmd)   echo "%F{red}--NORMAL--%f " ;;
-    visual)  echo "%F{white}--VISUAL--%f " ;;
-    viopp)   echo "%F{black}--BLINKING--%f " ;;
-    isearch) echo "%F{green}--INSERT--%f " ;;
-    command) echo "%F{yellow}----%f " ;;
-    *)       echo "%F{green}--INSERT--%f " ;;
-  esac
+	case "${VI_KEYMAP:-$KEYMAP}" in
+	vicmd) echo "%F{red}--NORMAL--%f " ;;
+	visual) echo "%F{white}--VISUAL--%f " ;;
+	viopp) echo "%F{black}--BLINKING--%f " ;;
+	isearch) echo "%F{green}--INSERT--%f " ;;
+	command) echo "%F{yellow}----%f " ;;
+	*) echo "%F{green}--INSERT--%f " ;;
+	esac
 }
 # Индикатор режима в промпт
 PS1+='$(vi_mode_prompt_info)'

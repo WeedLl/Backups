@@ -1,0 +1,113 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+#
+# lazygit 0.66.2 — тема gruvbox dark (палитра ellisonleao/gruvbox.nvim, contrast=medium)
+# Путь на этой машине: ~/.config/lazygit/config.yml
+#
+# Все цвета заданы hex-ами (truecolor), а не именами ANSI: имена вроде "blue"
+# берутся из палитры терминала, а у kitty она своя. Так тема не зависит от терминала.
+
+gui:
+  # Русский интерфейс (lazygit 0.66 поддерживает ru)
+  language: ru
+
+  # Явно тёмный фон: иначе lazygit спрашивает терминал, а без ответа считает тёмным
+  colorScheme: dark
+
+  # Иконки Nerd Font. Требует, чтобы глифы были в шрифте терминала:
+  # у тебя их отдаёт JetBrainsMonoNL Nerd Font через fallback fontconfig (см. README).
+  nerdFontsVersion: "3"
+  showFileIcons: true
+
+  # +N -N у файлов — видно, где изменения объёмные
+  showNumstatInFilesView: true
+
+  # Чуть больше контекста при прокрутке списков
+  scrollOffMargin: 3
+
+  # Граф коммитов: 'detailed' рисуется символами git (kitty их умеет),
+  # 'auto' сам выбирает detailed для kitty/Ghostty.
+  commitGraphStyle: auto
+
+  theme:
+    # ── Рамки ────────────────────────────────────────────────
+    activeBorderColor:
+      - "#b8bb26" # gruvbox green (bright) — активная панель
+      - bold
+    inactiveBorderColor:
+      - "#504945" # bg2 — неактивные рамки, тихо
+    searchingActiveBorderColor:
+      - "#fabd2f" # yellow — рамка во время поиска
+      - bold
+
+    # ── Текст ────────────────────────────────────────────────
+    defaultFgColor:
+      - "#ebdbb2" # fg1 — основной текст
+    optionsTextColor:
+      - "#83a598" # blue — подсказки клавиш внизу
+
+    # ── Выделение ────────────────────────────────────────────
+    selectedLineBgColor:
+      - "#3c3836" # bg1 — как визуальное выделение в nvim
+    inactiveViewSelectedLineBgColor:
+      - "#32302f" # bg0 soft — выделение в неактивной панели
+    selectedLineFgColor:
+      - bold
+
+    # ── Спец-строки ──────────────────────────────────────────
+    unstagedChangesColor:
+      - "#fb4934" # red — файлы с незакоммиченными изменениями
+    cherryPickedCommitBgColor:
+      - "#d3869b" # purple — бейдж скопированного коммита
+    cherryPickedCommitFgColor:
+      - "#282828" # text на бейдже
+    markedBaseCommitBgColor:
+      - "#fabd2f" # yellow — бейдж base для rebase
+    markedBaseCommitFgColor:
+      - "#282828"
+
+    # ── Авторы и ветки ───────────────────────────────────────
+    authorColors:
+      "Weed Lakmar": "#fabd2f"
+      "*": "#928374" # остальные — серый, чтобы не рябило
+    branchColorPatterns:
+      "^main$|^master$": "#fabd2f"
+      "^feature/": "#8ec07c"
+      "^fix/|^hotfix/": "#fb4934"
+      "^docs/": "#83a598"
+      "^release/": "#b8bb26"
+
+git:
+  # Автофетч каждые 60 с — выключен: не дёргает сеть и не мешает в больших репах
+  autoFetch: false
+
+  # Защита от случайного force-push (спросит подтверждение)
+  disableForcePushing: true
+
+  # Порядок коммитов и сортировка веток: topo-order читается лучше
+  log:
+    order: topo-order
+
+os:
+  # 'e' открывает файл в nvim; пресет сам выбирает команду
+  editPreset: nvim
+
+# Спрашивать подтверждение перед выходом
+confirmOnQuit: true
+
+keybinding:
+  universal:
+    # vim-привычка: u = undo (z по умолчанию остаётся рабочим).
+    # В панели веток u остаётся "set upstream" — панельные биндинги приоритетнее.
+    undo:
+      - z
+      - u
+
+    # Ctrl-навигация как в fzf/tmux; j/k и стрелки продолжают работать.
+    nextItem:
+      - "<down>"
+      - j
+      - "<c-n>"
+    prevItem:
+      - "<up>"
+      - k
+      - "<c-p>"

@@ -1,10 +1,10 @@
 ---
 tags:
 - sys
-- sys/nvim
+- sys/tui/nvim
 - sys/shell/zsh
 - sys/shell/bash
-- python
+- sys/programming_lang/python
 ---
 
 # Команды терминала:
