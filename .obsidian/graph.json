@@ -6,46 +6,17 @@
   "hideUnresolved": true,
   "showOrphans": true,
   "collapse-color-groups": false,
-  "colorGroups": [
-    {
-      "query": "tag:#to_watch  ",
-      "color": {
-        "a": 1,
-        "rgb": 48450
-      }
-    },
-    {
-      "query": "tag:#on_watching  ",
-      "color": {
-        "a": 1,
-        "rgb": 16759552
-      }
-    },
-    {
-      "query": "tag:#watched  ",
-      "color": {
-        "a": 1,
-        "rgb": 8581
-      }
-    },
-    {
-      "query": "tag:#Daily/to_work  ",
-      "color": {
-        "a": 1,
-        "rgb": 16711867
-      }
-    }
-  ],
+  "colorGroups": [],
   "collapse-display": true,
   "showArrow": false,
   "textFadeMultiplier": 0,
-  "nodeSizeMultiplier": 1.00230714455258,
-  "lineSizeMultiplier": 1.00067885117493,
+  "nodeSizeMultiplier": 1,
+  "lineSizeMultiplier": 1,
   "collapse-forces": true,
   "centerStrength": 0.518713248970312,
   "repelStrength": 10,
   "linkStrength": 1,
   "linkDistance": 250,
-  "scale": 0.9295880942305671,
+  "scale": 1.4279541380460616,
   "close": true
 }

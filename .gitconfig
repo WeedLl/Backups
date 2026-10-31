@@ -18,3 +18,37 @@
     cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED"
     trustExitCode = true
 
+# gruvbox dark — цвета git для lazygit
+# lazygit не красит диффы сам: он показывает вывод `git diff --color=always`.
+# Поэтому цвета диффов/декораций задаются в git. Подключается одной строкой
+# в ~/.gitconfig:  [include]  path = ~/.config/git/gruvbox-colors.inc
+
+
+# >>> lazygit gruvbox (managed by apply-variant.sh) >>>
+[color "diff"]
+	meta = "#4fd2b4"
+	frag = "#ea7fa4"
+	func = "#ff9f40"
+	commit = "#ffc93f"
+	old = "#ff5f4d"
+	new = "#c8d92f"
+	context = "#b3a486"
+	whitespace = "#665c54"
+	oldMoved = "#e04a3a"
+	newMoved = "#a8b81f"
+[color "decorate"]
+	HEAD = "#8fdc72"
+	branch = "#ffc93f"
+	remoteBranch = "#4fd2b4"
+	tag = "#ea7fa4"
+	stash = "#ff9f40"
+[color "branch"]
+	current = "#8fdc72"
+	local = "#ffc93f"
+	remote = "#4fd2b4"
+	upstream = "#8fdc72"
+[color "status"]
+	added = "#8fdc72"
+	changed = "#ffc93f"
+	untracked = "#4fd2b4"
+# <<< lazygit gruvbox <<<

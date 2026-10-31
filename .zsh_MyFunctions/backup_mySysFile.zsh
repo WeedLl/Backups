@@ -1,6 +1,6 @@
 backup_mySysFile() {
-  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-    cat <<EOF
+	if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+		cat <<EOF
 backup_mySysFile — обновить бэкапа
 
 Доступные компоненты:
@@ -15,6 +15,7 @@ backup_mySysFile — обновить бэкапа
   neovide       - .config/neovide/config.toml
   ideavim       - .ideavimrc
   git           - .gitconfig
+  lazygit       - .config/lazygit/config.yml
   psql          - .config/psql/.psqlrc
   pgcli         - .config/pgcli/config
   mycli         - .config/mycli/.myclirc
@@ -29,90 +30,91 @@ backup_mySysFile — обновить бэкапа
 Пример:
   backup_mySysFile zsh bash or backup_mySysFile all
 EOF
-    return 0
-  fi
+		return 0
+	fi
 
-  local dest="~/Documents/For Sys/Backup"
-  dest=${~dest}
-  mkdir -p "$dest"
+	local dest="~/Documents/For Sys/Backup"
+	dest=${~dest}
+	mkdir -p "$dest"
 
-  typeset -A items
-  items=(
-    bash           "~/.bash_profile:$dest/.bash_profile"
-    zsh            "~/.zshrc:$dest/.zshrc"
-    zshf           "~/.zsh_MyFunctions/:$dest/.zsh_MyFunctions"
-    vim            "~/.vimrc:$dest/.vimrc"
-    nvim           "~/.config/nvim/:$dest/.config/nvim"
-    neovide        "~/.config/neovide/config.toml:$dest/.config/neovide/config.toml"
-    ideavim        "~/.ideavimrc:$dest/.ideavimrc"
-    git            "~/.gitconfig:$dest/.gitconfig"
-    psql           "~/.config/psql/.psqlrc:$dest/.config/psql/.psqlrc"
-    pgcli          "~/.config/pgcli/config:$dest/.config/pgcli/config"
-    mycli          "~/.config/mycli/.myclirc:$dest/.config/mycli/.myclirc"
-    ultisnips      "~/.vim/UltiSnips/:$dest/.vim/UltiSnips"
-    omz            "~/.oh-my-zsh/custom/:$dest/.oh-my-zsh/custom"
-    btop           "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
-    kitty          "~/.config/kitty/:$dest/.config/kitty"
-    alacritty      "~/.config/alacritty/:$dest/.config/alacritty"
-    yazi           "~/.config/yazi/:$dest/.config/yazi"
-    tmux           "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
-    aerospace      "~/.config/aerospace/aerospace.toml:$dest/.config/aerospace/aerospace.toml"
-    treemd         "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
-  )
+	typeset -A items
+	items=(
+		bash "~/.bash_profile:$dest/.bash_profile"
+		zsh "~/.zshrc:$dest/.zshrc"
+		zshf "~/.zsh_MyFunctions/:$dest/.zsh_MyFunctions"
+		vim "~/.vimrc:$dest/.vimrc"
+		nvim "~/.config/nvim/:$dest/.config/nvim"
+		neovide "~/.config/neovide/config.toml:$dest/.config/neovide/config.toml"
+		ideavim "~/.ideavimrc:$dest/.ideavimrc"
+		git "~/.gitconfig:$dest/.gitconfig"
+		lazygit "~/.config/lazygit/config.yml:$dest/.config/lazygit/config.yml"
+		psql "~/.config/psql/.psqlrc:$dest/.config/psql/.psqlrc"
+		pgcli "~/.config/pgcli/config:$dest/.config/pgcli/config"
+		mycli "~/.config/mycli/.myclirc:$dest/.config/mycli/.myclirc"
+		ultisnips "~/.vim/UltiSnips/:$dest/.vim/UltiSnips"
+		omz "~/.oh-my-zsh/custom/:$dest/.oh-my-zsh/custom"
+		btop "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
+		kitty "~/.config/kitty/:$dest/.config/kitty"
+		alacritty "~/.config/alacritty/:$dest/.config/alacritty"
+		yazi "~/.config/yazi/:$dest/.config/yazi"
+		tmux "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
+		aerospace "~/.config/aerospace/aerospace.toml:$dest/.config/aerospace/aerospace.toml"
+		treemd "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
+	)
 
-  if [[ $# -eq 0 ]]; then
-    echo "Использование: backup_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|all]"
-    return 1
-  fi
+	if [[ $# -eq 0 ]]; then
+		echo "Использование: backup_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|all]"
+		return 1
+	fi
 
-  for arg in "$@"; do
-    if [[ $arg = "all" ]]; then
-      for key in "${(k)items[@]}"; do
-        _backup_item "$key" "$dest" "$items[$key]"
-      done
-      return
-    fi
+	for arg in "$@"; do
+		if [[ $arg = "all" ]]; then
+			for key in "${(k)items[@]}"; do
+				_backup_item "$key" "$dest" "$items[$key]"
+			done
+			return
+		fi
 
-    if [[ -z "${items[$arg]+x}" ]]; then
-      echo "Неизвестный компонент: $arg"
-      continue
-    fi
-    _backup_item "$arg" "$dest" "${items[$arg]}"
-  done
+		if [[ -z "${items[$arg]+x}" ]]; then
+			echo "Неизвестный компонент: $arg"
+			continue
+		fi
+		_backup_item "$arg" "$dest" "${items[$arg]}"
+	done
 }
 
 function _backup_item() {
-  local key=$1 dest=$2 spec=$3
-  local src dst
+	local key=$1 dest=$2 spec=$3
+	local src dst
 
-  if [[ "$spec" = *":"* ]]; then
-    src=${spec%:*}
-    dst=${spec#*:}
-  else
-    src=$spec
-    dst=$dest
-  fi
+	if [[ "$spec" = *":"* ]]; then
+		src=${spec%:*}
+		dst=${spec#*:}
+	else
+		src=$spec
+		dst=$dest
+	fi
 
-  src=${~src}
-  dst=${~dst}
+	src=${~src}
+	dst=${~dst}
 
-  if [[ ! -e "$src" && ! -L "$src" ]]; then
-    echo "Пропущено (не найдено): $src"
-    return
-  fi
+	if [[ ! -e "$src" && ! -L "$src" ]]; then
+		echo "Пропущено (не найдено): $src"
+		return
+	fi
 
-  local src_display="$src"
+	local src_display="$src"
 
-  if [[ -d "$src" ]]; then
-    src="$src/"
-  fi
+	if [[ -d "$src" ]]; then
+		src="$src/"
+	fi
 
-  mkdir -p "${dst%/*}" 2>/dev/null
-  cp -Rf "$src" "$dst"
+	mkdir -p "${dst%/*}" 2>/dev/null
+	cp -Rf "$src" "$dst"
 
-  if [[ -d "$dst" && -f "$src_display" ]]; then
-    echo "Скопировано: $src_display -> $dst/${src_display:t}"
-  else
-    echo "Скопировано: $src_display -> $dst"
-  fi
+	if [[ -d "$dst" && -f "$src_display" ]]; then
+		echo "Скопировано: $src_display -> $dst/${src_display:t}"
+	else
+		echo "Скопировано: $src_display -> $dst"
+	fi
 }

@@ -1,6 +1,6 @@
 unload_mySysFile() {
-  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-    cat <<EOF
+	if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+		cat <<EOF
 unload_mySysFile — восстановить конфиги из бэкапа
 
 Доступные компоненты:
@@ -14,6 +14,7 @@ unload_mySysFile — восстановить конфиги из бэкапа
   neovide       - .config/neovide/config.toml
   ideavim       - .ideavimrc
   git           - .gitconfig
+  lazygit       - .config/lazygit/config.yml
   psql          - .config/psql/.psqlrc
   pgcli         - .config/pgcli/config
   mycli         - .config/mycli/.myclirc
@@ -28,88 +29,89 @@ unload_mySysFile — восстановить конфиги из бэкапа
 Пример:
   unload_mySysFile zsh bash или unload_mySysFile all
 EOF
-    return 0
-  fi
+		return 0
+	fi
 
-  local src="~/Documents/For Sys/Backup"
-  src=${~src}
+	local src="~/Documents/For Sys/Backup"
+	src=${~src}
 
-  if [[ ! -d "$src" ]]; then
-    echo "Папка бэкапа не найдена: $src"
-    return 1
-  fi
-  typeset -A items
-  items=(
-    bash           "$src/.bash_profile:~/.bash_profile"
-    zsh            "$src/.zshrc:~/.zshrc"
-    zshf           "$src/.zsh_MyFunctions/:~/.zsh_MyFunctions"
-    vim            "$src/.vimrc:~/.vimrc"
-    nvim           "$src/.config/nvim/:~/.config/nvim"
-    neovide        "$src/.config/neovide/config.toml:~/.config/neovide/config.toml"
-    ideavim        "$src/.ideavimrc:~/.ideavimrc"
-    git            "$src/.gitconfig:~/.gitconfig"
-    psql           "$src/.config/psql/.psqlrc:~/.config/psql/.psqlrc"
-    pgcli          "$src/.config/pgcli/config:~/.config/pgcli/config"
-    mycli          "$src/.config/mycli/.myclirc:~/.config/mycli/.myclirc"
-    ultisnips      "$src/.vim/UltiSnips/:~/.vim/UltiSnips"
-    omz            "$src/.oh-my-zsh/custom/:~/.oh-my-zsh/custom"
-    btop           "$src/.config/btop/btop.conf:~/.config/btop/btop.conf"
-    kitty          "$src/.config/kitty/:~/.config/kitty"
-    alacritty      "$src/.config/alacritty/:~/.config/alacritty"
-    yazi           "$src/.config/yazi/:~/.config/yazi"
-    tmux           "$src/.config/tmux/tmux.conf:~/.config/tmux/tmux.conf"
-    aerospace      "$src/.config/aerospace/aerospace.toml:/.config/aerospace/aerospace.toml"
-    treemd         "$src/.config/treemd/config.toml"
-  )
+	if [[ ! -d "$src" ]]; then
+		echo "Папка бэкапа не найдена: $src"
+		return 1
+	fi
+	typeset -A items
+	items=(
+		bash "$src/.bash_profile:~/.bash_profile"
+		zsh "$src/.zshrc:~/.zshrc"
+		zshf "$src/.zsh_MyFunctions/:~/.zsh_MyFunctions"
+		vim "$src/.vimrc:~/.vimrc"
+		nvim "$src/.config/nvim/:~/.config/nvim"
+		neovide "$src/.config/neovide/config.toml:~/.config/neovide/config.toml"
+		ideavim "$src/.ideavimrc:~/.ideavimrc"
+		git "$src/.gitconfig:~/.gitconfig"
+		lazygit "$src/.config/lazygit/config.yml:~/.config/lazygit/config.yml"
+		psql "$src/.config/psql/.psqlrc:~/.config/psql/.psqlrc"
+		pgcli "$src/.config/pgcli/config:~/.config/pgcli/config"
+		mycli "$src/.config/mycli/.myclirc:~/.config/mycli/.myclirc"
+		ultisnips "$src/.vim/UltiSnips/:~/.vim/UltiSnips"
+		omz "$src/.oh-my-zsh/custom/:~/.oh-my-zsh/custom"
+		btop "$src/.config/btop/btop.conf:~/.config/btop/btop.conf"
+		kitty "$src/.config/kitty/:~/.config/kitty"
+		alacritty "$src/.config/alacritty/:~/.config/alacritty"
+		yazi "$src/.config/yazi/:~/.config/yazi"
+		tmux "$src/.config/tmux/tmux.conf:~/.config/tmux/tmux.conf"
+		aerospace "$src/.config/aerospace/aerospace.toml:/.config/aerospace/aerospace.toml"
+		treemd "$src/.config/treemd/config.toml"
+	)
 
-  if [[ $# -eq 0 ]]; then
-    echo "Использование: unload_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|all]"
-    return 1
-  fi
+	if [[ $# -eq 0 ]]; then
+		echo "Использование: unload_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|all]"
+		return 1
+	fi
 
-  for arg in "$@"; do
-    if [[ $arg = "all" ]]; then
-      for key in "${(k)items[@]}"; do
-        _unload_item "$key" "${items[$key]}"
-      done
-      return
-    fi
+	for arg in "$@"; do
+		if [[ $arg = "all" ]]; then
+			for key in "${(k)items[@]}"; do
+				_unload_item "$key" "${items[$key]}"
+			done
+			return
+		fi
 
-    if [[ -z "${items[$arg]+x}" ]]; then
-      echo "Неизвестный компонент: $arg"
-      continue
-    fi
-    _unload_item "$arg" "${items[$arg]}"
-  done
+		if [[ -z "${items[$arg]+x}" ]]; then
+			echo "Неизвестный компонент: $arg"
+			continue
+		fi
+		_unload_item "$arg" "${items[$arg]}"
+	done
 }
 
 function _unload_item() {
-  local key=$1 spec=$2
-  local src dst
+	local key=$1 spec=$2
+	local src dst
 
-  src=${spec%:*}
-  dst=${spec#*:}
+	src=${spec%:*}
+	dst=${spec#*:}
 
-  src=${~src}
-  dst=${~dst}
+	src=${~src}
+	dst=${~dst}
 
-  if [[ ! -e "$src" && ! -L "$src" ]]; then
-    echo "Пропущено (нет в бэкапе): $src"
-    return
-  fi
+	if [[ ! -e "$src" && ! -L "$src" ]]; then
+		echo "Пропущено (нет в бэкапе): $src"
+		return
+	fi
 
-  local src_display="$src"
+	local src_display="$src"
 
-  if [[ -d "$src" ]]; then
-    src="$src/"
-  fi
+	if [[ -d "$src" ]]; then
+		src="$src/"
+	fi
 
-  mkdir -p "${dst%/*}" 2>/dev/null
-  cp -Rf "$src" "$dst"
+	mkdir -p "${dst%/*}" 2>/dev/null
+	cp -Rf "$src" "$dst"
 
-  if [[ -d "$dst" && -f "$src_display" ]]; then
-    echo "Восстановлено: $src_display -> ${dst%/}/${src_display:t}"
-  else
-    echo "Восстановлено: $src_display -> $dst"
-  fi
+	if [[ -d "$dst" && -f "$src_display" ]]; then
+		echo "Восстановлено: $src_display -> ${dst%/}/${src_display:t}"
+	else
+		echo "Восстановлено: $src_display -> $dst"
+	fi
 }

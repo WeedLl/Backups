@@ -12,6 +12,16 @@ image_quality = 90
 max_width = 600
 max_height = 900
 
+[opener]
+treemd = [
+    { run = 'treemd %s', block = true, desc = "treemd (markdown)" },
+]
+
+[open]
+prepend_rules = [
+    { url = "*.md", use = [ "edit", "treemd" ] },
+]
+
 #Plugins
 [[plugin.prepend_fetchers]]
 url   = "*"
