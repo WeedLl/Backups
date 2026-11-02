@@ -159,6 +159,9 @@ export FPATH="$HOME/.zsh_MyFunctions:$FPATH"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 #_______________________________________________ Дефолтные настройки ______________________________
+#Необходимо для приложений, поддерживающих кастомное расположение конфигов, когда дефолтное не в .config
+export XDG_CONFIG_HOME="$HOME/.config"
+
 export LDFLAGS="-L/opt/homebrew/opt/postgresql@15/lib" #For compilers to find postgresql@15 you may need to set:
 export CPPFLAGS="-I/opt/homebrew/opt/postgresql@15/include"
 
@@ -200,8 +203,6 @@ alias glog='git log --graph'
 alias gbranch='git log --oneline --graph --decorate --all'
 #LazyGit
 alias lg='lazygit'
-#Кастомная директория lazygit для macos
-export XDG_CONFIG_HOME="$HOME/.config"
 
 ## PGCLI
 alias psqlc=pgcli

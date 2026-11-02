@@ -32,6 +32,7 @@
 16. PgAdmin 4 **(brew)**
 17. `pgcli` **(brew)** - Как `psql` только с автокомплитом и подсветкой синтаксиса
 18. MacTex **(brew)**
+19. ADB (android debug bridge) - `android-platform-tools` **(brew)** - для передачи файлов с андроид.
 
 # Программы
 1. Obsidian **(brew)**

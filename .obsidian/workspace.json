@@ -8,33 +8,33 @@
         "type": "tabs",
         "children": [
           {
-            "id": "e0e54d9f224f7c64",
+            "id": "07770caa3f9e7d41",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "09-OS/Python/Python course.md",
+                "file": "08-SYS/Markdown callouts.md",
                 "mode": "preview",
                 "source": true,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "Python course"
+              "title": "Markdown callouts"
             }
           },
           {
-            "id": "105d064b2b193ced",
+            "id": "2ab3fa90ced70f53",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01-DAYS/2026-10-31.md",
-                "mode": "source",
+                "file": "01-DAYS/2026-11-02.md",
+                "mode": "preview",
                 "source": true,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "2026-10-31"
+              "title": "2026-11-02"
             }
           }
         ],
@@ -72,7 +72,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:python/info",
                 "matchingCase": false,
                 "explainSearch": true,
                 "collapseAll": false,
@@ -135,7 +135,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "09-OS/Python/Python course.md",
+                "file": "01-DAYS/2026-11-02.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -178,7 +178,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "01-DAYS/2026-10-31.md",
+                "file": "01-DAYS/2026-11-02.md",
                 "followCursor": true,
                 "showSearch": false,
                 "searchQuery": ""
@@ -200,7 +200,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -219,54 +219,54 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "105d064b2b193ced",
+  "active": "2ab3fa90ced70f53",
   "lastOpenFiles": [
-    "09-OS/Markdown callouts.md",
-    "01-DAYS/2026-10-31.md",
-    "09-OS/Python/Python course.md",
-    "09-OS/UsefullFeature.md",
-    "09-OS/Latex гайд.md",
+    "08-SYS/Markdown callouts.md",
+    "01-DAYS/2026-11-02.md",
+    "01-DAYS/2026-11-01.md",
+    "06-Text/BigNotes/Кто такие Анимешники.md",
+    "08-SYS/Python/Python course.md",
+    "08-SYS/Python/Python courseDS.md",
     "01-DAYS/2026-10-30.md",
     "01-DAYS/2026-10-25.md",
-    "01-DAYS/2026-10-28.md",
-    "09-OS/Python/Ключи от python курса.md",
-    "01-DAYS/00-MergeLog/vault_merge_log_20261028_203033.md",
-    "09-OS/Markdown guid.md",
-    "02-TEMPLATES/Template_DailyNote.md",
-    "02-TEMPLATES/Template_Movie.md",
+    "08-SYS/regex-course.obsidian.md",
+    "08-SYS/Markdown guid.md",
+    "08-SYS/Latex guide.md",
+    "08-SYS/Kitty.md",
+    "08-SYS/Tui/NeoVim.md",
+    "08-SYS/Python/Pip.md",
+    "08-SYS/Tui/LazyGit guide.md",
+    "08-SYS/Alacritty.md",
+    "08-SYS/Tui/Vim.md",
+    "08-SYS/Остальное.md",
+    "08-SYS/Tui/Tmux.md",
+    "08-SYS/Shell/Base_cli_command.md",
+    "08-SYS/SysAdmin/VPN.md",
+    "08-SYS/SysAdmin/Server_Defence.md",
+    "08-SYS/SysAdmin/PVS & PDS.md",
+    "08-SYS/SysAdmin/Proxy.md",
+    "08-SYS/SysAdmin/PostgreSQL.md",
+    "08-SYS/Shell/ZSH/ZSH.md",
+    "08-SYS/Cli",
+    "08-SYS/Tui",
+    "08-SYS/Shell",
+    "08-SYS/Shell/ZSH",
     "01-DAYS/01-To_Work.base",
-    "01-DAYS/2026-10-24.md",
-    "09-OS/zshSkript/index.md",
-    "09-OS/UsefullFeature_1.md",
-    "01-DAYS/2026-10-29.md",
-    "01-DAYS/00-MergeLog.md",
-    "02-TEMPLATES/Template_Accaunt.md",
-    "05-Important/Сколько нужно откладывать.md",
-    "13-Movies/00-WatchList.base",
-    "09-OS/regex-course.obsidian.md",
-    "09-OS/Остальное.md",
-    "00-SORT/Про браузеры.md",
-    "01-DAYS/2026-10-23.md",
-    "05-Important/Accaunts/Mails.md",
-    "01-DAYS/2026-10-21.md",
-    "00-SORT/Games image/20260328_231445.jpg",
-    "00-SORT/Games image/i.jpeg",
-    "00-SORT/Games image/Screenshot_20260302_145709_YouTube.jpg",
-    "00-SORT/Games image/Screenshot_20260330_202937_YouTube.jpg",
-    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_142857_YouTube.jpg",
-    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_143028_YouTube.jpg",
-    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_143116_YouTube.jpg",
-    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_143040_YouTube.jpg",
-    "16-Games/SnowRunner/00-CASHE/Screenshot_20260519_143032_YouTube.jpg",
-    "16-Games/SnowRunner/00-CASHE",
-    "16-Games/SnowRunner",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4.png",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4 Б.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3 Б.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Skylark mk2.seria",
-    "16-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Shmel'.seria",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4.seria",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4.png",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4 Б.seria",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk4 Б.png",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3.seria",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3.png",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3 Б.seria",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Yars Mk3 Б.png",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Skylark mk2.seria",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Skylark mk2.png",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Shmel'.png",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Sevastopol mk1.png",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Puss.png",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Meteor Mk31.png",
+    "15-Games/Highfleet/00-CASHE/Higfleet Ships 07-09-26 19-10/Lightning mk2.png",
     "06-Text/Joke && Phrases.canvas",
     "13-Movies/13.00-Kanvas.canvas",
     "Без названия.canvas"

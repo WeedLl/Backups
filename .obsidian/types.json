@@ -3,6 +3,8 @@
     "aliases": "aliases",
     "cssclasses": "multitext",
     "tags": "tags",
-    "time": "datetime"
+    "time": "datetime",
+    "Todo": "checkbox",
+    "Changes before merge": "checkbox"
   }
 }

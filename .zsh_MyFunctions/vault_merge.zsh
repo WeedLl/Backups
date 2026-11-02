@@ -100,9 +100,9 @@ _vm_is_binary() {
 	ext=${(L)ext}
 	case "$ext" in
 	png | jpg | jpeg | gif | webp | avif | heic | heif | ico | bmp | tif | tiff | psd | raw | cr2 | \
-	    pdf | zip | gz | tgz | bz2 | xz | rar | 7z | tar | \
-	    mp3 | m4a | wav | flac | aac | ogg | opus | mp4 | mov | mkv | avi | webm | m4v | \
-	    docx | xlsx | pptx | odt | ods | epub | dmg | iso | exe | bin) return 0 ;;
+		    pdf | zip | gz | tgz | bz2 | xz | rar | 7z | tar | \
+		    mp3 | m4a | wav | flac | aac | ogg | opus | mp4 | mov | mkv | avi | webm | m4v | \
+		    docx | xlsx | pptx | odt | ods | epub | dmg | iso | exe | bin) return 0 ;;
 	esac
 	return 1
 }
@@ -1114,7 +1114,7 @@ vault_merge() {
 		# фронтматтер (YAML для Obsidian)
 		print -r -- "---"
 		print -r -- "tags:"
-		print -r -- "- merge_log"
+		print -r -- "- merge/merge_log"
 		print -r -- "time: $t_iso"
 		print -r -- "merge_bases:"
 		print -r -- "  - $base_name"

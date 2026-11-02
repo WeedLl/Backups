@@ -1,5 +1,6 @@
 {
   "snapToObjects": true,
   "snapToGrid": true,
-  "newFileLocation": "current"
+  "newFileLocation": "folder",
+  "newFileFolderPath": "00-SORT"
 }
