@@ -1,0 +1,74 @@
+{"text":"/help","ts":1793643591390}
+{"text":"/provider","ts":1793644337096}
+{"text":"/auth status","ts":1793643712364,"project":"/Users/weed/Documents/DSH"}
+{"text":"/provider","ts":1793644422746,"project":"/Users/weed/Documents/DSH"}
+{"text":"/clear","ts":1793644458978,"project":"/Users/weed/Documents/DSH"}
+{"text":"/help","ts":1793644784648,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793644810167,"project":"/Users/weed/Documents/DSH"}
+{"text":"/help","ts":1793644854859,"project":"/Users/weed/Documents/DSH"}
+{"text":"/tree","ts":1793644859929,"project":"/Users/weed/Documents/DSH"}
+{"text":"Я перешел с dsh web на dsh tui (https://github.com/ccch1mneyyy/dsh-TUI/tree/main).\nНаучи меня им пользоваться.\nПлагин установлен, ключ добавлен, но я ничего не понимаю, все не привычно.\n\nДля начала, нам нужно разобраться в настройках данного плагина. Что здесь стоит поменять, настроить?\nА также возможно ли сделать здесь аналог \"vim-motion\".\n\nДай задачу субагенту написать инструкцию по использованию в формате .md с соответствующей разметкой и оформлением.\nПусть он сделает акцент на сравнении с использованием web версии, чтобы мне было понятнее.\nПосле этого, пусть скажет какие мои плагины из web можно использовать в tui.","ts":1793645108563,"project":"/Users/weed/Documents/DSH"}
+{"text":"/tree","ts":1793645128768,"project":"/Users/weed/Documents/DSH"}
+{"text":"/help","ts":1793645142463,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793645150012,"project":"/Users/weed/Documents/DSH"}
+{"text":"/help","ts":1793645184820,"project":"/Users/weed/Documents/DSH"}
+{"text":"/tree","ts":1793645437455,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793645451767,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agents","ts":1793645485389,"project":"/Users/weed/Documents/DSH"}
+{"text":"/tree","ts":1793645547867,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agents","ts":1793645622007,"project":"/Users/weed/Documents/DSH"}
+{"text":"/tree","ts":1793645627349,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agents","ts":1793645723417,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793645739535,"project":"/Users/weed/Documents/DSH"}
+{"text":"/settings","ts":1793646557289,"project":"/Users/weed/Documents/DSH"}
+{"text":"/vim","ts":1793646690821,"project":"/Users/weed/Documents/DSH"}
+{"text":"/cost","ts":1793646816310,"project":"/Users/weed/Documents/DSH"}
+{"text":"/settings","ts":1793646838066,"project":"/Users/weed/Documents/DSH"}
+{"text":"/balance","ts":1793646915588,"project":"/Users/weed/Documents/DSH"}
+{"text":"/settings","ts":1793646921702,"project":"/Users/weed/Documents/DSH"}
+{"text":"/skills","ts":1793647075094,"project":"/Users/weed/Documents/DSH"}
+{"text":"/skills fact-check","ts":1793647092943,"project":"/Users/weed/Documents/DSH"}
+{"text":"/skills /fact-check","ts":1793647106067,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793647267990}
+{"text":"1. Что будет если я выйду из dsh tui, будет ли жить сессия\n2. Как закрыть вообще все что связанно с dsh, все процессы\n3. Как удалять сессии из tui\n\n4. Дай мне полный список плагинов всех профилей, с указанием какие где установлены. Сохрани в отдельный плагин .md\n5. Какие файлы мне нужно сохранить (для dsh web и dsh tui), чтобы при установке на новой машине у меня остались мои\nнастройки? Подтянутся ли с этими настройками плагины?","ts":1793647506713,"project":"/Users/weed/Documents/DSH"}
+{"text":"/skills","ts":1793647542267,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793647805698,"project":"/Users/weed/Documents/DSH"}
+{"text":"У меня телевизор xiaomi MiTv-MSSP1\nОн очень жутко тормозит, лагает, у него нет vpn, не скачиваются приложения из google play (дает вайти в аккаунт, но не прогружает страницы, то же самое во всех других приложениях).\nМожешь ли ты помочь с его прошивкой? Нужно выпилить из него все не нужное.\nСкажи, что тебе нужно узнать об этом телевизоре и как.\nЧто нам потребуется.\nЧто мы можем с ним сделать?\nСделай план и предложи. Не стесняйся спрашивать","ts":1793648013957,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793648032952,"project":"/Users/weed/Documents/DSH"}
+{"text":"Почему мы ничего не копируем из ~/.dsh-tui?","ts":1793648321710,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793648333040,"project":"/Users/weed/Documents/DSH"}
+{"text":"1. наклейку не видно,\n2. IP.5925 release-keys\n3. он меня в целом раздражает\n4. Мне нужен vpn на телевизоре, yotube, возможность шерить экран с мака/самсунга, также в ютубе \n5. Роутер хороший, но не хочу на нем накатывать пока что\n6. Есть подписка на vpn, пользуюсь приложением Hap\n7. \"Что-то пошло не так. Проверьте подключение к сети Wi-Fi...\"\n8. как узнать его ip\n6.","ts":1793648983328,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793649030783,"project":"/Users/weed/Documents/DSH"}
+{"text":"Сделай мне zsh функцию (пример моих функций ты можешь посмотреть в ~/.zsh_myFynction, а их подключение в .zshrc).\nОна должна принимать два флага и путь: -b (bckup), -u (unload), path\nесли флаг -b - она должна сохранить настройки всех профилей в указанный адрес, отдельно проверить наличие tui, если он есть - и его тоже\nесли флаг -u - она должна взять указанные бэкапы и разгрузить их.\n\nСлушаю твои предложения и уточнения по поводу функции. Не забудь сам проверить ее на валидность данных и файлов, стрессоустойчивость","ts":1793649319199,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793649322458,"project":"/Users/weed/Documents/DSH"}
+{"text":"нажал разрешить","ts":1793649537962,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793649561508,"project":"/Users/weed/Documents/DSH"}
+{"text":"1. добавь --with-sessions\n2. да\n3. Не очень понял что это значит\n4. Формат - дерево\n5. Имя dsh_backup\n6. Не очень понял","ts":1793649735394,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793649873696,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1793649922029,"project":"/Users/weed/Documents/DSH"}
+{"text":"/provider","ts":1793649968496,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1793649976448,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793650007894,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1793650031757,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793650093088,"project":"/Users/weed/Documents/DSH"}
+{"text":"почему функция вышла такой большой?","ts":1793650538692,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793650547297,"project":"/Users/weed/Documents/DSH"}
+{"text":"Сейчас пойду скачивать Happ\n1. Стриминги - оставь только кинопоиск\n2. Лончер - сделай чтобы было максимально просто, быстро, минималистично","ts":1793650729783,"project":"/Users/weed/Documents/DSH"}
+{"text":"happ скачал","ts":1793650791887,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793650891701,"project":"/Users/weed/Documents/DSH"}
+{"text":"happ на телефоне выдает ошибку при сканировании qr - \"Телевизор не подключен к wi-fi сети или не удалось определить его ip\"\nЧерез вэб выдает таймаут","ts":1793651479471,"project":"/Users/weed/Documents/DSH"}
+{"text":"подписка https://sub.b2horizon.app/cnBFLQ2St1ZrRDhA","ts":1793652150169,"project":"/Users/weed/Documents/DSH"}
+{"text":"нажал","ts":1793652194780,"project":"/Users/weed/Documents/DSH"}
+{"text":"/model","ts":1793652349116,"project":"/Users/weed/Documents/DSH"}
+{"text":"я уже пробовал через браузер, давай дальше сам","ts":1793652366231,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793652378602,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1793652389904,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1793652395207,"project":"/Users/weed/Documents/DSH"}
+{"text":"Зашел в бота впн, попросил его еще раз скинуть инструкцию для андроид, вот что он дал\n🤖 Настройка VPN на Android\n\n1. Установите Horizon Connect из Play Market:\n🔗 https://play.google.com/store/apps/details?id=com.horizon.connect\n\n2. Скопируйте вашу конфигурацию:\n\n🔑 Подписка #162291\nНажмите на ссылку, чтобы скопировать её:\nhttps://sub.b2horizon.click/cnBFLQ2St1ZrRDhA\n\n3. Откройте приложение и вставьте ссылку на экране входа.\n\n4. Нажмите кнопку подключения.\n\n💡 Нажмите «⚡ Добавить в Horizon Connect» ниже.\n\nАльтернатива — Happ:\n🔗 https://play.google.com/store/apps/details?id=com.happproxy\nAPK: https://github.com/Happ-proxy/happ-android/releases/latest/download/Happ.apk\nВ Happ: нажмите \"+\" → \"Добавить из буфера\"","ts":1793653364944,"project":"/Users/weed/Documents/DSH"}
+{"text":"/tree","ts":1793653829212,"project":"/Users/weed/Documents/DSH"}
+{"text":"/balance","ts":1793654067805,"project":"/Users/weed/Documents/DSH"}
+{"text":"1. Убери с него все лишнее что осталось\n2. Предложи что еще можно с него стереть\n3. В этом лаунчере почему-то странно мигает обводка вокруг выбранного приложения. Нужно исправить\n\n4. Перечитай все что мы сделали. Найди все, что ты устанавливал или менял на моем пк. Выведи списком с пояснениями.\n5. Можем ли мы сделать полный кастом этого тв? Сделать свою оболочку или что-то вроде того","ts":1793654559655,"project":"/Users/weed/Documents/DSH"}
+{"text":"/balance","ts":1793656177571,"project":"/Users/weed/Documents/DSH"}
+{"text":"/vim","ts":1793656463396,"project":"/Users/weed/Documents/DSH"}
+{"text":"1. стираем assistant, setupwraith, wallpaperbackup (если не сломаем ничего этим), пустую подписку happ\n2. стираем zbar, твои изменения pip и global_venv, твои /tmp, установщик happ из downloads","ts":1793656652225,"project":"/Users/weed/Documents/DSH"}
+{"text":"телик включил, продолжай\nи еще, можешь как-то вывести в верхний статус бар телика впн (когда он включен)?","ts":1793656802073,"project":"/Users/weed/Documents/DSH"}

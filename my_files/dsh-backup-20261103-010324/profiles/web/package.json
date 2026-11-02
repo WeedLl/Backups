@@ -1,0 +1,32 @@
+{
+  "name": "dsh-profile-web",
+  "private": true,
+  "dependencies": {
+    "@geecraft23/dsh-token-usage": "~0.3.0",
+    "dsh-at-file": "https://github.com/omdsh-dev/dsh-at-file/archive/refs/tags/v0.6.3.tar.gz",
+    "dsh-composer-markdown": "^0.1.4",
+    "dsh-context": "0.78.2",
+    "dsh-cost-meter": "1.9.46",
+    "dsh-ctl": "^0.1.1",
+    "dsh-fact-check": "github:7starsseeker/dsh-fact-check",
+    "dsh-session-recycle-bin": "^0.5.0",
+    "dshmarket": "1.73.6"
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-web-app",
+        "dsh-ctl",
+        "@geecraft23/dsh-token-usage",
+        "dsh-at-file",
+        "dsh-fact-check",
+        "dsh-composer-markdown",
+        "dsh-session-recycle-bin",
+        "dshmarket",
+        "dsh-context",
+        "dsh-cost-meter"
+      ]
+    }
+  }
+}

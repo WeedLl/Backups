@@ -1,4 +1,6 @@
 # Для работы
+>[!WARNING] У меня стоит тулкит разработки от Apple
+> Некоторые зависимости могли браться оттуда.
 1. HomeBrew - менеджер пакетов
 2. `git` **(brew)**
 3. `lazygit` **(brew)**
@@ -27,7 +29,7 @@
 11. `tmux` **(brew)**
 12. AeroSpace **(brew)** - WM для macOS
 13. Raycast - нормальная замена spotlight!
-14. Fork - GUI для `git`
+14. DSH *(web profile)* + [`dsh-tui`](https://github.com/ccch1mneyyy/dsh-TUI/tree/main)
 15. PostgreSQL **(brew)**
 16. PgAdmin 4 **(brew)**
 17. `pgcli` **(brew)** - Как `psql` только с автокомплитом и подсветкой синтаксиса

@@ -1,0 +1,17 @@
+{
+  "name": "dsh-profile-tui",
+  "private": true,
+  "dependencies": {
+    "@deepseek-harness-tui/dsh-tui": "^0.18.0",
+    "dsh-fact-check": "^1.5.1"
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-harness-tui/dsh-tui",
+        "dsh-fact-check"
+      ]
+    }
+  }
+}

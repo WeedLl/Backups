@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "values": {
+    "lang": "en",
+    "statusBar": {
+      "compact": false,
+      "tokens": true,
+      "gitBranch": true,
+      "sessionTitle": false,
+      "mode": true,
+      "tps": true
+    },
+    "turnUsageRow": true,
+    "promptSessionLabel": true,
+    "toolBackground": "subtle",
+    "foldTerminalCommand": true,
+    "sidePanel": {
+      "open": false,
+      "splitEnabled": true,
+      "panels": "todo,jobs,agents,info,trajectory,workspace,btw,companion"
+    },
+    "taskNotifications": "always",
+    "mathRendering": "auto"
+  },
+  "imported": {
+    "from": "none",
+    "at": 1793643319763
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "models": [
+    {
+      "provider": "deepseek-official",
+      "id": "deepseek-v4-pro"
+    },
+    {
+      "provider": "deepseek-official",
+      "id": "deepseek-flash"
+    }
+  ]
+}
