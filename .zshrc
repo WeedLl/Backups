@@ -177,8 +177,8 @@ RPS1="%T"
 export RPS1
 
 #_______________________________________________ SmartMooving ______________________________________
-alias Dpython='cd ~/Documents/For\ Sys/Python'
-alias Dbackup='cd ~/Documents/For\ Sys/Backup'
+alias Dpython='cd ~/Documents/ForSys/Python'
+alias Dbackup='cd ~/Documents/ForSys/Backup'
 
 #_______________________________________________ ShortCat __________________________________________
 ## Vim and nVim

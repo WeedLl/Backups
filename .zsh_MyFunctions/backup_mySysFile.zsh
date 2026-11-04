@@ -33,7 +33,7 @@ EOF
 		return 0
 	fi
 
-	local dest="~/Documents/For Sys/Backup"
+	local dest="~/Documents/ForSys/Backup"
 	dest=${~dest}
 	mkdir -p "$dest"
 

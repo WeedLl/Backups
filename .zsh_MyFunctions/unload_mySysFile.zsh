@@ -32,7 +32,7 @@ EOF
 		return 0
 	fi
 
-	local src="~/Documents/For Sys/Backup"
+	local src="~/Documents/ForSys/Backup"
 	src=${~src}
 
 	if [[ ! -d "$src" ]]; then

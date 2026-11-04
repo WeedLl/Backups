@@ -42,7 +42,7 @@ EOF
 	fi
 
 	local vimdiff_McV="/opt/homebrew/bin/nvim"
-	local dest="~/Documents/For Sys/Backup"
+	local dest="~/Documents/ForSys/Backup"
 	dest=${~dest}
 
 	if [[ ! -d "$dest" ]]; then
