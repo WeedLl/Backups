@@ -14,6 +14,9 @@ importers:
       dsh-fact-check:
         specifier: ^1.5.1
         version: 1.5.1
+      dsh-session-alerts:
+        specifier: file:/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin
+        version: file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin
 
 packages:
 
@@ -391,6 +394,13 @@ packages:
   dsh-fact-check@1.5.1:
     resolution: {integrity: sha512-9r9zNEkjkw6gGqpivfSJO293ug6Qgnb+fzFRYOiVMRrHK4ZIFSkH+Wjzmd2J2iF9chcCTAkjpotk3as4/0zadA==}
     engines: {node: '>=18'}
+
+  dsh-session-alerts@file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin:
+    resolution: {directory: ../../../Documents/Ai/DSH/dsh-session-alerts-plagin, type: directory}
+    engines: {node: '>=22'}
+    peerDependencies:
+      '@deepseek-ai/cordis': ^4.0.5
+      '@deepseek-ai/schemastery': ^3.18.5
 
   dsh-working-activity@0.5.1:
     resolution: {integrity: sha512-AT25vt0tkZeGtdw64eONZchmaiAMMlBH1YuTVXpjLsjocjcowMTMQuDDebzslVQzcVFa+2VLaY/loEghq8lUDQ==}
@@ -873,6 +883,8 @@ snapshots:
   diff@8.0.4: {}
 
   dsh-fact-check@1.5.1: {}
+
+  dsh-session-alerts@file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin: {}
 
   dsh-working-activity@0.5.1(react@19.3.1):
     dependencies:

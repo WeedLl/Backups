@@ -3,14 +3,16 @@
   "private": true,
   "dependencies": {
     "@deepseek-harness-tui/dsh-tui": "^0.18.0",
-    "dsh-fact-check": "^1.5.1"
+    "dsh-fact-check": "^1.5.1",
+    "dsh-session-alerts": "file:/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin"
   },
   "dsh": {
     "profile": {
       "bundles": [
         "@deepseek-ai/dsh-base",
         "@deepseek-harness-tui/dsh-tui",
-        "dsh-fact-check"
+        "dsh-fact-check",
+        "dsh-session-alerts"
       ]
     }
   }

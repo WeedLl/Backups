@@ -1,11 +1,11 @@
 format: dsh-backup/1
-created: 2026-11-02T22:03:24Z
-host: MacBook-Pro--Weed.local
+created: 2026-11-04T19:38:10Z
+host: MacBookPro
 user: weed
 dsh: 0.2.0-rc.2
 dsh-tui: 0.18.0
-profiles: headless tui web wed
-profile-files: 17
+profiles: headless tui web
+profile-files: 15
 tui-state-files: 13
 tui-dir: present
 sessions: 0

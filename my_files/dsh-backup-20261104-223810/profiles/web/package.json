@@ -9,6 +9,7 @@
     "dsh-cost-meter": "1.9.46",
     "dsh-ctl": "^0.1.1",
     "dsh-fact-check": "github:7starsseeker/dsh-fact-check",
+    "dsh-session-alerts": "file:/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin",
     "dsh-session-recycle-bin": "^0.5.0",
     "dshmarket": "1.73.6"
   },
@@ -25,7 +26,8 @@
         "dsh-session-recycle-bin",
         "dshmarket",
         "dsh-context",
-        "dsh-cost-meter"
+        "dsh-cost-meter",
+        "dsh-session-alerts"
       ]
     }
   }

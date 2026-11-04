@@ -8,7 +8,10 @@
       "gitBranch": true,
       "sessionTitle": false,
       "mode": true,
-      "tps": true
+      "tps": true,
+      "trajectory": false,
+      "pluginFieldsOrder": "*",
+      "cwd": false
     },
     "turnUsageRow": true,
     "promptSessionLabel": true,
@@ -20,7 +23,16 @@
       "panels": "todo,jobs,agents,info,trajectory,workspace,btw,companion"
     },
     "taskNotifications": "always",
-    "mathRendering": "auto"
+    "mathRendering": "auto",
+    "effortDefault": "max",
+    "notificationMethod": "auto",
+    "scrollGutter": "timeline",
+    "pageMargin": "normal",
+    "companion": {
+      "skin": "deepy"
+    },
+    "thinkingFold": "preview",
+    "codeFrameStyle": "full"
   },
   "imported": {
     "from": "none",

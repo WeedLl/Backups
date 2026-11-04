@@ -1,0 +1,34 @@
+# dsh-session-alerts bundle patch: mount the plugin itself into the profile
+# composition tree.
+#
+# `dsh plugin --profile <name> add file:<path>` pnpm-installs this package into
+# the profile, and the CLI's reconcile step applies this patch list because
+# package.json declares `dsh.bundle.patch`. At boot, app-boot applies every
+# bundle's patch list in bundle order; this insert mounts the session-alerts
+# row — no manual configuration is needed.
+#
+# The config block below lists every knob at its default value. To tune a
+# value, override this row's config by id in the profile's own
+# cordis.patch.yml user layer — do NOT insert a second same-id row.
+- insert:
+    - id: session-alerts
+      name: 'dsh-session-alerts'
+      config:
+        enabled: true
+        onFinish: true
+        onError: true
+        onApproval: true
+        onQuestion: true
+        onPlanReview: true
+        notifySubagentTurns: false
+        settleMs: 1500
+        debounceMs: 10000
+        maxPerMinute: 12
+        sound: 'Glass'
+        soundOnFinish: true
+        soundOnInterrupt: false
+        soundOnApproval: true
+        soundOnQuestion: true
+        titlePrefix: 'DSH'
+        activate: ''
+        lang: 'ru'

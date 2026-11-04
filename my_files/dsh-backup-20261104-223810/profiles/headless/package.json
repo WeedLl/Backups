@@ -1,0 +1,16 @@
+{
+  "name": "dsh-profile-headless",
+  "private": true,
+  "dependencies": {
+    "dsh-session-alerts": "file:/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin"
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-headless",
+        "dsh-session-alerts"
+      ]
+    }
+  }
+}

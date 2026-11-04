@@ -1,0 +1,26 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: false
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      dsh-session-alerts:
+        specifier: file:/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin
+        version: file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin
+
+packages:
+
+  dsh-session-alerts@file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin:
+    resolution: {directory: ../../../Documents/Ai/DSH/dsh-session-alerts-plagin, type: directory}
+    engines: {node: '>=22'}
+    peerDependencies:
+      '@deepseek-ai/cordis': ^4.0.5
+      '@deepseek-ai/schemastery': ^3.18.5
+
+snapshots:
+
+  dsh-session-alerts@file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin: {}
