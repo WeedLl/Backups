@@ -1,0 +1,41 @@
+{
+  "name": "dsh-session-delete",
+  "version": "0.1.0",
+  "description": "Удаление сохранённых сессий dsh-TUI через модальный диалог: сессия, её подсессии и все «хвосты» в state-файлах.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "scene.js",
+    "session-ops.js",
+    "sweep.js",
+    "tree.js",
+    "strings.js",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": "^22.19 || >=24"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-tui",
+    "dsh-plugin",
+    "session",
+    "delete"
+  ],
+  "license": "MIT"
+}

@@ -10,19 +10,34 @@ importers:
     dependencies:
       '@deepseek-harness-tui/dsh-tui':
         specifier: ^0.18.0
-        version: 0.18.0
+        version: 0.18.0(@deepseek-ai/schemastery@3.19.0)
       dsh-fact-check:
-        specifier: ^1.5.1
-        version: 1.5.1
+        specifier: 1.5.2
+        version: 1.5.2
       dsh-session-alerts:
         specifier: file:/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin
-        version: file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin
+        version: file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin(@deepseek-ai/schemastery@3.19.0)
+      dsh-session-delete:
+        specifier: file:/Users/weed/Documents/Ai/DSH/dsh-session-delete-plagin
+        version: file:../../../Documents/Ai/DSH/dsh-session-delete-plagin
+      dsh-tui-pkg:
+        specifier: file:/Users/weed/Documents/Ai/DSH/dsh-tui-pkg-ru
+        version: file:../../../Documents/Ai/DSH/dsh-tui-pkg-ru(@deepseek-harness-tui/dsh-tui@0.18.0(@deepseek-ai/schemastery@3.19.0))
+      dsh-tui-workspace-sidebar:
+        specifier: 0.1.3
+        version: 0.1.3
 
 packages:
 
   '@alcalzone/ansi-tokenize@0.3.1':
     resolution: {integrity: sha512-cUD0PT0YX+rImRhfn7BfMRduP/tX/Zqt/N0dHlAyn2RlcJssCb5KsCJkhln61eh9vuJDkH8wKn3L8zJzzWXPFg==}
     engines: {node: '>=18'}
+
+  '@deepseek-ai/cosmokit@1.9.0':
+    resolution: {integrity: sha512-5O1S53mZiJyZYcvxxD0Qv1EY7qFPSxbGyD8CbVK6gw7W9FvcXZj2YIX1ZkOqyQQ3Xt2rFkZDHJv0+V3Zmmp8CA==}
+
+  '@deepseek-ai/schemastery@3.19.0':
+    resolution: {integrity: sha512-bDXoYQa7ghAhmdYD5VPlzKxEzJV/aKkz5l4V5h1u06z8GAPN1ROewSjvR9WiXhpa52E9fng8lpH5QdCRIQgnyQ==}
 
   '@deepseek-harness-tui/dsh-tui@0.18.0':
     resolution: {integrity: sha512-3LMtBYYR3uyW1mx4CsqS13w7k7+YJ7u6/DefpxySbftnyzJOLSKM4I/OYwIK5hvom0P2n2OPsHt7HI42ENbrgg==}
@@ -322,6 +337,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
@@ -391,8 +409,8 @@ packages:
     resolution: {integrity: sha512-DPi0FmjiSU5EvQV0++GFDOJ9ASQUVFh5kD+OzOnYdi7n3Wpm9hWWGfB/O2blfHcMVTL5WkQXSnRiK9makhrcnw==}
     engines: {node: '>=0.3.1'}
 
-  dsh-fact-check@1.5.1:
-    resolution: {integrity: sha512-9r9zNEkjkw6gGqpivfSJO293ug6Qgnb+fzFRYOiVMRrHK4ZIFSkH+Wjzmd2J2iF9chcCTAkjpotk3as4/0zadA==}
+  dsh-fact-check@1.5.2:
+    resolution: {integrity: sha512-Ylum1k0vLYsHfS8x4YL+SgxAmjX+OCYhb5BjI38sS17lO5hgt07bMc1vQwCjCgPREYekoRtw0PzjY//GDvqeFA==}
     engines: {node: '>=18'}
 
   dsh-session-alerts@file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin:
@@ -401,6 +419,26 @@ packages:
     peerDependencies:
       '@deepseek-ai/cordis': ^4.0.5
       '@deepseek-ai/schemastery': ^3.18.5
+
+  dsh-session-delete@file:../../../Documents/Ai/DSH/dsh-session-delete-plagin:
+    resolution: {directory: ../../../Documents/Ai/DSH/dsh-session-delete-plagin, type: directory}
+    engines: {node: ^22.19 || >=24}
+
+  dsh-tui-pkg@file:../../../Documents/Ai/DSH/dsh-tui-pkg-ru:
+    resolution: {directory: ../../../Documents/Ai/DSH/dsh-tui-pkg-ru, type: directory}
+    engines: {node: ^22.19 || >=24}
+    peerDependencies:
+      '@deepseek-ai/cordis': ^4.0.1
+      '@deepseek-harness-tui/dsh-tui': '>=0.9.0'
+    peerDependenciesMeta:
+      '@deepseek-ai/cordis':
+        optional: true
+      '@deepseek-harness-tui/dsh-tui':
+        optional: true
+
+  dsh-tui-workspace-sidebar@0.1.3:
+    resolution: {integrity: sha512-4xNyHtY/aykUtf443gi3Xlbr7Kckr7llaU6kAtqZcKI43pBWKaY3o3JkM0sWtGox9JMcSJMWdr3HXyAoTOwSKA==}
+    engines: {node: ^22.19 || >=24}
 
   dsh-working-activity@0.5.1:
     resolution: {integrity: sha512-AT25vt0tkZeGtdw64eONZchmaiAMMlBH1YuTVXpjLsjocjcowMTMQuDDebzslVQzcVFa+2VLaY/loEghq8lUDQ==}
@@ -665,7 +703,14 @@ snapshots:
       ansi-styles: 6.2.3
       is-fullwidth-code-point: 5.1.0
 
-  '@deepseek-harness-tui/dsh-tui@0.18.0':
+  '@deepseek-ai/cosmokit@1.9.0': {}
+
+  '@deepseek-ai/schemastery@3.19.0':
+    dependencies:
+      '@deepseek-ai/cosmokit': 1.9.0
+      '@standard-schema/spec': 1.1.0
+
+  '@deepseek-harness-tui/dsh-tui@0.18.0(@deepseek-ai/schemastery@3.19.0)':
     dependencies:
       '@alcalzone/ansi-tokenize': 0.3.1
       auto-bind: 5.0.1
@@ -675,7 +720,7 @@ snapshots:
       cli-highlight: 2.1.11
       code-excerpt: 4.0.0
       diff: 8.0.4
-      dsh-working-activity: 0.5.1(react@19.3.1)
+      dsh-working-activity: 0.5.1(@deepseek-ai/schemastery@3.19.0)(react@19.3.1)
       emoji-regex: 11.0.0
       figures: 6.1.0
       get-east-asian-width: 1.7.0
@@ -699,6 +744,7 @@ snapshots:
       yaml: 2.9.1
       zod: 4.6.7
     optionalDependencies:
+      '@deepseek-ai/schemastery': 3.19.0
       sharp: 0.35.5
     transitivePeerDependencies:
       - '@deepseek-ai/dsh-client-ui-conversation'
@@ -823,6 +869,8 @@ snapshots:
   '@img/sharp-win32-x64@0.35.5':
     optional: true
 
+  '@standard-schema/spec@1.1.0': {}
+
   ansi-regex@5.0.1: {}
 
   ansi-regex@6.5.0: {}
@@ -882,12 +930,25 @@ snapshots:
 
   diff@8.0.4: {}
 
-  dsh-fact-check@1.5.1: {}
+  dsh-fact-check@1.5.2: {}
 
-  dsh-session-alerts@file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin: {}
-
-  dsh-working-activity@0.5.1(react@19.3.1):
+  dsh-session-alerts@file:../../../Documents/Ai/DSH/dsh-session-alerts-plagin(@deepseek-ai/schemastery@3.19.0):
     dependencies:
+      '@deepseek-ai/schemastery': 3.19.0
+
+  dsh-session-delete@file:../../../Documents/Ai/DSH/dsh-session-delete-plagin: {}
+
+  dsh-tui-pkg@file:../../../Documents/Ai/DSH/dsh-tui-pkg-ru(@deepseek-harness-tui/dsh-tui@0.18.0(@deepseek-ai/schemastery@3.19.0)):
+    optionalDependencies:
+      '@deepseek-harness-tui/dsh-tui': 0.18.0(@deepseek-ai/schemastery@3.19.0)
+
+  dsh-tui-workspace-sidebar@0.1.3:
+    dependencies:
+      '@deepseek-ai/schemastery': 3.19.0
+
+  dsh-working-activity@0.5.1(@deepseek-ai/schemastery@3.19.0)(react@19.3.1):
+    dependencies:
+      '@deepseek-ai/schemastery': 3.19.0
       zod: 4.6.7
     optionalDependencies:
       react: 19.3.1

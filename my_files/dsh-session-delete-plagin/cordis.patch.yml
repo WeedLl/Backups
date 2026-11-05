@@ -1,0 +1,15 @@
+# dsh-session-delete bundle patch: монтирует сам плагин в дерево композиции
+# профиля. `dsh plugin --profile <name> add file:<path>` ставит пакет в
+# профиль, а reconcile CLI применяет этот список, потому что package.json
+# объявляет `dsh.bundle.patch`. При загрузке app-boot применяет patch-список
+# каждого bundle'а в порядке bundle'ов.
+#
+# Блок config перечисляет все настройки со значениями по умолчанию. Менять
+# значения — переопределением этой строки по id в пользовательском слое
+# профиля (~/.dsh/profiles/tui/cordis.patch.yml), НЕ второй строкой с тем же id.
+- insert:
+    - id: session-delete
+      name: dsh-session-delete
+      config:
+        sweep: true
+        backup: true
