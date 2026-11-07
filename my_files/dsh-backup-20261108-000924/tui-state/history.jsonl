@@ -188,3 +188,39 @@
 {"text":"/bg","ts":1793911149931,"project":"/Users/weed/Documents/DSH"}
 {"text":"/session-delete","ts":1793911158471,"project":"/Users/weed/Documents/DSH"}
 {"text":"/agentview","ts":1793911171210,"project":"/Users/weed/Documents/DSH"}
+{"text":"/bg","ts":1794050462039}
+{"text":"/skills","ts":1794050477194,"project":"/Users/weed/Documents/DSH"}
+{"text":"/model","ts":1794050504500,"project":"/Users/weed/Documents/DSH"}
+{"text":"Я хочу выбрать себе часы casio, нашел несколько интересных моделей, но не могу понять, чем они различаются.\nМне нужно, чтобы ты изучил данные ниже ссылки и подробно сопоставил данные часы. \nОбязательные три секции, должны идти рядом:\n1. Главные различия\n2. Общие различия\n3. Остальные различия\nМожешь добавить пункты, если посчитаешь нужным.\nОтвет должен быть составлен в файле по критериям, изложенным в @00-view_of_answer.md \nВот ссылки на часы в однмо из магазинов. Это базовая информация, чтобы ты понял, что за модели, но на сайте могут быть ошибки, так что тебе необходимо найти более подробную\nинформацию в интерне:\nhttps://www.alltime.ru/watch/casio/A-164WA-1/12493/\nhttps://www.alltime.ru/watch/casio/A159WA-N1/591634/\nhttps://www.alltime.ru/watch/casio/W-59-1/95282/\nhttps://www.alltime.ru/watch/casio/W-217H-3A/682726/\nhttps://www.alltime.ru/watch/casio/F-91WM-3A/345158/","ts":1794050790735,"project":"/Users/weed/Documents/DSH"}
+{"text":"/bg","ts":1794051195609,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794051202880,"project":"/Users/weed/Documents/DSH"}
+{"text":"Создай попку img и добавь туда фото каждых часов, название фото должно соответствовать названию часов","ts":1794054512938,"project":"/Users/weed/Documents/DSH"}
+{"text":"Вставлять не нужно, но найди фото разрешением по болье (найди в тех цветах, кторые в магазине AllTime)","ts":1794054645739,"project":"/Users/weed/Documents/DSH"}
+{"text":"/model","ts":1794065638979,"project":"/Users/weed/Documents/DSH"}
+{"text":"/settings","ts":1794065643880,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1794065941363,"project":"/Users/weed/Documents/DSH"}
+{"text":"Вот написанный курс по VPN ( @VPN_RF-2026.md ), а также правила оформления этого документа ( @00-view_of_answer.md ).\nЭтот курс должен быть рассчитан на новчика, но мне кажется, что многие термины не раскрыты достаточно подробно. Курс полезен, но приходится слишком часто обращаться к интернету за разьяснением аббревиатур и так далее. Прочитай курс и предложи правки или пояснения, которые стоит сделать. Ничего не меняй сам, пока я не подтвержу.\nЕсли есть предложения - спрашивай.","ts":1794065961840,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1794066687661,"project":"/Users/weed/Documents/DSH"}
+{"text":"Делай все сразу. Критерий успеха - грамотно составленный курс по VPN, без пробелов, непоняток, а главное - применимый на практике","ts":1794066770480,"project":"/Users/weed/Documents/DSH"}
+{"text":"Как закончишь, перечитай курс еще раз и подумай, действительно ли он теперь дает необходимую базу, чтобы разобраться в теме, не путаться в терминах и смочь применить на практике для конкретных целей","ts":1794067011344,"project":"/Users/weed/Documents/DSH"}
+{"text":"В этом курсе мы говорим о поднятии своего сервера и поднятии там VPN. Просто поднятый сервер стот с умом \"защищать\". Что насчет сервера с VPN? Стоит ли дополнить курс по этому пункту?","ts":1794070236481,"project":"/Users/weed/Documents/DSH"}
+{"text":"После того, как закончишь, убедись, что мы не потеряли ничего из исходного варианта курса, до начала всех изменений","ts":1794070749950,"project":"/Users/weed/Documents/DSH"}
+{"text":"Проверь новые файлы в рабочей директории.\nЯ веду свой обсидиан и хочу создать отдельные файлы по соответствующим темам. Там будут располагаться своя информация и соответствующие курсы. Как думаешь, что стоит вынести из курса в те отдельные файлы? Как правильно и красиво связать их между собой? Или оставить наш курс отдельно особняком и лишь сделать ссылки на те файлы?\n\nНичего сейчас не изменяй, предложи идею","ts":1794072480903,"project":"/Users/weed/Documents/DSH"}
+{"text":"/settings","ts":1794074805285,"project":"/Users/weed/Documents/DSH"}
+{"text":"/balance","ts":1794075037492,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794075248292,"project":"/Users/weed/Documents/DSH"}
+{"text":"Отравь агента расширить Networking, а именно все что связано с ip и портами. Должно быть максимально ясно и понятно.\nКак он закончит, пройдись сам по всем нашим файлах, проверяй ошибки и визуализацию, выделения екста. Особое внимание обрати на достаточность ссылок и определений. При чтении должно быть ясно, что данное слово стоит поискать в glossary","ts":1794078088317,"project":"/Users/weed/Documents/DSH"}
+{"text":"Если у тебя есть стоящие идеию по улучшению курса, файлов, структуры - слушаю","ts":1794078118472,"project":"/Users/weed/Documents/DSH"}
+{"text":"1 да\n3 да\n4 да\n5 да","ts":1794078503252,"project":"/Users/weed/Documents/DSH"}
+{"text":"давай сделаем точный переход glossary","ts":1794079179872,"project":"/Users/weed/Documents/DSH"}
+{"text":"После запусти сабагента на финальную проверку всего, снабди его всей необходимой информацией","ts":1794079225212,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794085376314,"project":"/Users/weed/Documents/DSH"}
+{"text":"/session-delete","ts":1794085380870,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794085580219,"project":"/Users/weed/Documents/DSH"}
+{"text":"/bg","ts":1794085589970,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794085605469,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agents","ts":1794085609848,"project":"/Users/weed/Documents/DSH"}
+{"text":"/bg","ts":1794085641385,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794085650136,"project":"/Users/weed/Documents/DSH"}
+{"text":"/bg","ts":1794085677251,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794085685050,"project":"/Users/weed/Documents/DSH"}

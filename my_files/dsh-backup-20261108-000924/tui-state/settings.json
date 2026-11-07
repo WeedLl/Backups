@@ -20,11 +20,11 @@
     "sidePanel": {
       "open": false,
       "splitEnabled": true,
-      "panels": "todo,jobs,agents,info,trajectory,workspace,btw,companion"
+      "panels": "todo,jobs,agents,info,trajectory,btw,companion"
     },
     "taskNotifications": "always",
     "mathRendering": "auto",
-    "effortDefault": "max",
+    "effortDefault": "high",
     "notificationMethod": "auto",
     "scrollGutter": "timeline",
     "pageMargin": "normal",
@@ -32,7 +32,8 @@
       "skin": "deepy"
     },
     "thinkingFold": "preview",
-    "codeFrameStyle": "full"
+    "codeFrameStyle": "full",
+    "splashFont": "daily"
   },
   "imported": {
     "from": "none",

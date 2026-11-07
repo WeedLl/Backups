@@ -2,11 +2,11 @@
   "models": [
     {
       "provider": "deepseek-official",
-      "id": "deepseek-v4-pro"
+      "id": "deepseek-flash"
     },
     {
       "provider": "deepseek-official",
-      "id": "deepseek-flash"
+      "id": "deepseek-v4-pro"
     }
   ]
 }
