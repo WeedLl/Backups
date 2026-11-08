@@ -35,6 +35,9 @@
 17. `pgcli` **(brew)** - Как `psql` только с автокомплитом и подсветкой синтаксиса
 18. MacTex **(brew)**
 19. ADB (android debug bridge) - `android-platform-tools` **(brew)** - для передачи файлов с андроид.
+20. Handy - отличная транскрипция, а также перевод голоса в текст на другой язык.
+    - Parakeet Ultra
+    - Canary 1B v2
 
 # Программы
 1. Obsidian **(brew)**

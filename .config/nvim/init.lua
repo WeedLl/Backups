@@ -8,6 +8,10 @@ require("core.options")
 require("core.autocmds")
 require("core.keymaps")
 
+-- Раскладка: английская в Normal/Cmdline/Terminal, прежняя — в Insert.
+-- Настройки и поддерживаемые бэкенды: lua/core/layout/init.lua.
+require("core.layout").setup()
+
 -- Хук для TSUpdate: должен быть ДО vim.pack.add
 vim.api.nvim_create_autocmd("PackChanged", {
 	callback = function(ev)
