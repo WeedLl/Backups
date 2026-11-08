@@ -17,8 +17,8 @@
         "dsh-fact-check",
         "dsh-session-alerts",
         "dsh-tui-pkg",
-        "dsh-tui-workspace-sidebar",
-        "dsh-session-delete"
+        "dsh-session-delete",
+        "dsh-tui-workspace-sidebar"
       ]
     }
   }
