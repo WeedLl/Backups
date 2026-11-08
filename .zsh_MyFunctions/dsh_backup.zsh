@@ -126,11 +126,30 @@ dsh_backup — бэкап и разгрузка настроек DeepSeek Harnes
   manifest.txt, checksums.txt
 
 НЕ входит: node_modules/ (ставится заново), session-index.json и
-session-mounts.json (кэш и чужие pid'ы), inject/ (unix-сокеты).
+session-mounts.json (кэш и чужие pid'ы), inject/ (unix-сокеты),
+~/.dsh/skills/ — личные скиллы (SKILL.md), их восстанавливай отдельно.
+
+Скиллы (~/.dsh/skills/<имя>/SKILL.md) в бэкап не попадают: это обычные
+каталоги с текстом, их немного и они маленькие.
+
+  # 1) скилл из своего репозитория/рабочей папки
+  mkdir -p ~/.dsh/skills
+  rsync -a <путь>/md-answer_skill/ ~/.dsh/skills/md-answer_skill/
+
+  # 2) скилл, поставленный плагином (например fact-check), — вместе с плагином
+  dsh plugin --profile <имя> install
+
+  # 3) если сохранил каталог ~/.dsh/skills руками — просто верни его целиком
+  rsync -a <резервная-копия>/skills/ ~/.dsh/skills/
 
 После разгрузки на новой машине:
   dsh plugin --profile <имя> install     # вернуть плагины из package.json
   dsh tui
+  /skills                                # проверить, что скиллы видны
+
+Плагины из package.json вернутся, только если доступны их источники:
+для записей вида file:/Users/... каталог-источник должен существовать,
+иначе pnpm install упадёт. Такие плагины копируй вместе с исходниками.
 
 Примеры:
   dsh_backup -b ~/Documents/Backups/DSH
@@ -505,6 +524,9 @@ _dsh_backup_load() {
 			print "  dsh plugin --profile $p install"
 		done
 	fi
+	print "скиллы (~/.dsh/skills) в бэкап не входят — восстанови их отдельно:"
+	print "  rsync -a <источник>/<скилл>/ ~/.dsh/skills/<скилл>/"
+	print "  или dsh plugin --profile <имя> install (для скиллов из плагинов)"
 	print "перезапусти TUI: dsh tui   (страховка: $safety)"
 	return 0
 }

@@ -1,21 +1,5 @@
 {"text":"/help","ts":1793643591390}
 {"text":"/provider","ts":1793644337096}
-{"text":"/help","ts":1793644854859,"project":"/Users/weed/Documents/DSH"}
-{"text":"/tree","ts":1793644859929,"project":"/Users/weed/Documents/DSH"}
-{"text":"Я перешел с dsh web на dsh tui (https://github.com/ccch1mneyyy/dsh-TUI/tree/main).\nНаучи меня им пользоваться.\nПлагин установлен, ключ добавлен, но я ничего не понимаю, все не привычно.\n\nДля начала, нам нужно разобраться в настройках данного плагина. Что здесь стоит поменять, настроить?\nА также возможно ли сделать здесь аналог \"vim-motion\".\n\nДай задачу субагенту написать инструкцию по использованию в формате .md с соответствующей разметкой и оформлением.\nПусть он сделает акцент на сравнении с использованием web версии, чтобы мне было понятнее.\nПосле этого, пусть скажет какие мои плагины из web можно использовать в tui.","ts":1793645108563,"project":"/Users/weed/Documents/DSH"}
-{"text":"/tree","ts":1793645128768,"project":"/Users/weed/Documents/DSH"}
-{"text":"/help","ts":1793645142463,"project":"/Users/weed/Documents/DSH"}
-{"text":"/agentview","ts":1793645150012,"project":"/Users/weed/Documents/DSH"}
-{"text":"/help","ts":1793645184820,"project":"/Users/weed/Documents/DSH"}
-{"text":"/tree","ts":1793645437455,"project":"/Users/weed/Documents/DSH"}
-{"text":"/agentview","ts":1793645451767,"project":"/Users/weed/Documents/DSH"}
-{"text":"/agents","ts":1793645485389,"project":"/Users/weed/Documents/DSH"}
-{"text":"/tree","ts":1793645547867,"project":"/Users/weed/Documents/DSH"}
-{"text":"/agents","ts":1793645622007,"project":"/Users/weed/Documents/DSH"}
-{"text":"/tree","ts":1793645627349,"project":"/Users/weed/Documents/DSH"}
-{"text":"/agents","ts":1793645723417,"project":"/Users/weed/Documents/DSH"}
-{"text":"/agentview","ts":1793645739535,"project":"/Users/weed/Documents/DSH"}
-{"text":"/settings","ts":1793646557289,"project":"/Users/weed/Documents/DSH"}
 {"text":"/vim","ts":1793646690821,"project":"/Users/weed/Documents/DSH"}
 {"text":"/cost","ts":1793646816310,"project":"/Users/weed/Documents/DSH"}
 {"text":"/settings","ts":1793646838066,"project":"/Users/weed/Documents/DSH"}
@@ -255,4 +239,20 @@
 {"text":"/pkg","ts":1794158178329}
 {"text":"/agentview","ts":1794158237270,"project":"/Users/weed/Documents/DSH"}
 {"text":"через pkg почемут-то не обновляется sidebar плагин. Проверь почему и напиши вижимку, что нового в той версии","ts":1794158280593,"project":"/Users/weed/Documents/DSH"}
-{"text":"/pkg","ts":1794158283263,"project":"/Users/weed/Documents/DSH"}
+{"text":"/pkg","ts":1794158915358,"project":"/Users/weed/Documents/DSH"}
+{"text":"/background","ts":1794159651151,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794159656114,"project":"/Users/weed/Documents/DSH"}
+{"text":"/balance","ts":1794159661654,"project":"/Users/weed/Documents/DSH"}
+{"text":"/workspace","ts":1794159690513,"project":"/Users/weed/Documents/DSH"}
+{"text":"У меня есть гайд по работе с dsh-tui ( @dsh_tui_guide.md ), мне нужно, чтобы ты добавил раздел, посвященный работе с изображениями, в качестве примера используй модели deepseek flash и pro. \nОформление подчиняется следубщим принципам - @00-view_of_answer.md","ts":1794159845976,"project":"/Users/weed/Documents/DSH"}
+{"text":"Помоги мне разработать скилл для тебя. В директории есть файл @00-view_of_answer.md, там я объясняю каждый раз, какой формат ответа мне нужен, если хочу чтобы модель сохранила ответ в файле .md. Я уже устал добавлять его туда каждый раз, но я не знаю, чего именно хочу от скила кроме этого.\nПредожи мне варианты, задавай мне наводящие вопросы и давай сделаеим это вместе","ts":1794160130469,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794160753934,"project":"/Users/weed/Documents/DSH"}
+{"text":"1. насчет тегов - должен быть тэг ai/by_ai. Остальные - предложить после написания файла. Нужно узнать все теги в хранилище obsidian (сделать это нужно максимально кост-эфективно, а не читать все заметки. Выполнимо?) Если агент не может найти или выбрать хранилище, откуда брать теги - спросить из вариантов\n2. Добавь проверку дублей\n3. Объясни режим \"допиши\", не понял, что ты имеешь ввиду\n4. Проверку живости добавь по флагу, но неужно сделать так, чтобы я понимал, что есть флаги\n5. Не понял про плагин хук, объясни\n6. Не понял про актуальный формат\n7. Какая часть скила будет уходить каждый раз с промтом, а какая при использовании?","ts":1794161856889,"project":"/Users/weed/Documents/DSH"}
+{"text":"не понял что ты имеешь виду под пуктом 2\nМне нужно, чтобы он работал со скилом. Если я закреплю файл или опишу в каком формате нужен ответ - он должен использовать то, что я напишу. Если похоже на скил - спросить, использовать скил или совместить оба формата","ts":1794162674662,"project":"/Users/weed/Documents/DSH"}
+{"text":"Так, проверь все еще раз и напиши, как работает, в каких случаях\nОтдельно проверь, у меня есть функция бэкапа конфикгов dsh. Цепляет ли она плагины и скилы, если нет, то допиши в ее описание, как восстановить скилы","ts":1794162827862,"project":"/Users/weed/Documents/DSH"}
+{"text":"/vim","ts":1794163154696,"project":"/Users/weed/Documents/DSH"}
+{"text":"1. Тэг updated не нужен.\n2. Мои локальные плагины имеют различия в имени. Папка называется названиеплагина_plugin, а в списке плагинов просто названиеплагина. Можно ли как-то сделать это со скилом?","ts":1794163470808,"project":"/Users/weed/Documents/DSH"}
+{"text":"Сделай так, чтобы он ВСЕГДА уточнял актуальные тэги","ts":1794163708459,"project":"/Users/weed/Documents/DSH"}
+{"text":"Сохрани скил в папку, где лежат мои локальные плагины, а другую копию установи в во все профили","ts":1794163771375,"project":"/Users/weed/Documents/DSH"}
+{"text":"/md-answer","ts":1794163910870,"project":"/Users/weed/Documents/DSH"}
+{"text":"stop","ts":1794163962958,"project":"/Users/weed/Documents/DSH"}
