@@ -2,12 +2,12 @@
   "name": "dsh-profile-tui",
   "private": true,
   "dependencies": {
-    "@deepseek-harness-tui/dsh-tui": "^0.18.0",
+    "@deepseek-harness-tui/dsh-tui": "0.19.0",
     "dsh-fact-check": "1.5.2",
     "dsh-session-alerts": "file:/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin",
     "dsh-session-delete": "file:/Users/weed/Documents/Ai/DSH/dsh-session-delete-plagin",
     "dsh-tui-pkg": "file:/Users/weed/Documents/Ai/DSH/dsh-tui-pkg-ru",
-    "dsh-tui-workspace-sidebar": "0.1.3"
+    "dsh-tui-workspace-sidebar": "0.1.5"
   },
   "dsh": {
     "profile": {

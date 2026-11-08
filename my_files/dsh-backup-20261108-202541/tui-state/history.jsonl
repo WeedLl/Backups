@@ -1,10 +1,5 @@
 {"text":"/help","ts":1793643591390}
 {"text":"/provider","ts":1793644337096}
-{"text":"/auth status","ts":1793643712364,"project":"/Users/weed/Documents/DSH"}
-{"text":"/provider","ts":1793644422746,"project":"/Users/weed/Documents/DSH"}
-{"text":"/clear","ts":1793644458978,"project":"/Users/weed/Documents/DSH"}
-{"text":"/help","ts":1793644784648,"project":"/Users/weed/Documents/DSH"}
-{"text":"/agentview","ts":1793644810167,"project":"/Users/weed/Documents/DSH"}
 {"text":"/help","ts":1793644854859,"project":"/Users/weed/Documents/DSH"}
 {"text":"/tree","ts":1793644859929,"project":"/Users/weed/Documents/DSH"}
 {"text":"Я перешел с dsh web на dsh tui (https://github.com/ccch1mneyyy/dsh-TUI/tree/main).\nНаучи меня им пользоваться.\nПлагин установлен, ключ добавлен, но я ничего не понимаю, все не привычно.\n\nДля начала, нам нужно разобраться в настройках данного плагина. Что здесь стоит поменять, настроить?\nА также возможно ли сделать здесь аналог \"vim-motion\".\n\nДай задачу субагенту написать инструкцию по использованию в формате .md с соответствующей разметкой и оформлением.\nПусть он сделает акцент на сравнении с использованием web версии, чтобы мне было понятнее.\nПосле этого, пусть скажет какие мои плагины из web можно использовать в tui.","ts":1793645108563,"project":"/Users/weed/Documents/DSH"}
@@ -235,3 +230,29 @@
 {"text":"/restart","ts":1794146578893,"project":"/Users/weed/Documents/DSH"}
 {"text":"/permission","ts":1794146594746,"project":"/Users/weed/Documents/DSH"}
 {"text":"/agentview","ts":1794146600034,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1794146751843,"project":"/Users/weed/.config/nvim"}
+{"text":"Ознакомься с моей конфигурацией nvim.\nЗадача стоит следующая:\nНужен функционал, который позволяет при выходе из insert мода переключать раскладку на английскую и возвращать ту, которая была при входе в insert обратно.","ts":1794146827843,"project":"/Users/weed/.config/nvim"}
+{"text":"Ознакомься с моей конфигурацией nvim.\nЗадача стоит следующая:\nНужен функционал, который позволяет при выходе из insert мода переключать раскладку на английскую и возвращать ту, которая была при входе в insert обратно.\nЭто можно сделать как с помощью своего плагина, так и с помощью уже существующих.\nДолжно работать как на macos, так и на linux.\nЕсли мы пишем свой плагин или делаем этот функционал просто обновляя текущие настройки, это должно быть сделано гармонично и не ломая логику и стиль проекта.\nНеобходимо учесть все существующие реальные сценарии использования.","ts":1794146967721,"project":"/Users/weed/.config/nvim"}
+{"text":"/session-delete","ts":1794147003273,"project":"/Users/weed/.config/nvim"}
+{"text":"/agentview","ts":1794147044825,"project":"/Users/weed/.config/nvim"}
+{"text":"/workspace","ts":1794147108341,"project":"/Users/weed/.config/nvim"}
+{"text":"/balance","ts":1794147538669,"project":"/Users/weed/.config/nvim"}
+{"text":"/agentview","ts":1794148256316,"project":"/Users/weed/.config/nvim"}
+{"text":"/bg","ts":1794148258735,"project":"/Users/weed/.config/nvim"}
+{"text":"/agentview","ts":1794148275398,"project":"/Users/weed/.config/nvim"}
+{"text":"/permission","ts":1794148457734,"project":"/Users/weed/.config/nvim"}
+{"text":"/agentview","ts":1794156412610,"project":"/Users/weed/.config/nvim"}
+{"text":"/session-delete","ts":1794156421542,"project":"/Users/weed/Documents/DSH"}
+{"text":"/agentview","ts":1794156448969,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1794156461093,"project":"/Users/weed/Documents/DSH"}
+{"text":"/vim","ts":1794156465574,"project":"/Users/weed/Documents/DSH"}
+{"text":"/settings","ts":1794156467879,"project":"/Users/weed/Documents/DSH"}
+{"text":"вышла новая верси этого dsh-tui плагина. Сделай краткую выжимку, что в ней нового\nТакже, проверь мои плагины, не сломается ли ничего, если я обновлюсь","ts":1794156575574,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1794157563606,"project":"/Users/weed/Documents/DSH"}
+{"text":"Обнови движок и tui, либо напиши пошагово, как это сделать","ts":1794157598833,"project":"/Users/weed/Documents/DSH"}
+{"text":"/pkg","ts":1794157601279,"project":"/Users/weed/Documents/DSH"}
+{"text":"/permission","ts":1794158160546,"project":"/Users/weed/Documents/DSH"}
+{"text":"/pkg","ts":1794158178329}
+{"text":"/agentview","ts":1794158237270,"project":"/Users/weed/Documents/DSH"}
+{"text":"через pkg почемут-то не обновляется sidebar плагин. Проверь почему и напиши вижимку, что нового в той версии","ts":1794158280593,"project":"/Users/weed/Documents/DSH"}
+{"text":"/pkg","ts":1794158283263,"project":"/Users/weed/Documents/DSH"}
