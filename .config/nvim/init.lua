@@ -1,0 +1,27 @@
+-- Обязательно первая строка: байткеш для быстрого старта
+vim.loader.enable()
+
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+require("core.options")
+require("core.autocmds")
+require("core.keymaps")
+
+-- Раскладка: английская в Normal/Cmdline/Terminal, прежняя — в Insert.
+-- Настройки и поддерживаемые бэкенды: lua/core/layout/init.lua.
+require("core.layout").setup()
+
+-- Хук для TSUpdate: должен быть ДО vim.pack.add
+vim.api.nvim_create_autocmd("PackChanged", {
+	callback = function(ev)
+		local name, kind = ev.data.spec.name, ev.data.kind
+		if name == "nvim-treesitter" and kind == "update" then
+			if not ev.data.active then
+				vim.cmd.packadd("nvim-treesitter")
+			end
+			vim.cmd("TSUpdate")
+		end
+	end,
+})
+require("plugins")

@@ -1,0 +1,23 @@
+snippet c "Kolonka"
+	| ${1} | ${2} |
+	|----|----|
+	| ${3} | ${4} |
+
+snippet ifpathb "If not in PATH or FPATH"
+	if [[ ":\$${1:PATH or FPATH}:" != *":${2:custom PATH or FPATH}:"* ]] && [[ -d "${2}" ]]; then
+		export ${1}="${2}:\$${1}"
+	fi
+
+snippet ifpathe "If not in PATH or FPATH"
+	if [[ ":\$${1:PATH or FPATH}:" != *":${2:custom PATH or FPATH}:"* ]] && [[ -d "${2}" ]]; then
+		export ${1}="\$${1}:${2}"
+	fi
+
+snippet hforfunc "Help for Func"
+	if [[ "\$1" == "-h" || "\$1" == "--help" ]]; then
+		cat <<EOF
+	${1:Some text about your Function}
+	EOF
+		return 0
+	fi
+

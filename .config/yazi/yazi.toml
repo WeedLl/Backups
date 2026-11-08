@@ -1,0 +1,34 @@
+[mgr]
+show_hidden = true          # показывать скрытые файлы по умолчанию
+sort_by = "natural"         # естественная сортировка: 1.md < 2.md < 10.md
+sort_dir_first = true       # директории сверху
+linemode = "size"           # размер файла справа от имени
+scrolloff = 5               # курсор не прилипает к краю
+ratio = [1, 4, 3]           # пропорции панелей: parent, current, preview
+
+[preview]
+image_filter = "lanczos3"  # лучший фильтр для превью изображений
+image_quality = 90
+max_width = 600
+max_height = 900
+
+[opener]
+treemd = [
+    { run = 'treemd %s', block = true, desc = "treemd (markdown)" },
+]
+
+[open]
+prepend_rules = [
+    { url = "*.md", use = [ "edit", "treemd" ] },
+]
+
+#Plugins
+[[plugin.prepend_fetchers]]
+url   = "*"
+run   = "git"
+group = "git"
+
+[[plugin.prepend_fetchers]]
+url   = "*/"
+run   = "git"
+group = "git"
