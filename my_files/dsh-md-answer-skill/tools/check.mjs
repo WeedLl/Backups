@@ -17,8 +17,8 @@
  * 2 — файл не найден или не .md.
  */
 
-import { readFileSync, existsSync } from 'node:fs'
-import { resolve, extname } from 'node:path'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
+import { resolve, extname, join } from 'node:path'
 import { detectVault, scanVault } from './vault-tags.mjs'
 
 /** Разрешённый набор: ровно девять типов. */
@@ -49,7 +49,43 @@ const ALIASES = new Map([
 ])
 
 /** Поля frontmatter, которые скилл допускает без отдельной просьбы. */
-const KNOWN_KEYS = new Set(['tags', 'created', 'aliases', 'status', 'source', 'cssclasses', 'publish'])
+const KNOWN_KEYS = new Set(['tags', 'type', 'created', 'aliases', 'status', 'source', 'cssclasses', 'publish'])
+
+/** Закрытые словари свойств (объявлены в SKILL.md). */
+const PROP_DICT = {
+  type: new Set(['note', 'guide', 'course', 'log', 'daily', 'moc']),
+  status: new Set(['todo', 'doing', 'done']),
+  source: new Set(['self', 'by_ai']),
+}
+
+/** Значения type/status/source, реально использованные в хранилище. */
+function scanVaultProps(root) {
+  const out = { type: new Set(), status: new Set(), source: new Set() }
+  const walk = (dir) => {
+    let entries
+    try { entries = readdirSync(dir, { withFileTypes: true }) } catch { return }
+    for (const e of entries) {
+      if (e.name.startsWith('.')) continue
+      const p = join(dir, e.name)
+      if (e.isDirectory()) { walk(p); continue }
+      if (!e.name.endsWith('.md')) continue
+      let text
+      try { text = readFileSync(p, 'utf8') } catch { continue }
+      const lines = text.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').split('\n')
+      if (lines[0] !== '---') continue
+      const close = lines.indexOf('---', 1)
+      if (close < 0) continue
+      for (let i = 1; i < close; i++) {
+        const m = lines[i].match(/^(type|status|source):\s*(.*)$/)
+        if (!m) continue
+        const v = m[2].trim().replace(/^["']|["']$/g, '')
+        if (v) out[m[1]].add(v)
+      }
+    }
+  }
+  walk(root)
+  return out
+}
 
 /** Заголовки, которые не описывают тему и потому не годятся в H1. */
 const WEAK_TITLES = new Set(['ответ', 'заметка', 'документ', 'инструкция', 'итог', 'выводы', 'answer', 'note'])
@@ -70,12 +106,22 @@ const FENCE_RE = /^\s{0,3}(?:```|~~~)/
 
 const argv = process.argv.slice(2)
 const flags = new Set(argv.filter((a) => a.startsWith('-')))
-const files = argv.filter((a) => !a.startsWith('-'))
+const vaultArg = readArgValue('--vault')
+const files = argv.filter((a) => !a.startsWith('-') && a !== vaultArg)
 const strict = flags.has('--strict')
 const asJson = flags.has('--json')
 const deepLinks = flags.has('--links')
 const useVocab = !flags.has('--no-vocab')
-const allowArg = argv.find((a) => a.startsWith('--allow='))?.slice('--allow='.length) ?? null
+const propsCheck = flags.has('--props')
+const allowArg = readArgValue('--allow')
+
+function readArgValue(name) {
+  const eq = argv.find((a) => a.startsWith(`${name}=`))
+  if (eq) return eq.slice(name.length + 1)
+  const i = argv.indexOf(name)
+  if (i !== -1 && argv[i + 1] && !argv[i + 1].startsWith('-')) return argv[i + 1]
+  return null
+}
 
 // Пользовательский формат может разрешать свои типы: расширяем набор на один запуск.
 if (allowArg) {
@@ -95,13 +141,15 @@ check.mjs — валидатор формата заметок скилла md-a
   --json        машиночитаемый вывод (для скриптов)
   --links       проверить живость внешних ссылок (нужна сеть, медленно)
   --no-vocab    не сверять теги с хранилищем (по умолчанию — живой пересъём)
+  --vault PATH  какое хранилище брать для сверки тегов/свойств
+  --props       сверять type/status/source со словарём (и с хранилищем)
   --allow=a,b   разрешить дополнительные типы колаутов (свой формат пользователя)
   --help        эта справка
 
 Коды выхода: 0 — чисто, 1 — ошибки (или предупреждения при --strict),
              2 — нет аргументов / файл не найден / не .md.
 
-Что проверяется: frontmatter (tags, created, ai/by_ai), один H1, только
+Что проверяется: frontmatter (tags, created, source: by_ai), один H1, только
 разрешённые callouts, пустые и глубоко вложенные блоки, TL;DR в длинном
 файле, ссылки в оглавлении, раздел «Источники» при 2+ ссылках.
 Теги сверяются с живым хранилищем Obsidian при каждом запуске (≈0,15 с).
@@ -119,8 +167,9 @@ if (flags.has('--help') || files.length === 0) {
  */
 let VOCAB = null
 let VOCAB_ERROR = null
+let VAULT_PATH = null
 if (useVocab) {
-  const vault = detectVault()
+  const vault = detectVault(vaultArg || undefined)
   if (vault.path) {
     try {
       const scan = scanVault(vault.path)
@@ -139,6 +188,10 @@ if (useVocab) {
         ? `путь из $OBSIDIAN_VAULT не существует: ${vault.candidates?.[0]?.path ?? '?'}`
         : 'хранилище Obsidian не найдено'
   }
+}
+let VAULT_PROPS = null
+if (propsCheck && VAULT_PATH) {
+  try { VAULT_PROPS = scanVaultProps(VAULT_PATH) } catch { VAULT_PROPS = null }
 }
 
 /* ──────────────────────── разбор файла ───────────────────── */
@@ -169,10 +222,14 @@ function checkFile(file) {
       bodyStart = close + 1
 
       const tags = readTags(fmLines)
-      if (tags === null) {
-        add(1, 'error', 'fm-tags', 'в frontmatter нет поля tags')
-      } else if (tags.length === 0) {
-        add(1, 'error', 'fm-tags-empty', 'tags есть, но пустой: нужен список из 2–4 тегов')
+      const source = readScalar(fmLines, 'source')
+      const hasMeta = ['type', 'status', 'source'].some((k) => readScalar(fmLines, k) !== null)
+      if (tags === null || tags.length === 0) {
+        if (hasMeta) {
+          add(1, 'warn', 'fm-tags-optional', 'тегов нет — допустимо, если тема не нужна (есть свойства type/status/source)')
+        } else {
+          add(1, 'error', 'fm-tags', 'в frontmatter нет ни tags, ни свойств (type/status/source)')
+        }
       } else {
         if (tags.length > 6) add(1, 'warn', 'fm-tags-many', `тегов ${tags.length} — обычно хватает 2–4`)
         const seen = new Set()
@@ -181,16 +238,38 @@ function checkFile(file) {
           if (seen.has(tag.toLowerCase())) add(1, 'warn', 'fm-tag-dup', `тег «${tag}» повторяется`)
           seen.add(tag.toLowerCase())
         }
-        if (!seen.has('ai/by_ai')) {
-          add(1, 'error', 'fm-ai-tag', 'нет обязательного тега ai/by_ai — он помечает, что заметку написал агент')
-        }
         if (VOCAB) {
           for (const tag of tags) {
             const low = tag.toLowerCase()
-            if (low === 'ai/by_ai') continue
             if (!VOCAB.has(low)) {
               add(1, 'warn', 'fm-tag-unknown', `тег «${tag}» не встречается в хранилище — либо опечатка, либо новый тег (тогда предложи его явно)`)
             }
+          }
+        }
+      }
+      if (source !== 'by_ai') {
+        add(1, 'error', 'fm-ai-source', 'в frontmatter нет source: by_ai — он помечает, что заметку написал агент')
+      }
+      if (tags && tags.length) {
+        const typeVal = readScalar(fmLines, 'type')
+        for (const tag of tags) {
+          const low = tag.toLowerCase()
+          if (PROP_DICT.type.has(low) && typeVal !== low) {
+            add(1, 'warn', 'fm-genre-tag', `тег «${tag}» — это жанр: пиши type: ${low}, а в tags оставь только темы`)
+          }
+        }
+      }
+      if (propsCheck) {
+        for (const prop of ['type', 'status', 'source']) {
+          const val = readScalar(fmLines, prop)
+          if (val === null) continue
+          const allowed = PROP_DICT[prop]
+          if (allowed.has(val)) continue
+          const inVault = VAULT_PROPS?.[prop]?.has(val)
+          if (inVault) {
+            add(1, 'warn', 'prop-undocumented', `${prop} «${val}» есть в хранилище, но не в словаре {${[...allowed].join(', ')}} — добавь в SKILL.md`)
+          } else {
+            add(1, 'warn', 'prop-unknown', `${prop} «${val}» нет ни в словаре {${[...allowed].join(', ')}}, ни в хранилище — объяви явно`)
           }
         }
       }
@@ -209,7 +288,7 @@ function checkFile(file) {
       }
 
       if (useVocab && !VOCAB) {
-        add(1, 'warn', 'vocab-unavailable', `теги не с чем сверять: ${VOCAB_ERROR}. Спроси путь к хранилищу или запусти с --no-vocab`)
+        add(1, 'warn', 'vocab-unavailable', `теги не с чем сверять: ${VOCAB_ERROR}. Укажи --vault <путь> или $OBSIDIAN_VAULT, либо запусти с --no-vocab`)
       }
     }
   }
