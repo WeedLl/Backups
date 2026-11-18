@@ -7,6 +7,30 @@ mkdir -p ~/.dsh/skills
 rsync -a md-answer_skill/ ~/.dsh/skills/md-answer_skill/
 ```
 
+## Где что лежит
+
+| Путь | Роль |
+|---|---|
+| `/Users/weed/Documents/DSH/md-answer_skill` | **рабочая копия**: здесь правки |
+| `~/.dsh/skills/md-answer_skill` | **установленная**: её видит DSH, все профили |
+
+После правок рабочей копии — синхронизация в одну сторону:
+
+```bash
+rsync -a /Users/weed/Documents/DSH/md-answer_skill/ ~/.dsh/skills/md-answer_skill/
+```
+
+Копии расходятся молча: DSH читает только установленную, поэтому «поменял и не проверил» выглядит как «поменял, а ничего не изменилось». Это правило проще соблюдать, чем помнить.
+
+Альтернатива — симлинк вместо копии (ядро ходит по симлинкам):
+
+```bash
+rm -rf ~/.dsh/skills/md-answer_skill
+ln -s /Users/weed/Documents/DSH/md-answer_skill ~/.dsh/skills/md-answer_skill
+```
+
+Тогда каталог один и синхронизировать нечего.
+
 ## Имя папки и имя скилла — разные вещи
 
 DSH берёт имя из `name:` в YAML-frontmatter `SKILL.md`, а не из имени каталога. Каталог нужен только как **resourceBase** — точка отсчёта для `tools/check.mjs` и `references/`. Поэтому:
@@ -15,54 +39,22 @@ DSH берёт имя из `name:` в YAML-frontmatter `SKILL.md`, а не из 
 - в `/skills` и в команде `/md-answer` будет ровно то, что написано в `name`;
 - переименование папки не ломает скилл, пока внутри лежит `SKILL.md` с валидным `name` (kebab-case) и `description`.
 
-Проверка: в TUI — `/skills` (должен появиться `md-answer`), либо
-
-```bash
-dsh-tui cli skills list | grep md-answer
-```
-
-Использование: `/md-answer` или просто просьба «оформи в .md».
+Проверка: `/skills` в TUI — в списке должен появиться `md-answer`. Команда `dsh-tui cli skills list` на текущей версии DSH не работает (адаптер проверяет старые версии и падает с `ADAPTER_UNAVAILABLE`), так что на неё не рассчитывай.
 
 ## Обновление и удаление
 
-Обновление — заменить папку тем же `rsync`. Удаление:
-
 ```bash
-rm -rf ~/.dsh/skills/md-answer_skill
+rsync -a /Users/weed/Documents/DSH/md-answer_skill/ ~/.dsh/skills/md-answer_skill/   # обновить
+rm -rf ~/.dsh/skills/md-answer_skill                                                   # удалить
 ```
 
 ## Пути внутри скилла
 
-После установки пути в `SKILL.md` вида `tools/check.mjs` резолвятся от каталога скилла; если запускаешь из другой папки, используй полный путь:
+Пути в `SKILL.md` вида `tools/check.mjs` резолвятся от каталога скилла. Если запускаешь из другой папки, используй полный путь:
 
 ```bash
 node ~/.dsh/skills/md-answer_skill/tools/check.mjs answers/2026-11-08-x.md
 ```
-
-## Копии и синхронизация
-
-Скилл лежит в трёх местах, и это осознанно:
-
-| Путь | Роль |
-|---|---|
-| `~/Documents/Ai/DSH/md-answer_skill` | **источник**, рядом с локальными плагинами |
-| `~/.dsh/skills/md-answer_skill` | **установленная копия**, её видят все профили |
-| рабочая папка (`…/DSH/md-answer_skill`) | черновик, его можно удалить |
-
-После правок источника — одна команда:
-
-```bash
-rsync -a ~/Documents/Ai/DSH/md-answer_skill/ ~/.dsh/skills/md-answer_skill/
-```
-
-Вместо копии можно держать симлинк (ядро ходит по симлинкам):
-
-```bash
-rm -rf ~/.dsh/skills/md-answer_skill
-ln -s ~/Documents/Ai/DSH/md-answer_skill ~/.dsh/skills/md-answer_skill
-```
-
-Тогда источник и установка — один каталог, расхождению взяться неоткуда.
 
 ## Перенос на другую машину
 

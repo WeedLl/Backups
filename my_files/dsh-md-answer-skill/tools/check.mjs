@@ -49,11 +49,23 @@ const ALIASES = new Map([
 ])
 
 /** Поля frontmatter, которые скилл допускает без отдельной просьбы. */
-const KNOWN_KEYS = new Set(['tags', 'type', 'created', 'aliases', 'status', 'source', 'cssclasses', 'publish'])
+const KNOWN_KEYS = new Set([
+  'tags', 'type', 'created', 'aliases', 'status', 'source', 'sensitive', 'cssclasses', 'publish',
+  // служебные поля других функций: валидатор их терпит, скилл никогда не пишет
+  'Todo', 'Changes before merge', 'time', 'where', 'merge_bases',
+])
+
+/** Канонический порядок полей frontmatter — часть контракта, см. SKILL.md §4. */
+const KEY_ORDER = [
+  'tags', 'aliases', 'type', 'source', 'status', 'created',
+  'Todo', 'Changes before merge', 'time', 'merge_bases', 'where',
+  'sensitive', 'cssclasses', 'publish',
+]
+const KEY_RANK = new Map(KEY_ORDER.map((k, i) => [k, i]))
 
 /** Закрытые словари свойств (объявлены в SKILL.md). */
 const PROP_DICT = {
-  type: new Set(['note', 'guide', 'course', 'log', 'daily', 'moc']),
+  type: new Set(['note', 'guide', 'course', 'log', 'daily', 'moc', 'backup', 'card']),
   status: new Set(['todo', 'doing', 'done']),
   source: new Set(['self', 'by_ai']),
 }
@@ -142,16 +154,16 @@ check.mjs — валидатор формата заметок скилла md-a
   --links       проверить живость внешних ссылок (нужна сеть, медленно)
   --no-vocab    не сверять теги с хранилищем (по умолчанию — живой пересъём)
   --vault PATH  какое хранилище брать для сверки тегов/свойств
-  --props       сверять type/status/source со словарём (и с хранилищем)
+  --props       дополнительно сверять значения со словарём хранилища
   --allow=a,b   разрешить дополнительные типы колаутов (свой формат пользователя)
   --help        эта справка
 
 Коды выхода: 0 — чисто, 1 — ошибки (или предупреждения при --strict),
              2 — нет аргументов / файл не найден / не .md.
 
-Что проверяется: frontmatter (tags, created, source: by_ai), один H1, только
+Что проверяется: frontmatter (type, source: by_ai, created; tags — опционально), один H1, только
 разрешённые callouts, пустые и глубоко вложенные блоки, TL;DR в длинном
-файле, ссылки в оглавлении, раздел «Источники» при 2+ ссылках.
+файле, ссылки в оглавлении, раздел «Источники» при 2+ ссылках, порядок полей frontmatter.
 Теги сверяются с живым хранилищем Obsidian при каждом запуске (≈0,15 с).
 `.trim()
 
@@ -223,14 +235,7 @@ function checkFile(file) {
 
       const tags = readTags(fmLines)
       const source = readScalar(fmLines, 'source')
-      const hasMeta = ['type', 'status', 'source'].some((k) => readScalar(fmLines, k) !== null)
-      if (tags === null || tags.length === 0) {
-        if (hasMeta) {
-          add(1, 'warn', 'fm-tags-optional', 'тегов нет — допустимо, если тема не нужна (есть свойства type/status/source)')
-        } else {
-          add(1, 'error', 'fm-tags', 'в frontmatter нет ни tags, ни свойств (type/status/source)')
-        }
-      } else {
+      if (tags && tags.length) {
         if (tags.length > 6) add(1, 'warn', 'fm-tags-many', `тегов ${tags.length} — обычно хватает 2–4`)
         const seen = new Set()
         for (const tag of tags) {
@@ -250,8 +255,22 @@ function checkFile(file) {
       if (source !== 'by_ai') {
         add(1, 'error', 'fm-ai-source', 'в frontmatter нет source: by_ai — он помечает, что заметку написал агент')
       }
+
+      // type обязателен всегда: жанр заметки. Пустое значение допустимо (осознанно),
+      // отсутствие ключа — нет.
+      const typeVal = readScalar(fmLines, 'type')
+      if (typeVal === null) {
+        add(1, 'error', 'fm-type', `в frontmatter нет type — обязательное поле: ${[...PROP_DICT.type].join(', ')} (или оставь пустым)`)
+      } else if (typeVal === '') {
+        // Пустое значение — легальный фолбэк «жанр неизвестен», а не дефект:
+        // иначе --strict заставлял бы выдумывать жанр вместо вопроса пользователю.
+      } else if (!PROP_DICT.type.has(typeVal)) {
+        const inVault = VAULT_PROPS?.type?.has(typeVal)
+        add(1, 'warn', inVault ? 'prop-undocumented' : 'prop-unknown',
+          `type «${typeVal}» ${inVault ? 'есть в хранилище, но не в словаре' : 'не из словаря'} {${[...PROP_DICT.type].join(', ')}} — объяви явно`)
+      }
+
       if (tags && tags.length) {
-        const typeVal = readScalar(fmLines, 'type')
         for (const tag of tags) {
           const low = tag.toLowerCase()
           if (PROP_DICT.type.has(low) && typeVal !== low) {
@@ -259,19 +278,16 @@ function checkFile(file) {
           }
         }
       }
-      if (propsCheck) {
-        for (const prop of ['type', 'status', 'source']) {
-          const val = readScalar(fmLines, prop)
-          if (val === null) continue
-          const allowed = PROP_DICT[prop]
-          if (allowed.has(val)) continue
-          const inVault = VAULT_PROPS?.[prop]?.has(val)
-          if (inVault) {
-            add(1, 'warn', 'prop-undocumented', `${prop} «${val}» есть в хранилище, но не в словаре {${[...allowed].join(', ')}} — добавь в SKILL.md`)
-          } else {
-            add(1, 'warn', 'prop-unknown', `${prop} «${val}» нет ни в словаре {${[...allowed].join(', ')}}, ни в хранилище — объяви явно`)
-          }
-        }
+      for (const prop of ['status', 'source']) {
+        const val = readScalar(fmLines, prop)
+        if (val === null || val === '') continue
+        const allowed = PROP_DICT[prop]
+        if (allowed.has(val)) continue
+        const inVault = propsCheck && VAULT_PROPS?.[prop]?.has(val)
+        add(1, 'warn', inVault ? 'prop-undocumented' : 'prop-unknown',
+          inVault
+            ? `${prop} «${val}» есть в хранилище, но не в словаре {${[...allowed].join(', ')}} — добавь в SKILL.md`
+            : `${prop} «${val}» не из словаря {${[...allowed].join(', ')}} — объяви явно`)
       }
 
       const created = readScalar(fmLines, 'created')
@@ -283,8 +299,25 @@ function checkFile(file) {
         add(1, 'error', 'fm-created-invalid', `created = «${created}» — такой даты нет`)
       }
 
+      const sensitive = readScalar(fmLines, 'sensitive')
+      if (sensitive !== null && !['true', 'false'].includes(sensitive)) {
+        add(1, 'warn', 'fm-sensitive-value', `sensitive = «${sensitive}» — нужно true или false`)
+      }
+
       for (const key of readKeys(fmLines)) {
         if (!KNOWN_KEYS.has(key)) add(1, 'warn', 'fm-extra-key', `поле «${key}» не из набора скилла — добавляй только по просьбе`)
+      }
+
+      // Порядок известных полей: Obsidian показывает свойства так, как они лежат в файле.
+      let prevRank = -1
+      for (const key of readKeys(fmLines)) {
+        const rank = KEY_RANK.get(key)
+        if (rank === undefined) continue
+        if (rank < prevRank) {
+          add(1, 'warn', 'fm-order', `порядок полей: ${KEY_ORDER.join(' → ')}; нарушает «${key}»`)
+          break
+        }
+        prevRank = rank
       }
 
       if (useVocab && !VOCAB) {
@@ -452,7 +485,7 @@ function readScalar(fmLines, key) {
 function readKeys(fmLines) {
   const keys = []
   for (const line of fmLines) {
-    const m = line.match(/^([A-Za-z0-9_-]+):/)
+    const m = line.match(/^([^\s:#][^:]*?):(?:\s|$)/)
     if (m) keys.push(m[1])
   }
   return keys

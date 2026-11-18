@@ -1,8 +1,9 @@
 ---
 tags:
-  - ai/by_ai
   - sys/shell
   - sys/shell/zsh
+type: guide
+source: by_ai
 created: 2026-11-08
 ---
 # Перенос zsh-конфига на новую машину

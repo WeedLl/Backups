@@ -1,8 +1,8 @@
 ---
 tags:
-  - ai/by_ai
   - sys
-  - guide
+type: guide
+source: by_ai
 created: 2026-11-08
 ---
 # VPS под VPN: как выбрать и не переплатить
