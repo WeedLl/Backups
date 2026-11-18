@@ -1,6 +1,6 @@
-# dsh_backup — бэкап и разгрузка настроек DSH (все профили + состояние dsh-TUI)
+# dsh_backup — бэкап и разгрузка настроек DSH (все профили + состояние dsh-TUI + скиллы)
 #
-#   dsh_backup -b <путь>     сохранить конфиги всех профилей + состояние dsh-TUI
+#   dsh_backup -b <путь>     сохранить конфиги профилей, состояние dsh-TUI и скиллы
 #   dsh_backup -u <путь>     разгрузить (восстановить) из бэкапа
 #
 # Дополнительно:
@@ -108,7 +108,7 @@ _dsh_backup_usage() {
 	cat <<'EOF'
 dsh_backup — бэкап и разгрузка настроек DeepSeek Harness
 
-  dsh_backup -b <путь>     забэкапить настройки всех профилей (+ состояние dsh-TUI)
+  dsh_backup -b <путь>     забэкапить профили, состояние dsh-TUI и скиллы
   dsh_backup -u <путь>     разгрузить бэкап обратно
   dsh_backup -n <режим> …  dry-run: только показать план
   dsh_backup -s <режим> …  вместе с секретами (~/.dsh/.credentials.yaml)
@@ -121,26 +121,16 @@ dsh_backup — бэкап и разгрузка настроек DeepSeek Harnes
   tui-state/{settings.json, theme.json, lang.json, permission.json,
              history.jsonl, model-recents.json, resume.txt, …}
   home/{settings.yaml, cordis.patch.yml}     (если есть)
+  skills/<имя>/{SKILL.md, tools/, references/, …}
   sessions/                                  (только с --with-sessions)
   credentials.yaml                           (только с -s, режим 600)
   manifest.txt, checksums.txt
 
 НЕ входит: node_modules/ (ставится заново), session-index.json и
-session-mounts.json (кэш и чужие pid'ы), inject/ (unix-сокеты),
-~/.dsh/skills/ — личные скиллы (SKILL.md), их восстанавливай отдельно.
+session-mounts.json (кэш и чужие pid'ы), inject/ (unix-сокеты).
 
-Скиллы (~/.dsh/skills/<имя>/SKILL.md) в бэкап не попадают: это обычные
-каталоги с текстом, их немного и они маленькие.
-
-  # 1) скилл из своего репозитория/рабочей папки
-  mkdir -p ~/.dsh/skills
-  rsync -a <путь>/md-answer_skill/ ~/.dsh/skills/md-answer_skill/
-
-  # 2) скилл, поставленный плагином (например fact-check), — вместе с плагином
-  dsh plugin --profile <имя> install
-
-  # 3) если сохранил каталог ~/.dsh/skills руками — просто верни его целиком
-  rsync -a <резервная-копия>/skills/ ~/.dsh/skills/
+Скиллы (~/.dsh/skills) теперь входят в бэкап целиком: при разгрузке они
+дополняют каталог, не удаляя скиллов, которых в бэкапе нет.
 
 После разгрузки на новой машине:
   dsh plugin --profile <имя> install     # вернуть плагины из package.json
@@ -163,7 +153,7 @@ EOF
 
 _dsh_backup_save() {
 	local dsh=$1 tui=$2 target=$3 dry=$4 secrets=$5 sessions=$6
-	local stamp root name f src out n total_prof=0 total_tui=0 total_home=0
+	local stamp root name f src out n total_prof=0 total_tui=0 total_home=0 total_skills=0
 	local -a profiles
 	local -a tui_files=(
 		settings.json theme.json lang.json permission.json
@@ -282,6 +272,22 @@ _dsh_backup_save() {
 		print "домашний слой: файлов — $total_home"
 	fi
 
+	# ── скиллы ───────────────────────────────────────────────────────────
+	if [[ -d "$dsh/skills" ]]; then
+		if _dsh_backup_copy_tree "$dsh/skills" "$root/skills" "$dry"; then
+			if (( dry )); then
+				print "скиллы: будут скопированы"
+			else
+				total_skills=$(find "$root/skills" -type f 2>/dev/null | wc -l | tr -d ' ')
+				print "скиллы: файлов — ${total_skills:-0}"
+			fi
+		else
+			print -u2 "  ✗ скиллы скопировать не удалось"
+		fi
+	else
+		print "скиллы: каталог не найден — пропускаю"
+	fi
+
 	# ── манифест и контрольные суммы ─────────────────────────────────────
 	if (( dry )); then
 		print "[dry-run] манифест: $root/manifest.txt"
@@ -290,7 +296,7 @@ _dsh_backup_save() {
 	fi
 
 	if ! _dsh_backup_manifest "$root" "$dsh" "$tui" "$secrets" "$sessions" \
-		"${(j: :)profiles}" "$total_prof" "$total_tui"; then
+		"${(j: :)profiles}" "$total_prof" "$total_tui" "$total_skills"; then
 		print -u2 "dsh_backup: не удалось записать манифест"
 		return 1
 	fi
@@ -304,7 +310,7 @@ _dsh_backup_save() {
 # ─────────────────────────────────────────────────────────────────────────────
 
 _dsh_backup_manifest() {
-	local root=$1 dsh=$2 tui=$3 secrets=$4 sessions=$5 profiles=$6 pn=$7 tn=$8
+	local root=$1 dsh=$2 tui=$3 secrets=$4 sessions=$5 profiles=$6 pn=$7 tn=$8 sk=$9
 	local dsh_ver tui_ver when tui_present pj
 
 	when=$(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -332,6 +338,7 @@ _dsh_backup_manifest() {
 		print "profiles: $profiles"
 		print "profile-files: $pn"
 		print "tui-state-files: $tn"
+		print "skills-files: ${sk:-0}"
 		print "tui-dir: $tui_present"
 		print "sessions: $(( sessions ? 1 : 0 ))"
 		print "secrets: $(( secrets ? 1 : 0 ))"
@@ -351,7 +358,7 @@ _dsh_backup_manifest() {
 
 _dsh_backup_load() {
 	local dsh=$1 tui=$2 target=$3 dry=$4 secrets=$5 force=$6 sessions=$7
-	local root='' name f src out p safety s sn n skip extra
+	local root='' name f src out p safety s sn n skip extra sk skills_restored=0
 	local -a found restored to_install
 
 	# ── 1. найти каталог бэкапа ──────────────────────────────────────────
@@ -427,6 +434,12 @@ _dsh_backup_load() {
 				[[ -f "$tui/$f" ]] && cp -p "$tui/$f" "$safety/tui-state/$f" 2>/dev/null
 			done
 		fi
+		if [[ -d "$dsh/skills" ]]; then
+			mkdir -p "$safety/skills" 2>/dev/null
+			for sk in "$dsh"/skills/*(N/); do
+				_dsh_backup_copy_tree "$sk" "$safety/skills/${sk:t}" 0
+			done
+		fi
 		print "страховка текущего состояния: $safety"
 	fi
 
@@ -499,6 +512,18 @@ _dsh_backup_load() {
 		print "домашний слой DSH: восстановлен"
 	fi
 
+	# ── 7.5 скиллы ───────────────────────────────────────────────────────
+	if [[ -d "$root/skills" ]]; then
+		if _dsh_backup_copy_tree "$root/skills" "$dsh/skills" "$dry"; then
+			skills_restored=1
+			if (( ! dry )); then
+				print "скиллы: файлов — $(find "$dsh/skills" -type f 2>/dev/null | wc -l | tr -d ' ')"
+			fi
+		else
+			print -u2 "  ✗ скиллы восстановить не удалось"
+		fi
+	fi
+
 	if [[ -f "$root/credentials.yaml" ]]; then
 		if (( secrets )); then
 			if _dsh_backup_copy "$root/credentials.yaml" "$dsh/.credentials.yaml" "$dry"; then
@@ -524,9 +549,11 @@ _dsh_backup_load() {
 			print "  dsh plugin --profile $p install"
 		done
 	fi
-	print "скиллы (~/.dsh/skills) в бэкап не входят — восстанови их отдельно:"
-	print "  rsync -a <источник>/<скилл>/ ~/.dsh/skills/<скилл>/"
-	print "  или dsh plugin --profile <имя> install (для скиллов из плагинов)"
+	if (( skills_restored )); then
+		print "скиллы: восстановлены из бэкапа (существующие каталоги дополнены)"
+	else
+		print "скиллы: в бэкапе их нет — верни ~/.dsh/skills отдельно"
+	fi
 	print "перезапусти TUI: dsh tui   (страховка: $safety)"
 	return 0
 }
