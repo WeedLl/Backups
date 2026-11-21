@@ -1,6 +1,6 @@
 # dsh-session-alerts
 
-Системные уведомления macOS для DSH (0.2.0-rc.2): когда ход агента завершился,
+Системные уведомления macOS и Linux для DSH (0.2.0-rc.2): когда ход агента завершился,
 упал или прерван, когда инструмент просит подтверждение, когда агент задаёт
 вопрос, и когда план ждёт ревью. Host-only cordis-плагин: **все сессии,
 включая фоновые и субагентские** — никаких исключений «только foreground».
@@ -112,7 +112,14 @@ dsh plugin --profile headless remove dsh-session-alerts
 
 ## Иконка и клик по уведомлению
 
-Транспорт по умолчанию — `osascript`. Ограничение macOS: у `osascript` нет
+На Linux транспорт — `notify-send` (пакет `libnotify`, на Arch/CachyOS:
+`sudo pacman -S libnotify`). Заголовок и тело передаются отдельными argv,
+экранирование не нужно; заголовок ≤ 60, тело ≤ 200 символов. У `notify-send`
+нет флагов звука и действия по клику, поэтому `sound`, `soundOn*` и
+`activate` на Linux игнорируются, а уведомление показывает штатный демон
+рабочего стола (mako/dunst/swaync в зависимости от настройки сессии).
+
+На macOS транспорт по умолчанию — `osascript`. Ограничение macOS: у `osascript` нет
 собственного app-bundle, поэтому Notification Center приписывает уведомление
 **Script Editor** (иконка — Script Editor), а клик по уведомлению открывает
 Script Editor / папку со скриптами. Изменить это средствами osascript нельзя.
@@ -141,10 +148,11 @@ terminal-notifier (не работают на UserNotifications API), поэто
   `session/disposed`, и пассивные waterfall-слушатели `approval/request` /
   `user-questions/request`: плагин уведомляет и **всегда** возвращает
   `next()` — чужой запрос не потребляется, ответ принимает настоящий UI.
-- Транспорт: `execFile('osascript', ['-e', 'display notification …'])` без
-  shell, `stdio: 'ignore'`, таймаут 3 с. Если в PATH есть `terminal-notifier`,
-  используется он (зависимость в package.json не добавляется). Упавший
-  `osascript` — только `ctx.logger.warn`, процесс DSH не падает.
+- Транспорт: macOS — `execFile('osascript', ['-e', 'display notification …'])`
+  без shell (или `terminal-notifier`, если он есть в PATH; зависимость в
+  package.json не добавляется); Linux — `execFile('notify-send', ['-a', 'DSH',
+  title, body])`. Везде `stdio: 'ignore'` и таймаут 3 с. Упавший транспорт —
+  только `ctx.logger.warn`, процесс DSH не падает.
 - Экранирование: из текста убираются `"` и `\`, переносы строк схлопываются,
   заголовок ≤ 60, тело ≤ 200 символов.
 - Плагин ничего не пишет в stdout/stderr (кадр TUI не ломается), не читает и

@@ -1,7 +1,7 @@
 {
   "name": "dsh-session-alerts",
   "version": "1.0.0",
-  "description": "macOS system notifications for DSH sessions: turn completion, interrupts, approval requests and user questions — including background and subagent sessions. Host-only.",
+  "description": "Desktop notifications for DSH sessions: turn completion, interrupts, approval requests and user questions — including background and subagent sessions. macOS (osascript/terminal-notifier) and Linux (notify-send). Host-only.",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -43,7 +43,9 @@
     "dsh",
     "plugin",
     "notifications",
-    "macos"
+    "macos",
+    "linux",
+    "notify-send"
   ],
   "license": "MIT"
 }

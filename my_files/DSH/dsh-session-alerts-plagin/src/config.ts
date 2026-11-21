@@ -31,7 +31,11 @@ export interface SessionAlertsConfig {
   debounceMs?: number
   /** Global rate limit: maximum notifications per rolling minute. */
   maxPerMinute?: number
-  /** System sound for notifications; `'none'` silences everything. Any macOS sound name (e.g. `'Glass'`, `'Ping'`, `'Bottle'`) is accepted. */
+  /**
+   * System sound for notifications; `'none'` silences everything. On macOS any
+   * sound name (e.g. `'Glass'`, `'Ping'`, `'Bottle'`) is accepted; on Linux
+   * `notify-send` has no sound flag, so this value and `soundOn*` are ignored.
+   */
   sound?: string
   /** Play sound for turn-completion notifications. */
   soundOnFinish?: boolean
@@ -46,7 +50,8 @@ export interface SessionAlertsConfig {
   /**
    * Bundle id brought to front when the notification is clicked, e.g.
    * `'net.kovidgoyal.kitty'`. terminal-notifier only — osascript cannot
-   * control click behavior (its notifications open Script Editor).
+   * control click behavior (its notifications open Script Editor). Ignored on
+   * Linux: `notify-send` has no click-action flag.
    */
   activate?: string
   /** Notification copy language. */

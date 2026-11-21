@@ -1,5 +1,5 @@
 /**
- * session-alerts — macOS system notifications for DSH sessions.
+ * session-alerts — desktop notifications for DSH sessions (macOS and Linux).
  *
  * A host-only cordis plugin. One standing host composition observes every
  * session (foreground, background, subagents — scope dispatch flows UP the
@@ -20,8 +20,9 @@
  * approval/question. Subagent TURN notifications are off by default; their
  * approvals and questions are always notified.
  *
- * The plugin writes nothing to stdout/stderr: notifications go through
- * `execFile('osascript', …)` (or `terminal-notifier` when present) with
+ * The plugin writes nothing to stdout/stderr: on macOS notifications go
+ * through `execFile('osascript', …)` (or `terminal-notifier` when present),
+ * on Linux through `execFile('notify-send', …)`, always with
  * `stdio: 'ignore'`, a 3-second timeout, and failures degrade to a logger
  * warning.
  * @module index

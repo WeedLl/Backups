@@ -11,13 +11,13 @@ rsync -a md-answer_skill/ ~/.dsh/skills/md-answer_skill/
 
 | Путь | Роль |
 |---|---|
-| `/Users/weed/Documents/DSH/md-answer_skill` | **рабочая копия**: здесь правки |
+| `$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-md-answer-skill` | **рабочая копия**: здесь правки |
 | `~/.dsh/skills/md-answer_skill` | **установленная**: её видит DSH, все профили |
 
 После правок рабочей копии — синхронизация в одну сторону:
 
 ```bash
-rsync -a /Users/weed/Documents/DSH/md-answer_skill/ ~/.dsh/skills/md-answer_skill/
+rsync -a "$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-md-answer-skill/" ~/.dsh/skills/md-answer_skill/
 ```
 
 Копии расходятся молча: DSH читает только установленную, поэтому «поменял и не проверил» выглядит как «поменял, а ничего не изменилось». Это правило проще соблюдать, чем помнить.
@@ -26,7 +26,7 @@ rsync -a /Users/weed/Documents/DSH/md-answer_skill/ ~/.dsh/skills/md-answer_skil
 
 ```bash
 rm -rf ~/.dsh/skills/md-answer_skill
-ln -s /Users/weed/Documents/DSH/md-answer_skill ~/.dsh/skills/md-answer_skill
+ln -s "$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-md-answer-skill" ~/.dsh/skills/md-answer_skill
 ```
 
 Тогда каталог один и синхронизировать нечего.
@@ -44,7 +44,7 @@ DSH берёт имя из `name:` в YAML-frontmatter `SKILL.md`, а не из 
 ## Обновление и удаление
 
 ```bash
-rsync -a /Users/weed/Documents/DSH/md-answer_skill/ ~/.dsh/skills/md-answer_skill/   # обновить
+rsync -a "$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-md-answer-skill/" ~/.dsh/skills/md-answer_skill/   # обновить
 rm -rf ~/.dsh/skills/md-answer_skill                                                   # удалить
 ```
 

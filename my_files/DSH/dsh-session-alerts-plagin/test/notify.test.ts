@@ -4,6 +4,7 @@ import {
   capLength,
   createNotifier,
   findTerminalNotifier,
+  linuxNotifyArgs,
   osascriptArgs,
   prepareBody,
   prepareTitle,
@@ -45,6 +46,19 @@ test('osascriptArgs output contains no quotes or backslashes from user text', ()
   assert.equal(script.includes('\n'), false)
 })
 
+test('linuxNotifyArgs passes title and body as separate argv entries', () => {
+  assert.deepEqual(
+    linuxNotifyArgs({ title: 'DSH · ход завершён', body: 'a "quoted" \\ path', sound: 'Glass' }),
+    ['-a', 'DSH', 'DSH · ход завершён', 'a "quoted" \\ path'],
+  )
+})
+
+test('linuxNotifyArgs caps title and body', () => {
+  const args = linuxNotifyArgs({ title: 't'.repeat(100), body: 'b'.repeat(500), sound: 'none' })
+  assert.equal(args[2]!.length, 60)
+  assert.equal(args[3]!.length, 200)
+})
+
 test('terminalNotifierArgs passes -title/-message and -sound only when sound set', () => {
   assert.deepEqual(
     terminalNotifierArgs({ title: 'T', body: 'B', sound: 'Glass' }),
@@ -77,6 +91,7 @@ test('createNotifier uses osascript by default and warns on exec failure', () =>
   const calls: Array<{ file: string; args: string[] }> = []
   const notifier = createNotifier({
     warn: { warn: (m) => warnings.push(m) },
+    platform: 'darwin',
     exec: (file, args, _opts, callback) => {
       calls.push({ file, args })
       callback(new Error('killed by timeout'))
@@ -93,6 +108,7 @@ test('createNotifier prefers terminal-notifier when requested', () => {
   const calls: Array<{ file: string }> = []
   const notifier = createNotifier({
     warn: { warn: () => {} },
+    platform: 'darwin',
     preferTerminalNotifier: true,
     terminalNotifierAvailable: true,
     exec: (file, _args, _opts, callback) => {
@@ -102,6 +118,27 @@ test('createNotifier prefers terminal-notifier when requested', () => {
   })
   notifier({ title: 't', body: 'b', sound: 'none' })
   assert.equal(calls[0]!.file, 'terminal-notifier')
+})
+
+test('createNotifier uses notify-send on Linux and warns on exec failure', () => {
+  const warnings: string[] = []
+  const calls: Array<{ file: string; args: string[] }> = []
+  const notifier = createNotifier({
+    warn: { warn: (m) => warnings.push(m) },
+    platform: 'linux',
+    preferTerminalNotifier: true,
+    terminalNotifierAvailable: true,
+    exec: (file, args, _opts, callback) => {
+      calls.push({ file, args })
+      callback(new Error('notify-send: no display'))
+    },
+  })
+  notifier({ title: 't', body: 'b', sound: 'Glass', activate: 'net.kovidgoyal.kitty' })
+  assert.equal(calls.length, 1)
+  assert.equal(calls[0]!.file, 'notify-send')
+  assert.deepEqual(calls[0]!.args, ['-a', 'DSH', 't', 'b'])
+  assert.equal(warnings.length, 1)
+  assert.match(warnings[0]!, /notification failed \(notify-send\)/)
 })
 
 test('createNotifier never throws on spawn errors', () => {

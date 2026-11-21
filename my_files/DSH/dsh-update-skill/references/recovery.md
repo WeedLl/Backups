@@ -34,10 +34,10 @@ node ~/.dsh/skills/dsh-update/scripts/collect.mjs | \
   node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);console.log(j.profiles.tui.deps["dsh-at-file"])})'
 
 # 2. исходник локального форка
-ls -la /Users/weed/Documents/Ai/DSH/<форк>
+ls -la "$HOME/Documents/ForSys/Backup/my_files/DSH/<форк>"
 
 # 3. переустановка из исходника
-dsh plugin --profile tui add "file:/Users/weed/Documents/Ai/DSH/<форк>"
+dsh plugin --profile tui add "file:$HOME/Documents/ForSys/Backup/my_files/DSH/<форк>"
 ```
 
 Если ошибка про отсутствующий экспорт — плагин отстал от ядра. Варианты:
@@ -49,7 +49,7 @@ dsh plugin --profile tui add "file:/Users/weed/Documents/Ai/DSH/<форк>"
 Признак: `dsh-tui-pkg` вдруг отвечает по-английски / потерял русскую локализацию.
 
 ```bash
-dsh plugin --profile tui add "file:/Users/weed/Documents/Ai/DSH/dsh-tui-pkg-ru"
+dsh plugin --profile tui add "file:$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-tui-pkg-ru"
 ```
 
 После этого `check.sh` снова покажет его как `file:`.

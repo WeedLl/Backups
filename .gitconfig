@@ -4,14 +4,14 @@
 [color]
 	ui = true
 [core]
-#Также указан жесткий путь
-	editor =/opt/homebrew/bin/nvim
+# nvim (Linux)
+	editor =/usr/bin/nvim
 [diff]
 #Название своего варианта
 	tool = shvimdiff
 [difftool "shvimdiff"]
-#Сделал "кастомный" vimdiff - казал жеский путь к vimdiff MacVim, так как обычный не дружил с UltiSnips
-	cmd = sh -c \"/opt/homebrew/bin/nvim -d \\\"$LOCAL\\\" \\\"$REMOTE\\\"\"
+#Кастомный vimdiff; nvim из Linux
+	cmd = sh -c \"/usr/bin/nvim -d \\\"$LOCAL\\\" \\\"$REMOTE\\\"\"
 [merge]
     tool = nvim
 [mergetool "nvim"]

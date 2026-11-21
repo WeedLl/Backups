@@ -1,21 +1,22 @@
 ""#### Основные параметы
-""Установка языка
-set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
-language en_US                 " sets the language of the messages / ui (vim)
+""Язык: на Linux локаль en_US.utf8; GUI-опции — только для GUI
+if has('gui_running')
+	set langmenu=en_US.UTF-8
+	set guifont=JetBrainsMono\ NFM:h14
+	set mousehide
+endif
+silent! language en_US.utf8
 set termencoding=utf-8 "Кодировка терминала
 set encoding=utf-8 " Кодировка файлов по умолчанию
 set fileencodings=utf8,cp1251
 " Вырубаем .swp и ~ (резервные) файлы
 set nobackup
 set noswapfile
-"" Сторонний шрифт для MacVim от NerdFont - JetBrainsMono NFM
-set guifont=JetBrainsMono\ NFM:h14
 ""Меню
 set number relativenumber "" Нумерация строк на полях
 set ruler ""Статус в правом нижнем углу
 set showcmd "Отображение вводимой комманды
 set colorcolumn=120 ""Вертикальная линия
-set mousehide "Спрятать курсор мыши когда набираем текст
 set mouse=a "Включить поддержку мыши
 set laststatus=2 "Постоянное отображение статуса
 set scrolloff=15 "Всегда иметь визульные отступы от верхнего и нижнего края
@@ -56,7 +57,11 @@ set foldnestmax=6
 let g:markdown_folding=1
 
 ""Правописание
-set spell spelllang=ru_ru,en_us
+if !empty(globpath(&runtimepath, 'spell/ru.utf-8.spl'))
+	silent! set spell spelllang=ru_ru,en_us
+else
+	silent! set spell spelllang=en_us
+endif
 
 ""####Питонячие фишки
 " Настройки табов для Python, согласно рекомендациям
@@ -79,7 +84,9 @@ set t_Co=256
 
 
 ""####Плагины
-call plug#begin()
+let s:plug = expand('~/.vim/autoload/plug.vim')
+if filereadable(s:plug)
+	call plug#begin()
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -94,10 +101,11 @@ Plug 'preservim/vim-markdown'
 Plug 'lervag/vimtex'
 Plug 'vim-python/python-syntax'
 
-call plug#end()
+	call plug#end()
+endif
 
 set background=dark
-colorscheme gruvbox
+silent! colorscheme gruvbox
 "" Нужно, если есть проблеимы с подсветкой ошибок? Ставится после выбора темы!
 hi SpellBad cterm=underline ctermfg=red
 

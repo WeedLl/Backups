@@ -14,13 +14,21 @@ vim.api.nvim_create_autocmd("InsertLeave", {
 	end,
 })
 
--- Fallback на indent-folding для файлов без Treesitter-парсера (режим fold)
-vim.api.nvim_create_autocmd("FileType", {
+-- Fallback на indent-folding для файлов без Treesitter-парсера.
+-- FileType не срабатывает для файлов с пустым filetype (например .foo),
+-- поэтому дополнительно слушаем BufWinEnter.
+vim.api.nvim_create_autocmd({ "FileType", "BufWinEnter" }, {
 	group = augroup,
 	callback = function()
 		local ft = vim.bo.filetype
 		if ft == "" or ft == "text" or ft == "plaintext" then
-			vim.opt_local.foldmethod = "indent"
+			vim.wo.foldmethod = "indent"
+		else
+			-- foldmethod=expr использует treesitter; для файлов без
+			-- парсера откатываемся на indent, чтобы foldexpr не падал.
+			if not pcall(vim.treesitter.get_parser, 0, ft) then
+				vim.wo.foldmethod = "indent"
+			end
 		end
 	end,
 })

@@ -3,6 +3,9 @@
 --
 -- Здесь собраны:
 --   * Linux-адаптеры: fcitx5, IBus, X11 xkb-switch, GNOME g3kb-switch;
+--   * niri вынесен в core/layout/niri.lua: он отдаёт JSON и адресует
+--     раскладку индексом, поэтому не вписывается в простую схему
+--     «одна команда — один ID»;
 --   * fallback для macOS через внешний macism;
 --   * декларативный custom-бэкенд для Wayland-композиторов, которые
 --     не покрыты стандартными утилитами (Hyprland, Sway, KDE и т.п.).
@@ -322,7 +325,7 @@ end
 ---Короткая подсказка для сообщения об отсутствии Linux-бэкенда.
 ---@return string
 function M.supported_hint()
-	return "fcitx5-remote, ibus, xkb-switch (X11) или g3kb-switch (GNOME)"
+	return "niri (Wayland), fcitx5-remote, ibus, xkb-switch (X11) или g3kb-switch (GNOME)"
 end
 
 ---Fallback для macOS: внешний macism.

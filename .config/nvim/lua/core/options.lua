@@ -4,6 +4,22 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 
+-- Python-provider: явный путь к global venv, потому что Neovim может
+-- запускаться не из zsh (niri/Noctalia/launcher), где ~/.global_venv/bin
+-- нет в PATH. Если venv удалён, оставляем выбор Neovim по умолчанию.
+local python_host = vim.fn.expand("~/.global_venv/bin/python")
+if vim.fn.executable(python_host) == 1 then
+	vim.g.python3_host_prog = python_host
+end
+
+-- Mason ставит LSP-серверы и форматтеры не в системный PATH, а в
+-- ~/.local/share/nvim/mason/bin. Без этого nvim-lspconfig и conform
+-- не находят pyright/ruff/stylua, хотя пакеты установлены.
+local mason_bin = vim.fn.expand("~/.local/share/nvim/mason/bin")
+if vim.fn.isdirectory(mason_bin) == 1 then
+	vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+end
+
 -- Кодировка (Neovim использует UTF-8 по умолчанию, но явно не повредит)
 opt.fileencoding = "utf-8"
 opt.fileencodings = { "utf-8", "cp1251" }

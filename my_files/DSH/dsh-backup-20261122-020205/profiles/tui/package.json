@@ -1,0 +1,23 @@
+{
+  "name": "dsh-profile-tui",
+  "private": true,
+  "dependencies": {
+    "@deepseek-harness-tui/dsh-tui": "^0.20.2",
+    "dsh-fact-check": "1.5.2",
+    "dsh-session-alerts": "file:/home/weed/Documents/ForSys/Backup/my_files/DSH/dsh-session-alerts-plagin",
+    "dsh-session-delete": "file:/home/weed/Documents/ForSys/Backup/my_files/DSH/dsh-session-delete-plagin",
+    "dsh-tui-workspace-sidebar": "0.1.5"
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-harness-tui/dsh-tui",
+        "dsh-fact-check",
+        "dsh-session-alerts",
+        "dsh-session-delete",
+        "dsh-tui-workspace-sidebar"
+      ]
+    }
+  }
+}

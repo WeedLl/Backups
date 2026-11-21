@@ -5,7 +5,7 @@ _DiffBackupUnload() {
 
 	local -a components=(
 		-h
-		--Help
+		--help
 		all
 		bash
 		zsh
@@ -26,8 +26,9 @@ _DiffBackupUnload() {
 		alacritty
 		yazi
 		tmux
-		aerospace
 		treemd
+		niri
+		noctalia
 	)
 
 	local -a diff_components=()

@@ -10,8 +10,10 @@
 -- Платформы:
 --   * macOS — Carbon TIS через LuaJIT FFI (core/layout/macos.lua),
 --     без внешних бинарей; при недоступности FFI — fallback на macism;
---   * Linux — fcitx5, IBus, xkb-switch (X11), g3kb-switch (GNOME);
---     для остальных Wayland-композиторов можно передать свой backend.
+--   * Linux/Wayland с niri — нативный IPC niri (core/layout/niri.lua):
+--     `niri msg --json keyboard-layouts` и `niri msg action switch-layout`;
+--   * остальной Linux — fcitx5, IBus, xkb-switch (X11), g3kb-switch (GNOME);
+--     для прочих Wayland-композиторов можно передать свой backend.
 --
 -- Учитываемые сценарии:
 --   * InsertEnter/InsertLeave, включая i_CTRL-O, Ctrl-C и Ctrl-[;
@@ -32,6 +34,7 @@
 -- ============================================================
 
 local macos = require("core.layout.macos")
+local niri = require("core.layout.niri")
 local command = require("core.layout.command")
 
 local M = {}
@@ -169,7 +172,17 @@ local function ensure_backend()
 			end
 		end
 	elseif osname == "Linux" then
-		backend, err = command.detect(opts)
+		-- niri сам управляет раскладками, поэтому сначала его IPC:
+		-- это нативный путь без fcitx5/IBus и без X11-утилит.
+		local niri_backend, niri_err = niri.backend(opts)
+		if niri_backend then
+			backend = niri_backend
+		else
+			backend, err = command.detect(opts)
+			if not backend and niri_err then
+				err = "niri: " .. tostring(niri_err) .. "; " .. tostring(err)
+			end
+		end
 	else
 		err = "ОС " .. tostring(osname) .. " не поддерживается"
 	end

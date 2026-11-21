@@ -266,11 +266,14 @@ DSH_UPDATE_KEEP_SNAPSHOTS=3 DSH_UPDATE_KEEP_REPORTS=10 .../snapshot.sh prune
 ## 10. Локальные форки: что делать при поломке
 
 `check.sh` показывает `file:`-зависимости и их исходники. Если после обновления
-форк не грузится (в `verify --smoke` — `failed to import`):
+форк не грузится (в `verify --smoke` — `failed to import`).
+
+Путь ниже — ожидаемое место локальных исходников в этом репозитории.
+Исходники `dsh-tui-pkg-ru` в бэкап не входят; если их нет, сначала верни каталог.
 
 ```bash
 # переустановить из локального исходника (по просьбе пользователя)
-dsh plugin --profile tui add "file:/Users/weed/Documents/Ai/DSH/dsh-tui-pkg-ru"
+dsh plugin --profile tui add "file:$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-tui-pkg-ru"
 
 # посмотреть, что именно сломалось
 ~/.dsh/skills/dsh-update/scripts/verify.sh --profile tui --smoke

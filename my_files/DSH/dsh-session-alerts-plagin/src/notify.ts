@@ -1,8 +1,10 @@
 /**
- * macOS notification transport: `osascript display notification` via
- * `execFile` (no shell), with an optional `terminal-notifier` fast path when
- * the binary is present in PATH. Never writes to stdout/stderr and never
- * throws — failures are reported through the injected warn sink only.
+ * Desktop notification transports:
+ * - macOS: `osascript display notification` via `execFile` (no shell), with an
+ *   optional `terminal-notifier` fast path when the binary is present in PATH;
+ * - Linux: `notify-send` (libnotify), title and body passed as separate argv.
+ * Never writes to stdout/stderr and never throws — failures are reported
+ * through the injected warn sink only.
  *
  * Escape discipline (AppleScript string literals are double-quoted, and the
  * whole script is passed as a single argv entry — no shell is involved):
@@ -91,6 +93,18 @@ export function terminalNotifierArgs(payload: NotificationPayload): string[] {
   return args
 }
 
+/**
+ * Build the `notify-send` argv used on Linux. Title and body travel as
+ * separate argv entries, so no AppleScript/shell escaping is needed; only the
+ * shared length caps apply. `notify-send` has no sound or click-action flags,
+ * so `sound` and `activate` are ignored here.
+ */
+export function linuxNotifyArgs(payload: NotificationPayload): string[] {
+  const title = capLength(payload.title.trim(), TITLE_LIMIT)
+  const body = capLength(payload.body.trim(), BODY_LIMIT)
+  return ['-a', 'DSH', title, body]
+}
+
 /** True when a `terminal-notifier` executable exists in PATH. */
 export function findTerminalNotifier(env: { PATH?: string } = process.env): boolean {
   const path = env.PATH
@@ -120,6 +134,8 @@ export type ExecFileLike = (
 
 export interface NotifierOptions {
   warn: WarnSink
+  /** Target platform; defaults to `process.platform`. Injectable for tests. */
+  platform?: NodeJS.Platform
   /** Prefer `terminal-notifier` when available in PATH. */
   preferTerminalNotifier?: boolean
   /** Detected once by the caller; kept here for testability. */
@@ -134,8 +150,9 @@ export interface Notifier {
 
 /**
  * Debug/testing seam: when `DSH_SESSION_ALERTS_LOG_ONLY=1`, the notifier
- * records every payload here instead of spawning osascript /
- * terminal-notifier. Used by the integration tests so they never emit real
+ * records every payload here instead of spawning the platform transport
+ * (osascript / terminal-notifier / notify-send). Used by the integration
+ * tests so they never emit real
  * notifications; never writes to stdout/stderr.
  */
 export const capturedPayloads: NotificationPayload[] = []
@@ -168,7 +185,10 @@ export function createNotifier(options: NotifierOptions): Notifier {
   const warn = options.warn
   const timeoutMs = options.timeoutMs ?? EXEC_TIMEOUT_MS
   const exec = options.exec ?? execFile
-  const useTerminalNotifier = options.preferTerminalNotifier === true && options.terminalNotifierAvailable !== false
+  const platform = options.platform ?? process.platform
+  const useLinuxNotifySend = platform === 'linux'
+  const useTerminalNotifier = !useLinuxNotifySend &&
+    options.preferTerminalNotifier === true && options.terminalNotifierAvailable !== false
   const logOnly = process.env.DSH_SESSION_ALERTS_LOG_ONLY === '1'
   const captureFile = captureToFile()
 
@@ -183,7 +203,10 @@ export function createNotifier(options: NotifierOptions): Notifier {
     }
     let command: string
     let args: string[]
-    if (useTerminalNotifier) {
+    if (useLinuxNotifySend) {
+      command = 'notify-send'
+      args = linuxNotifyArgs(payload)
+    } else if (useTerminalNotifier) {
       command = 'terminal-notifier'
       args = terminalNotifierArgs(payload)
     } else {

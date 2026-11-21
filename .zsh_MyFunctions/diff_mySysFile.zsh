@@ -1,13 +1,13 @@
 #Сравнивает различия. Без аргументов - только отчёт по всем файлам.
-#diff_bzvp                  # проверить всё, только отчёт
-#diff_bzvp zsh git          # проверить только zsh и git
-#diff_bzvp diff             # проверить всё + vimdiff для отличающихся
-#diff_bzvp diff zsh vim     # vimdiff только для zsh и vim (если они отличаются)
-#Пришлось принудительно прописать путь к vimdiff из MacVim, ибо была ошибка UltiSnipps как в git difftool.
+#diff_mySysFile                  # проверить всё, только отчёт
+#diff_mySysFile zsh git          # проверить только zsh и git
+#diff_mySysFile diff             # проверить всё + nvim -d для отличающихся
+#diff_mySysFile diff zsh vim     # nvim -d только для zsh и vim (если они отличаются)
+# nvim берётся из PATH; старый жёсткий путь /opt/homebrew/bin/nvim был macOS-спецификой.
 
 diff_mySysFile() {
 	if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-		cat <<EOF
+		command cat <<EOF
 diff_mySysFile — сравнить текущие файлы с бэкапом. Все, по одному или попарно "nVim -d"
 
 Доступные компоненты:
@@ -31,8 +31,9 @@ diff_mySysFile — сравнить текущие файлы с бэкапом.
   alacritty     - .config/alacritty/
   yazi          - .config/yazi/
   tmux          - .config/tmux/tmux.conf
-  aerospace     - .config/aerospace/aerospace.toml
   treemd        - .config/treemd/config.toml
+  niri          - .config/niri/
+  noctalia      - .config/noctalia/ (config.toml активный; full_config.toml применять вручную)
 
 
 Пример:
@@ -41,7 +42,8 @@ EOF
 		return 0
 	fi
 
-	local vimdiff_McV="/opt/homebrew/bin/nvim"
+	local vimdiff_bin
+	vimdiff_bin="$(command -v nvim 2>/dev/null)"
 	local dest="~/Documents/ForSys/Backup"
 	dest=${~dest}
 
@@ -83,8 +85,9 @@ EOF
 		alacritty "~/.config/alacritty:$dest/.config/alacritty"
 		yazi "~/.config/yazi:$dest/.config/yazi"
 		tmux "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
-		aerospace "~/.config/aerospace/aerospace.toml:$dest/.config/aerospace/aerospace.toml"
 		treemd "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
+		niri "~/.config/niri:$dest/.config/niri"
+		noctalia "~/.config/noctalia:$dest/.config/noctalia"
 	)
 	typeset -A diff_details
 
@@ -99,6 +102,7 @@ EOF
 	local different=()
 	local identical=()
 	local diff_output
+	local missing_both=()
 
 	for key in "${components[@]}"; do
 		if [[ -z "${items[$key]+x}" ]]; then
@@ -119,8 +123,7 @@ EOF
 		[[ ! -e "$backup" && ! -L "$backup" ]] && backup_exists=false
 
 		if [[ $home_exists = false && $backup_exists = false ]]; then
-			missing_home+=$key
-			missing_backup+=$key
+			missing_both+=$key
 			continue
 		fi
 
@@ -202,12 +205,23 @@ EOF
 		echo ""
 	fi
 
+	if [[ ${#missing_both} -gt 0 ]]; then
+		echo "Нет ни в системе, ни в бэкапе:"
+		for k in "${missing_both[@]}"; do
+			echo "  $k"
+		done
+		echo ""
+	fi
+
 	if [[ $found_diff = false ]]; then
 		echo "Различий нет."
 	fi
 
 	# vimdiff_McV для отличающихся
-	if [[ $use_vimdiff_McV = true && ${#different} -gt 0 ]]; then
+	if [[ $use_vimdiff_McV = true && ${#different} -gt 0 && -z $vimdiff_bin ]]; then
+		echo ""
+		echo "nVim не найден в PATH — сравнение в редакторе пропущено."
+	elif [[ $use_vimdiff_McV = true && ${#different} -gt 0 ]]; then
 		echo ""
 		echo "Открытие nVim -d для отличающихся файлов..."
 		for key in "${different[@]}"; do
@@ -247,13 +261,13 @@ EOF
 					for f in "${diff_files[@]}"; do
 						echo ""
 						echo ">>> $key/$f"
-						$vimdiff_McV -d "$current/$f" "$backup/$f"
+						"$vimdiff_bin" -d "$current/$f" "$backup/$f"
 					done
 				fi
 			else
 				echo ""
 				echo ">>> $key: $current <-> $backup"
-				$vimdiff_McV -d "$current" "$backup"
+				"$vimdiff_bin" -d "$current" "$backup"
 			fi
 		done
 	elif [[ $use_vimdiff_McV = true && ${#different} -eq 0 ]]; then

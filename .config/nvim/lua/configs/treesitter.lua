@@ -2,6 +2,17 @@
 -- nvim-treesitter (ветка main, Neovim 0.12)
 -- ============================================================
 
+-- Для установки парсеров нужен tree-sitter CLI (пакет tree-sitter-cli):
+-- Neovim его не поставляет, а nvim-treesitter вызывает `tree-sitter build`.
+-- Если CLI нет — предупреждаем один раз и не спамим ошибками установки.
+if vim.fn.executable("tree-sitter") == 0 then
+	vim.notify(
+		"nvim-treesitter: не найден tree-sitter CLI; установи tree-sitter-cli",
+		vim.log.levels.WARN
+	)
+	return
+end
+
 -- Установка парсеров (аналог ensure_installed)
 require("nvim-treesitter").install({
 	"python",

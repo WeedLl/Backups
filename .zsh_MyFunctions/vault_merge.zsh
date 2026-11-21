@@ -484,7 +484,7 @@ _vm_group_by_first() {
 }
 
 _vm_usage() {
-	cat <<'EOF'
+	command cat <<'EOF'
 vault_merge — слияние двух хранилищ Obsidian в третье (исходники не изменяются)
 
 Использование:
