@@ -1,6 +1,7 @@
     window-rule {
-        geometry-corner-radius 20 // Set every window radius to 20
+        geometry-corner-radius 10 // Set every window radius to 10 (was 20)
         clip-to-geometry true
+        opacity 0.94 // Общая прозрачность всех окон (0.9 было слишком прозрачно)
     }
 
     window-rule {

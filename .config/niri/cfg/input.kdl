@@ -6,7 +6,12 @@ input {
         xkb {
             //If you want to overwrite your keyboard layout,
             // uncomment the line below and change the layout accordingly.
-            //layout "us" // Use the American keyboard layout
+            // Явно задаём раскладки и переключение Alt+Shift.
+            layout "us,ru"
+
+            // CapsLock работает как Ctrl (полезно для vim-like набора).
+            // Чтобы вернуть CapsLock, убери ctrl:nocaps.
+            options "ctrl:nocaps,grp:alt_shift_toggle"
         }
         numlock // Enable numlock on startup
     }

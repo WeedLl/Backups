@@ -251,11 +251,11 @@ dsh plugin --profile web install --force
 | Ветка | Где | Состояние |
 |---|---|---|
 | `macos` | локально + `origin` | Чистый мак-снимок `6d52314`; default branch на GitHub |
-| `linux` | локально | Наши изменения в индексе; коммита и пуша пока нет |
+| `linux` | локально + `origin` | Первый коммит `02b1326` запушен; текущий коммит — настройка niri/Noctalia |
 | `master` | — | Удалён на GitHub; не воссоздавать |
 | `min` | `origin` | Старая ветка, не трогали |
 
-В индексе `linux` — 43 изменения, включая этот документ; коммита нет. Документ, который ты читаешь, лежит в `~/Documents/ForSys/Backup/doc/2026-11-21-pereezd-macos-cachyos-niri-noctalia.md` и входит в репозиторий.
+В индексе `linux` — 5 изменений (niri + журнал); коммит — настройка niri/Noctalia. Документ, который ты читаешь, лежит в `~/Documents/ForSys/Backup/doc/2026-11-21-pereezd-macos-cachyos-niri-noctalia.md` и входит в репозиторий.
 
 > [!danger] Не пушить `master`
 > `git push origin master` заново создаст удалённую ветку и снова сделает её кандидатом в default. Если это случилось — сначала вернуть default на `macos`, потом удалять.
@@ -385,6 +385,9 @@ git status
 
 ## Напоминалка: клавиши
 
+> Текущее: `Mod` = Super; cheatsheet — `Mod+F1`; launcher — `Mod+Space`; `Mod+N` — уведомления; `Mod+Shift+N` — DND; `Mod+Return` — kitty; `Mod+B` — Zen; focus — `Mod+hjkl`; move — `Mod+Shift+hjkl`; resize — `Mod+Ctrl+hjkl`; workspace — `Mod+Alt+J/K`; floating move — `Mod+Ctrl+Alt+hjkl`; floating resize — `Mod+Ctrl+Alt+Shift+hjkl`; floating/tiling focus — `Mod+V`; screenshot area — `Mod+Print`; CapsLock = Ctrl; раскладка — Alt+Shift; gaps 8, radius 10, opacity 0.94.
+
+
 > [!note] Цель
 > Сделать **vim-like** набор: максимально опираться на дефолты Neovim, терминала, niri и Noctalia; кастомные сочетания добавлять только там, где они реально улучшают ощущения, а не дублируют привычное.
 
@@ -460,13 +463,14 @@ git status
 - **`fzf-tab`.** Установлен из AUR (`fzf-tab 1.3.0-2`), файл `/usr/share/zsh/plugins/fzf-tab/fzf-tab.zsh` на месте, source в `.zshrc` работает.
 - **Git.** Ветка `master` переименована в `macos` и запушена; `master` удалён на GitHub; default переключён на `macos`; временная `BackupLinux` удалена; работа продолжается в `Backup` на ветке `linux`.
 - **`Apps.md`.** Структура и нумерация обновлены; предустановленные: `git`, `zsh`+OhMyZsh, `fastfetch`, `bat`, `btop`, `fzf`, `ripgrep`, `fd`, `vim`, `alacritty`. macOS-only удалены, Handy возвращён под Linux (AUR + `wtype` + модели), `fzf-tab` и `happ-desktop-bin` добавлены. `treemd` и `wtype` уже установлены, Handy пока нет.
-- **Текущий индекс `linux`.** 115 позиций; первый коммит linux — см. `git log`.
+- **Текущий индекс `linux`.** Первый коммит `02b1326` (115 позиций); текущий коммит — 5 правок niri/Noctalia.
 - **Документ.** Перенесён из `~/Documents/ForSys/DSH/answers/` в `~/Documents/ForSys/Backup/doc/`; теперь входит в репозиторий, дальнейшие записи — здесь.
 - **Свежий DSH-бэкап.** `my_files/DSH/dsh-backup-20261122-020205`, 552K, 57 файлов: профили 3, TUI 14, скиллы 26; `secrets: 0`, `sessions: 0`; `sha256sum -c checksums.txt` — OK. Добавлен в коммит.
+- **niri: начальная настройка.** Явно `layout "us,ru"` и `options "ctrl:nocaps,grp:alt_shift_toggle"`; CapsLock → Ctrl, раскладка — Alt+Shift. `gaps 8`, `geometry-corner-radius 10`, `opacity 0.94`. Cheatsheet — `Mod+F1`; launcher — `Mod+Space`; уведомления — `Mod+N`, DND — `Mod+Shift+N`; терминал — `kitty`, браузер — Zen. Перемещение — `Mod+Shift+hjkl`, ресайз — `Mod+Ctrl+hjkl`, workspace — `Mod+Alt+J/K`, floating move — `Mod+Ctrl+Alt+hjkl`, floating resize — `Mod+Ctrl+Alt+Shift+hjkl`, floating/tiling focus — `Mod+V`; screenshot area — `Mod+Print`. Удалены старые mouse-алиасы перемещения (`Mod+Ctrl+Wheel*`, `Mod+Ctrl+Shift+Wheel*`, `Mod+Shift+Wheel*`) и дубли `Mod+Minus/Equal`. `niri validate` OK, English↔Russian проверено.
 - **niri/Noctalia в бэкапе.** Скопированы `.config/niri/` (10 файлов) и `.config/noctalia/` (2 файла); `backup_mySysFile niri noctalia` и `diff_mySysFile niri noctalia` — без различий. `full_config.toml` в help помечен как применяемый вручную.
 - **Чистка.** Удалены старый `dsh-backup-20261118-165930`, `kitty.conf.bak`, `.zshrc.bak*`, `.bash_profile.bak*`, `.gitconfig.bak*`, временный снимок функций и `/tmp`-артефакты.
 - **Zsh-функции.** Временный снимок `~/.zsh_MyFunctions.bak-20261122-020152` сделан и после проверки удалён; `zsh -n` всех 10 файлов — OK; help, `backup_mySysFile zshf` → `diff_mySysFile zshf` без различий, `gdbranch HEAD HEAD` без diff. В `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` добавлены `niri` и `noctalia`, в автодополнение — тоже; `full_config.toml` помечен как ручной.
-- **Текущее состояние на 2026-11-22.** nvim Linux-порт завершён (`:checkhealth` — 0 ошибок); `treemd` и `wtype` установлены, Handy ещё нет; `Apps.md` обновлён; niri/noctalia в бэкапе; первый коммит linux.
+- **Текущее состояние на 2026-11-22.** nvim Linux-порт завершён (`:checkhealth` — 0 ошибок); `treemd` и `wtype` установлены, Handy ещё нет; `Apps.md` обновлён; niri/noctalia в бэкапе; первый коммит `02b1326`, текущий — настройка niri/Noctalia.
 
 ## Нюансы и грабли
 
