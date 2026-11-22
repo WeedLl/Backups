@@ -2,3 +2,7 @@
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
     spawn-at-startup "noctalia"
+
+    // При автологине SDDM экран блокируется локскрином Noctalia.
+    // Скрипт сам ждёт готовности Noctalia и лочится только раз за загрузку.
+    spawn-sh-at-startup "$HOME/.config/niri/scripts/autolock-on-boot.sh"

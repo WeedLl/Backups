@@ -476,6 +476,7 @@ git status
 - **Чистка.** Удалены старый `dsh-backup-20261118-165930`, `kitty.conf.bak`, `.zshrc.bak*`, `.bash_profile.bak*`, `.gitconfig.bak*`, временный снимок функций и `/tmp`-артефакты.
 - **Zsh-функции.** Временный снимок `~/.zsh_MyFunctions.bak-20261122-020152` сделан и после проверки удалён; `zsh -n` всех 10 файлов — OK; help, `backup_mySysFile zshf` → `diff_mySysFile zshf` без различий, `gdbranch HEAD HEAD` без diff. В `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` добавлены `niri` и `noctalia`, в автодополнение — тоже; `full_config.toml` помечен как ручной.
 - **Текущее состояние на 2026-11-22.** nvim Linux-порт завершён (`:checkhealth` — 0 ошибок); `treemd` и `wtype` установлены, Handy ещё нет; `Apps.md` обновлён; niri/noctalia в бэкапе; kitty/alacritty выровнены; `kitty_grab` установлен; nvim keymaps/splits/which-key настроены; mimeapps/XDG добавлены; последний коммит — `451f153`.
+- **Вход в систему: автологин SDDM + лок Noctalia.** `/etc/sddm.conf.d/10-autologin.conf` (`User=weed`, `Session=niri`, `Relogin=false`) убирает гриттер; `~/.config/niri/scripts/autolock-on-boot.sh` по `spawn-sh-at-startup` лочит экран при первом входе после загрузки: сверяет `boot_id` с `~/.cache/niri-autolock-boot`, ждёт IPC Noctalia до 20 с, без дроп-ина автологина не работает. Скрипт прогнан тестами с подменой `noctalia` (13 проверок), `niri validate` OK. README — `.config/niri/README.md`.
 
 ## Нюансы и грабли
 
@@ -531,3 +532,5 @@ git status
 42. **Nvim: каналы обновления.** Плагины — `:lua vim.pack.update()`; парсеры — `:TSUpdate`; Mason-инструменты (`ruff`, `stylua`, `pyright`, `lua-language-server`, `marksman`, `shuck`) — `:MasonUpdate` + `:Mason` (Update All), они не pacman-пакеты.
 
 43. **Документация.** Журнал перенесён в `Backup/doc/2026-11-21-pereezd-macos-cachyos-niri-noctalia.md` и добавлен в индекс `linux`; дальнейшие записи вести там, а не в `DSH/answers/`.
+
+44. **Автологин и keyring.** Без пароля в PAM `login.keyring` не разблокируется сам: Noctalia берёт ключ хранилища из Secret Service (`[storage] key_source = "secret-service"`), поэтому `notification_history.enc` и буфер обмена могут не открыться до разблокировки ключницы. Лечение — ручная разблокировка раз за загрузку или `key_source = "file"` с ключом в `~/.local/state/noctalia`.
