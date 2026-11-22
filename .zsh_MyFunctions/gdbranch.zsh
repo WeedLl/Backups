@@ -2,7 +2,7 @@ gdbranch() {
   # 0. Справка.
   case "$1" in
     -h|--help)
-      cat <<'EOF'
+      command cat <<'EOF'
 gdbranch — сравнение веток и коммитов с наглядным выводом.
 
 ИСПОЛЬЗОВАНИЕ
@@ -79,11 +79,14 @@ EOF
 
   # 2. Разбор аргументов.
   #    Позиционные: [base] [target]. Флаг -f задаёт фильтр.
-  local base="" target="" filter="ACDMRTUXB"
+  local base="" target="" filter="ACDMRTUXB" target_given=0
   local -a positional
   while (( $# )); do
     case "$1" in
       -f|--filter)
+        if [[ -z "${2:-}" ]]; then
+          print -u2 "✗ Флаг $1 требует значение"; return 1
+        fi
         filter="$2"; shift 2 ;;
       -*)
         print -u2 "✗ Неизвестный флаг: $1"; return 1 ;;
@@ -91,8 +94,9 @@ EOF
         positional+=("$1"); shift ;;
     esac
   done
-  base="${positional[1]}"
-  target="${positional[2]}"
+  base="${positional[1]:-}"
+  target="${positional[2]:-}"
+  [[ -n "$target" ]] && target_given=1
 
   # 3. Определяем основной remote.
   #    Приоритет: upstream текущей ветки → origin → первый из списка.
@@ -160,27 +164,19 @@ EOF
     pager=(cat)
   fi
 
-  # 8. Человекочитаемая метка для target, если это HEAD.
-  local target_label="$target"
-  if [[ "$target" == "HEAD" ]]; then
-    target_label="${cur_branch:-HEAD} (HEAD)"
+  # 8. Что с чем сравниваем: явный target — два ref'а, иначе рабочее дерево.
+  local -a diff_args
+  local target_label
+  if (( target_given )); then
+    diff_args=("$base" "$target")
+    target_label="$target"
+    [[ "$target" == "HEAD" ]] && target_label="${cur_branch:-HEAD} (HEAD)"
+  else
+    diff_args=("$base")
+    target_label="рабочее дерево (включая staged/unstaged)"
   fi
 
-# 9. Определяем, что с чем сравнивать.
-local -a diff_args
-if (( target_given )); then
-  diff_args=("$base" "$target")       # два ref'а
-else
-  diff_args=("$base")                 # рабочий каталог vs base
-fi
-
-# 10. Шапка (уточняем, что сравнивается).
-local target_label="$target"
-if (( ! target_given )); then
-  target_label="рабочее дерево (включая staged/unstaged)"
-fi
-
-print -r -- "🔀 $base → $target_label"
+  print -r -- "🔀 $base → $target_label"
 print -r -- "   remote: ${remote:-—}   filter: $filter"
 print -r -- "────────────────────────────────────────────────────────────────────────────────"
 

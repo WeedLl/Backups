@@ -1,6 +1,6 @@
 unload_mySysFile() {
 	if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-		cat <<EOF
+		command cat <<EOF
 unload_mySysFile — восстановить конфиги из бэкапа
 
 Доступные компоненты:
@@ -60,12 +60,12 @@ EOF
 		alacritty "$src/.config/alacritty/:~/.config/alacritty"
 		yazi "$src/.config/yazi/:~/.config/yazi"
 		tmux "$src/.config/tmux/tmux.conf:~/.config/tmux/tmux.conf"
-		aerospace "$src/.config/aerospace/aerospace.toml:/.config/aerospace/aerospace.toml"
-		treemd "$src/.config/treemd/config.toml"
+		aerospace "$src/.config/aerospace/aerospace.toml:~/.config/aerospace/aerospace.toml"
+		treemd "$src/.config/treemd/config.toml:~/.config/treemd/config.toml"
 	)
 
 	if [[ $# -eq 0 ]]; then
-		echo "Использование: unload_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|all]"
+		echo "Использование: unload_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|tmux|treemd|aerospace|all]"
 		return 1
 	fi
 
@@ -102,16 +102,22 @@ function _unload_item() {
 
 	local src_display="$src"
 
-	if [[ -d "$src" ]]; then
-		src="$src/"
-	fi
-
-	mkdir -p "${dst%/*}" 2>/dev/null
-	cp -Rf "$src" "$dst"
-
-	if [[ -d "$dst" && -f "$src_display" ]]; then
-		echo "Восстановлено: $src_display -> ${dst%/}/${src_display:t}"
+	if [[ -d "$src_display" ]]; then
+		mkdir -p "$dst" 2>/dev/null || {
+			echo "Не удалось создать каталог: $dst"
+			return 1
+		}
+		if ! cp -Rf "$src_display/." "$dst/" 2>/dev/null; then
+			echo "Ошибка восстановления: $src_display -> $dst"
+			return 1
+		fi
+		echo "Восстановлено: $src_display -> $dst"
 	else
+		mkdir -p "${dst%/*}" 2>/dev/null
+		if ! cp -f "$src_display" "$dst" 2>/dev/null; then
+			echo "Ошибка восстановления: $src_display -> $dst"
+			return 1
+		fi
 		echo "Восстановлено: $src_display -> $dst"
 	fi
 }

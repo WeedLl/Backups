@@ -1,6 +1,6 @@
 backup_mySysFile() {
 	if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-		cat <<EOF
+		command cat <<EOF
 backup_mySysFile — обновить бэкапа
 
 Доступные компоненты:
@@ -63,7 +63,7 @@ EOF
 	)
 
 	if [[ $# -eq 0 ]]; then
-		echo "Использование: backup_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|all]"
+		echo "Использование: backup_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|tmux|treemd|aerospace|all]"
 		return 1
 	fi
 
@@ -105,16 +105,22 @@ function _backup_item() {
 
 	local src_display="$src"
 
-	if [[ -d "$src" ]]; then
-		src="$src/"
-	fi
-
-	mkdir -p "${dst%/*}" 2>/dev/null
-	cp -Rf "$src" "$dst"
-
-	if [[ -d "$dst" && -f "$src_display" ]]; then
-		echo "Скопировано: $src_display -> $dst/${src_display:t}"
+	if [[ -d "$src_display" ]]; then
+		mkdir -p "$dst" 2>/dev/null || {
+			echo "Не удалось создать каталог: $dst"
+			return 1
+		}
+		if ! cp -Rf "$src_display/." "$dst/" 2>/dev/null; then
+			echo "Ошибка копирования: $src_display -> $dst"
+			return 1
+		fi
+		echo "Скопировано: $src_display -> $dst"
 	else
+		mkdir -p "${dst%/*}" 2>/dev/null
+		if ! cp -f "$src_display" "$dst" 2>/dev/null; then
+			echo "Ошибка копирования: $src_display -> $dst"
+			return 1
+		fi
 		echo "Скопировано: $src_display -> $dst"
 	fi
 }

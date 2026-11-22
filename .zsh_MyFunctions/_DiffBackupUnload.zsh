@@ -5,7 +5,7 @@ _DiffBackupUnload() {
 
 	local -a components=(
 		-h
-		--Help
+		--help
 		all
 		bash
 		zsh
