@@ -29,6 +29,9 @@ _DiffBackupUnload() {
 		treemd
 		niri
 		noctalia
+		mimeapps
+		xdg
+		xdg-locale
 	)
 
 	local -a diff_components=()

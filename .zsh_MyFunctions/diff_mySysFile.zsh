@@ -34,6 +34,9 @@ diff_mySysFile — сравнить текущие файлы с бэкапом.
   treemd        - .config/treemd/config.toml
   niri          - .config/niri/
   noctalia      - .config/noctalia/ (config.toml активный; full_config.toml применять вручную)
+  mimeapps      - .config/mimeapps.list (ассоциации приложений)
+  xdg           - .config/user-dirs.dirs
+  xdg-locale    - .config/user-dirs.locale
 
 
 Пример:
@@ -88,6 +91,9 @@ EOF
 		treemd "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
 		niri "~/.config/niri:$dest/.config/niri"
 		noctalia "~/.config/noctalia:$dest/.config/noctalia"
+		mimeapps "~/.config/mimeapps.list:$dest/.config/mimeapps.list"
+		xdg "~/.config/user-dirs.dirs:$dest/.config/user-dirs.dirs"
+		xdg-locale "~/.config/user-dirs.locale:$dest/.config/user-dirs.locale"
 	)
 	typeset -A diff_details
 

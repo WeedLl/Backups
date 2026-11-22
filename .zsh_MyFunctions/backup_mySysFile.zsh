@@ -27,6 +27,9 @@ backup_mySysFile — обновить бэкап
   treemd        - .config/treemd/config.toml
   niri          - .config/niri/
   noctalia      - .config/noctalia/ (config.toml активный; full_config.toml применять вручную)
+  mimeapps      - .config/mimeapps.list (ассоциации приложений)
+  xdg           - .config/user-dirs.dirs
+  xdg-locale    - .config/user-dirs.locale
 
 Пример:
   backup_mySysFile zsh bash or backup_mySysFile all
@@ -62,10 +65,13 @@ EOF
 		treemd "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
 		niri "~/.config/niri/:$dest/.config/niri"
 		noctalia "~/.config/noctalia/:$dest/.config/noctalia"
+		mimeapps "~/.config/mimeapps.list:$dest/.config/mimeapps.list"
+		xdg "~/.config/user-dirs.dirs:$dest/.config/user-dirs.dirs"
+		xdg-locale "~/.config/user-dirs.locale:$dest/.config/user-dirs.locale"
 	)
 
 	if [[ $# -eq 0 ]]; then
-		echo "Использование: backup_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|tmux|treemd|niri|noctalia|all]"
+		echo "Использование: backup_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|tmux|treemd|niri|noctalia|mimeapps|xdg|xdg-locale|all]"
 		return 1
 	fi
 
