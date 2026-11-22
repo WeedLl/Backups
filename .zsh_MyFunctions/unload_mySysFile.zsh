@@ -26,6 +26,7 @@ unload_mySysFile — восстановить конфиги из бэкапа
   treemd        - .config/treemd/config.toml
   niri          - .config/niri/
   noctalia      - .config/noctalia/ (config.toml активный; full_config.toml применять вручную)
+  noctalia-state - .local/state/noctalia/settings.toml (активные настройки Noctalia)
   mimeapps      - .config/mimeapps.list (ассоциации приложений)
   xdg           - .config/user-dirs.dirs
   xdg-locale    - .config/user-dirs.locale
@@ -67,13 +68,14 @@ EOF
 		treemd "$src/.config/treemd/config.toml:~/.config/treemd/config.toml"
 		niri "$src/.config/niri/:~/.config/niri"
 		noctalia "$src/.config/noctalia/:~/.config/noctalia"
+		noctalia-state "$src/.local/state/noctalia/settings.toml:~/.local/state/noctalia/settings.toml"
 		mimeapps "$src/.config/mimeapps.list:~/.config/mimeapps.list"
 		xdg "$src/.config/user-dirs.dirs:~/.config/user-dirs.dirs"
 		xdg-locale "$src/.config/user-dirs.locale:~/.config/user-dirs.locale"
 	)
 
 	if [[ $# -eq 0 ]]; then
-		echo "Использование: unload_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|tmux|treemd|niri|noctalia|mimeapps|xdg|xdg-locale|all]"
+		echo "Использование: unload_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|tmux|treemd|niri|noctalia|noctalia-state|mimeapps|xdg|xdg-locale|all]"
 		return 1
 	fi
 

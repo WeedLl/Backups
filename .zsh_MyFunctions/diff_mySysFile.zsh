@@ -34,6 +34,7 @@ diff_mySysFile — сравнить текущие файлы с бэкапом.
   treemd        - .config/treemd/config.toml
   niri          - .config/niri/
   noctalia      - .config/noctalia/ (config.toml активный; full_config.toml применять вручную)
+  noctalia-state - .local/state/noctalia/settings.toml (активные настройки Noctalia)
   mimeapps      - .config/mimeapps.list (ассоциации приложений)
   xdg           - .config/user-dirs.dirs
   xdg-locale    - .config/user-dirs.locale
@@ -91,6 +92,7 @@ EOF
 		treemd "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
 		niri "~/.config/niri:$dest/.config/niri"
 		noctalia "~/.config/noctalia:$dest/.config/noctalia"
+		noctalia-state "~/.local/state/noctalia/settings.toml:$dest/.local/state/noctalia/settings.toml"
 		mimeapps "~/.config/mimeapps.list:$dest/.config/mimeapps.list"
 		xdg "~/.config/user-dirs.dirs:$dest/.config/user-dirs.dirs"
 		xdg-locale "~/.config/user-dirs.locale:$dest/.config/user-dirs.locale"

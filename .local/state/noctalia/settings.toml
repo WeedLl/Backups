@@ -1,0 +1,76 @@
+config_version = 20
+
+[bar.default]
+background_opacity = 0.51999998837709427
+thickness = 22
+
+[desktop_widgets]
+schema_version = 2
+widget_order = []
+
+    [desktop_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [desktop_widgets.widget]
+
+[lockscreen_widgets]
+enabled = false
+schema_version = 2
+widget_order = [ "lockscreen-login-box@HDMI-A-1" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 960.0
+    cy = 898.0
+    output = "HDMI-A-1"
+    placement_height = 1080.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1".settings]
+        background_color = "surface_container"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_media_controls = true
+        show_password_reveal = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+[plugins]
+enabled = [ "kenn/keybind-cheatsheet" ]
+
+[shell]
+font_family = "JetBrainsMono Nerd Font"
+show_close_buttons = false
+
+    [shell.panel]
+    border_width = 20.0
+    session_placement = "floating"
+    session_position = "top_right"
+
+[theme]
+builtin = "Gruvbox"
+
+    [theme.templates]
+    builtin_ids = [ "niri" ]
+[storage]
+key_source = "file"
+key_file = "/home/weed/.local/state/noctalia/storage.key"

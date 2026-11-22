@@ -29,6 +29,7 @@ _DiffBackupUnload() {
 		treemd
 		niri
 		noctalia
+		noctalia-state
 		mimeapps
 		xdg
 		xdg-locale
