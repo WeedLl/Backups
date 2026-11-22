@@ -363,7 +363,7 @@ git status
 - **Clipboard — проверено.** `vim.fn.setreg("+", ...)` и `getreg("+")` работают через `wl-copy`; `opt.clipboard` не задан, поэтому обычный yank не синхронизируется автоматически. Отдельного `:checkhealth clipboard` в Neovim 0.12 нет.
 - **Folding — исправлено.** Fallback на `indent` теперь срабатывает и по `BufWinEnter`, поэтому файлы без filetype/парсера (`.foo`) не падают; `.py` с парсером остаётся `expr`.
 - **VimTeX — исправлено под Linux.** Вместо macOS-метода `open` — `general` + `xdg-open`; компилятор включается только при наличии `latexmk` (сейчас его нет). Health даёт только предупреждения про `bibtex`/`biber`.
-- **Мусор — убран.** Удалены `nvim.log`, `backup_init.vim`, `lua/configs/gruvbox.lua.backup_trueColor`; добавлен `.config/nvim/.gitignore` с `nvim.log`. `soso_key-map.jpg` оставлен как ассет.
+- **Мусор — убран.** Удалены `nvim.log`, `backup_init.vim`, `lua/configs/gruvbox.lua.backup_trueColor`; добавлен `.config/nvim/.gitignore` с `nvim.log`. `soso_key-map.jpg` (566 КБ) удалён как неиспользуемый ассет во всех трёх ветках.
 - **`langmapper.nvim` — удалён.** Он был установлен и в lock, но нигде не подключался; `vim.pack` health больше не ругается. В lock 25 плагинов.
 - **`:checkhealth` — 0 ошибок.** Остались предупреждения: необязательные языки Mason (Go/Ruby/PHP/Java/Julia/luarocks), `bibtex`/`biber`, `which-key` без `mini.icons` и 7 LSP-конфигов «not found» из-за ленивой загрузки. После открытия `.py` конфиги `pyright`/`ruff` видны, клиенты стартуют.
 - **Клавиши.** `<C-m>` убран, Neo-tree/Yazi — на `<leader>n`/`<leader>y`, signature help — `<C-k>`, terminal — `<leader>t`; `C-n`/`C-y` возвращены дефолтам. Цель vim-like с дефолтами — в «Напоминалке: клавиши».
