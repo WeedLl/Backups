@@ -5,16 +5,28 @@ _DiffBackupUnload() {
 
 	local -a components=(
 		-h
-		--Help
+		--help
 		all
+		bash
 		zsh
 		zshf
 		omz
+		ultisnips
+		vim
 		nvim
+		neovide
 		git
+		lazygit
+		ideavim
+		psql
+		pgcli
+		mycli
 		btop
 		kitty
+		alacritty
 		yazi
+		tmux
+		aerospace
 		treemd
 	)
 

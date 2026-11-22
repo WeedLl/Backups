@@ -10,7 +10,7 @@ local function ensure_yazi()
 	end
 end
 
-vim.keymap.set("n", "<C-y>", function()
+vim.keymap.set("n", "<leader>y", function()
 	ensure_yazi()
 	vim.defer_fn(function()
 		if pcall(require, "yazi") then

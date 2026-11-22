@@ -21,6 +21,19 @@ end)
 -- Which-key.nvim - показывает подсказки для клавиш по типу операторов в nVim и тп.
 vim.pack.add({ "https://github.com/folke/which-key.nvim" })
 
+require("which-key").add({
+	{ "<leader>n", group = "Neo-tree" },
+	{ "<leader>y", group = "Yazi" },
+	{ "<leader>p", group = "Pickers" },
+	{ "<leader>s", group = "Search" },
+	{ "<leader>f", group = "Format" },
+	{ "<leader>d", group = "Diagnostics" },
+	{ "<leader>r", group = "Rename" },
+	{ "<leader>c", group = "Code" },
+	{ "<leader>m", group = "Markdown" },
+	{ "<leader>t", group = "Terminal" },
+})
+
 -- md-render.nvim: предпросмотр Markdown в отдельном окне
 -- Загружается сразу (не лениво), т.к. нужен для snacks.picker.preview
 -- и для автопредпросмотра на VimEnter

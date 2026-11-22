@@ -7,29 +7,42 @@
 
 diff_mySysFile() {
 	if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-		cat <<EOF
+		command cat <<EOF
 diff_mySysFile — сравнить текущие файлы с бэкапом. Все, по одному или попарно "nVim -d"
 
 Доступные компоненты:
   diff          - модификатор открытия попарного сравнения в "nVim -d"
+  bash          - .bash_profile
   zsh           - .zshrc
   zshf          - .zsh_MyFunctions/
   omz           - .oh-my-zsh/custom/
+  ultisnips     - .vim/UltiSnips/
+  vim           - .vimrc
   nvim          - .config/nvim/
+  neovide       - .config/neovide/config.toml
+  ideavim       - .ideavimrc
   git           - .gitconfig
+  lazygit       - .config/lazygit/config.yml
+  psql          - .config/psql/.psqlrc
+  pgcli         - .config/pgcli/config
+  mycli         - .config/mycli/.myclirc
   btop          - .config/btop/btop.conf
   kitty         - .config/kitty/
+  alacritty     - .config/alacritty/
   yazi          - .config/yazi/
+  tmux          - .config/tmux/tmux.conf
+  aerospace     - .config/aerospace/aerospace.toml
   treemd        - .config/treemd/config.toml
 
 
 Пример:
-  diff_mySysFile zsh git or diff_mySysFile diff (=all) or diff_mySysFile kitty omz
+  diff_mySysFile zsh bash or diff_mySysFile diff (=all) or diff_mySysFile psql omz
 EOF
 		return 0
 	fi
 
-	local vimdiff_McV="/opt/homebrew/bin/nvim"
+	local vimdiff_bin
+	vimdiff_bin="$(command -v nvim 2>/dev/null)"
 	local dest="~/Documents/ForSys/Backup"
 	dest=${~dest}
 
@@ -52,14 +65,26 @@ EOF
 	# Маппинг: ключ => "текущий_файл:файл_в_бэкапе"
 	typeset -A items
 	items=(
+		bash "~/.bash_profile:$dest/.bash_profile"
 		zsh "~/.zshrc:$dest/.zshrc"
 		zshf "~/.zsh_MyFunctions:$dest/.zsh_MyFunctions"
+		vim "~/.vimrc:$dest/.vimrc"
 		nvim "~/.config/nvim:$dest/.config/nvim"
+		neovide "~/.config/neovide/config.toml:$dest/.config/neovide/config.toml"
+		ideavim "~/.ideavimrc:$dest/.ideavimrc"
 		git "~/.gitconfig:$dest/.gitconfig"
+		lazygit "~/.config/lazygit/config.yml:$dest/.config/lazygit/config.yml"
+		psql "~/.config/psql/.psqlrc:$dest/.config/psql/.psqlrc"
+		pgcli "~/.config/pgcli/config:$dest/.config/pgcli/config"
+		mycli "~/.config/mycli/.myclirc:$dest/.config/mycli/.myclirc"
+		ultisnips "~/.vim/UltiSnips:$dest/.vim/UltiSnips"
 		omz "~/.oh-my-zsh/custom:$dest/.oh-my-zsh/custom"
 		btop "~/.config/btop/btop.conf:$dest/.config/btop/btop.conf"
 		kitty "~/.config/kitty:$dest/.config/kitty"
+		alacritty "~/.config/alacritty:$dest/.config/alacritty"
 		yazi "~/.config/yazi:$dest/.config/yazi"
+		tmux "~/.config/tmux/tmux.conf:$dest/.config/tmux/tmux.conf"
+		aerospace "~/.config/aerospace/aerospace.toml:$dest/.config/aerospace/aerospace.toml"
 		treemd "~/.config/treemd/config.toml:$dest/.config/treemd/config.toml"
 	)
 	typeset -A diff_details
@@ -72,6 +97,7 @@ EOF
 	local found_diff=false
 	local missing_home=()
 	local missing_backup=()
+	local missing_both=()
 	local different=()
 	local identical=()
 	local diff_output
@@ -95,8 +121,7 @@ EOF
 		[[ ! -e "$backup" && ! -L "$backup" ]] && backup_exists=false
 
 		if [[ $home_exists = false && $backup_exists = false ]]; then
-			missing_home+=$key
-			missing_backup+=$key
+			missing_both+=$key
 			continue
 		fi
 
@@ -178,12 +203,23 @@ EOF
 		echo ""
 	fi
 
+	if [[ ${#missing_both} -gt 0 ]]; then
+		echo "Нет ни в системе, ни в бэкапе:"
+		for k in "${missing_both[@]}"; do
+			echo "  $k"
+		done
+		echo ""
+	fi
+
 	if [[ $found_diff = false ]]; then
 		echo "Различий нет."
 	fi
 
 	# vimdiff_McV для отличающихся
-	if [[ $use_vimdiff_McV = true && ${#different} -gt 0 ]]; then
+	if [[ $use_vimdiff_McV = true && ${#different} -gt 0 && -z $vimdiff_bin ]]; then
+		echo ""
+		echo "nVim не найден в PATH — сравнение в редакторе пропущено."
+	elif [[ $use_vimdiff_McV = true && ${#different} -gt 0 ]]; then
 		echo ""
 		echo "Открытие nVim -d для отличающихся файлов..."
 		for key in "${different[@]}"; do
@@ -223,13 +259,13 @@ EOF
 					for f in "${diff_files[@]}"; do
 						echo ""
 						echo ">>> $key/$f"
-						$vimdiff_McV -d "$current/$f" "$backup/$f"
+						"$vimdiff_bin" -d "$current/$f" "$backup/$f"
 					done
 				fi
 			else
 				echo ""
 				echo ">>> $key: $current <-> $backup"
-				$vimdiff_McV -d "$current" "$backup"
+				"$vimdiff_bin" -d "$current" "$backup"
 			fi
 		done
 	elif [[ $use_vimdiff_McV = true && ${#different} -eq 0 ]]; then

@@ -100,9 +100,9 @@ _vm_is_binary() {
 	ext=${(L)ext}
 	case "$ext" in
 	png | jpg | jpeg | gif | webp | avif | heic | heif | ico | bmp | tif | tiff | psd | raw | cr2 | \
-			    pdf | zip | gz | tgz | bz2 | xz | rar | 7z | tar | \
-			    mp3 | m4a | wav | flac | aac | ogg | opus | mp4 | mov | mkv | avi | webm | m4v | \
-			    docx | xlsx | pptx | odt | ods | epub | dmg | iso | exe | bin) return 0 ;;
+				    pdf | zip | gz | tgz | bz2 | xz | rar | 7z | tar | \
+				    mp3 | m4a | wav | flac | aac | ogg | opus | mp4 | mov | mkv | avi | webm | m4v | \
+				    docx | xlsx | pptx | odt | ods | epub | dmg | iso | exe | bin) return 0 ;;
 	esac
 	return 1
 }
@@ -484,7 +484,7 @@ _vm_group_by_first() {
 }
 
 _vm_usage() {
-	cat <<'EOF'
+	command cat <<'EOF'
 vault_merge — слияние двух хранилищ Obsidian в третье (исходники не изменяются)
 
 Использование:
@@ -516,15 +516,20 @@ vault_merge — слияние двух хранилищ Obsidian в треть�
   4. Сравнение по относительным путям: новые файлы из <another_base>, конфликты
      содержимого, конфликты имён (одинаковый basename, разные пути).
   5. Итоговый отчёт.
-  6. Лог-файл: создаётся «<итог>.merge.md» рядом с итоговым хранилищем
-     (markdown для Obsidian: YAML-фронтматтер, «Содержание» с якорями, «Сводка»,
-     секции с файлами, отсортированными по директориям).
+  6. Лог-файл: создаётся «vault_merge_log_<YYYYMMDD>_<HHMMSS>.md» рядом с итоговым
+     хранилищем (markdown для Obsidian: YAML-фронтматтер, «Содержание» с якорями,
+     «Сводка», секции с файлами, отсортированными по директориям).
 
 Конфликт имён («один и тот же файл?» → да):
   На вопрос «Куда сохранить?» можно ответить:
   • каталог (например «.trash/» или «.trash») — файл кладётся туда с исходным именем;
   • полный путь («13-Movies/00-WatchList.base») — как есть;
-  • номер варианта (1/2/…) — взять этот вариант целиком (путь + содержимое).
+  • номер варианта (1/2/…).
+  Выбранный путь/вариант становится «основой» итогового файла. Если содержимое
+  остальных копий РАЗЛИЧАЕТСЯ, для каждой из них открывается редактор (для текста —
+  nvim -d, для .bases/.canvas — pretty-diff, для бинарника — меню [1]/[2]/[b]/[s]),
+  чтобы слить отличие. Если копии ИДЕНТИЧНЫ — редактор не открывается, дубликат просто
+  убирается. Без правок в редакторе сохраняется содержимое «основы».
 
 Форматы файлов:
   • Все файлы копируются байт-в-байт независимо от расширения (.md, .png, .pdf,
@@ -876,103 +881,78 @@ vault_merge() {
 				[[ -n "${only1[$m]}" ]] && m1+=("$m") || m2+=("$m")
 			done
 
-			local k
+			# Итоговый путь: выбранный вариант или введённый путь/каталог.
+			local seed_member=""
 			if ((chosen_ndx > 0)); then
-				# Выбран конкретный вариант — берём его целиком (путь + содержимое), без редактора.
-				local chosen="${members[$chosen_ndx]}"
-				if [[ -n "${only1[$chosen]}" ]]; then
-					print -r -- "  ${_VM_C_PURPLE}выбран вариант${_VM_C_OFF} [$chosen_ndx] «$chosen» (${_VM_C_GREEN}база${_VM_C_OFF}) — оставлен как есть"
-					for ((k = 1; k <= ${#m1}; k++)); do
-						if [[ "${m1[$k]}" != "$chosen" ]]; then
-							rm -f "$dst/${m1[$k]}"
-							_VM_LOG_MOVED+=("удалён дубликат: ${m1[$k]}")
-						fi
-					done
-					_VM_LOG_MOVED+=("выбран вариант [$chosen_ndx] «$chosen» (из базы) — без переименования")
-				else
-					_vm_copy_file "$another_base_abs/$chosen" "$dst/$chosen" || return 1
-					print -r -- "  ${_VM_C_PURPLE}выбран вариант${_VM_C_OFF} [$chosen_ndx] «$chosen» (${_VM_C_BLUE}another_base${_VM_C_OFF}) — скопирован"
-					for ((k = 1; k <= ${#m1}; k++)); do
-						rm -f "$dst/${m1[$k]}"
-						_VM_LOG_MOVED+=("удалён дубликат: ${m1[$k]}")
-					done
-					_VM_LOG_PHONE+=("$chosen")
-					_VM_LOG_MOVED+=("выбран вариант [$chosen_ndx] «$chosen» (из another_base) — без переименования")
-				fi
-				rename_log+=("• выбран вариант [$chosen_ndx] «$chosen»  ←  ${(j:, :)members}")
-			else
-				# ---- каталог/путь: переместить и слить содержимое ----
-				# Есть ли в группе двоичные файлы?
-				local grp_binary=0 srcp
-				for m in "${members[@]}"; do
-					[[ -n "${only1[$m]}" ]] && srcp="$base_abs/$m" || srcp="$another_base_abs/$m"
-					if _vm_is_binary "$srcp"; then
-						grp_binary=1
-						break
-					fi
-				done
-
-				if ((grp_binary == 1)); then
-					# Двоичные «то же самое»: без nvim — просто переносим файл.
-					if ((${#m1} > 0)); then
-						if [[ "${m1[1]}" == "$finalp" ]]; then
-							if ((${#m2} > 0)); then
-								_vm_binary_menu "$dst/$finalp" "$another_base_abs/${m2[1]}" "$finalp"
-								local bprc=$?
-								((bprc == 1)) && return 1
-							fi
-						else
-							mkdir -p "$dst/${finalp:h}"
-							mv "$dst/${m1[1]}" "$dst/$finalp" || {
-								_vm_err "mv не удался"
-								return 1
-							}
-							_VM_LOG_MOVED+=("переименование: ${m1[1]} → $finalp")
-						fi
-						for ((k = 2; k <= ${#m1}; k++)); do
-							rm -f "$dst/${m1[$k]}"
-							_VM_LOG_MOVED+=("удалён дубликат: ${m1[$k]}")
-						done
-					else
-						mkdir -p "$dst/${finalp:h}"
-						_vm_copy_file "$another_base_abs/${m2[1]}" "$dst/$finalp" || return 1
-						_VM_LOG_MOVED+=("переименование: ${m2[1]} → $finalp")
-					fi
-					print -r -- "  ${_VM_C_PURPLE}двоичный файл объединён${_VM_C_OFF} в «$finalp» (без diff)"
-				else
-					# Текстовые (включая .bases/.canvas): обычное слияние через редактор.
-					if ((${#m1} > 0)); then
-						if [[ "${m1[1]}" != "$finalp" ]]; then
-							mkdir -p "$dst/${finalp:h}"
-							mv "$dst/${m1[1]}" "$dst/$finalp" || {
-								_vm_err "mv не удался"
-								return 1
-							}
-							print -r -- "  ${_VM_C_PURPLE}переименовано${_VM_C_OFF}: ${m1[1]} -> $finalp"
-							_VM_LOG_MOVED+=("переименование: ${m1[1]} → $finalp")
-						else
-							print -r -- "  файл остаётся по пути: $finalp"
-						fi
-						for ((k = 2; k <= ${#m1}; k++)); do
-							_vm_resolve_pair "$dst/$finalp" "$dst/${m1[$k]}" "$finalp" || return 1
-							rm -f "$dst/${m1[$k]}"
-							_VM_LOG_MOVED+=("объединение: ${m1[$k]} → $finalp")
-						done
-						for ((k = 1; k <= ${#m2}; k++)); do
-							_vm_resolve_pair "$dst/$finalp" "$another_base_abs/${m2[$k]}" "$finalp" || return 1
-						done
-					else
-						mkdir -p "$dst/${finalp:h}"
-						_vm_copy_file "$another_base_abs/${m2[1]}" "$dst/$finalp" || return 1
-						print -r -- "  ${_VM_C_PURPLE}создано из${_VM_C_OFF} ${_VM_C_BLUE}another_base${_VM_C_OFF}: $finalp"
-						_VM_LOG_MOVED+=("переименование: ${m2[1]} → $finalp")
-						for ((k = 2; k <= ${#m2}; k++)); do
-							_vm_resolve_pair "$dst/$finalp" "$another_base_abs/${m2[$k]}" "$finalp" || return 1
-						done
-					fi
-				fi
-				rename_log+=("• объединено в «$finalp»  ←  ${(j:, :)members}")
+				finalp="${members[$chosen_ndx]}"
+				seed_member="$finalp"
 			fi
+
+			# Засеваем итоговый файл (он станет «левой» стороной редактора).
+			if ((chosen_ndx > 0)); then
+				if [[ -n "${only1[$finalp]}" ]]; then
+					print -r -- "  ${_VM_C_PURPLE}выбран вариант${_VM_C_OFF} [$chosen_ndx] «$finalp» (${_VM_C_GREEN}база${_VM_C_OFF})"
+					_VM_LOG_MOVED+=("выбран вариант [$chosen_ndx] «$finalp» (из базы) — без переименования")
+				else
+					mkdir -p "$dst/${finalp:h}"
+					_vm_copy_file "$another_base_abs/$finalp" "$dst/$finalp" || return 1
+					print -r -- "  ${_VM_C_PURPLE}выбран вариант${_VM_C_OFF} [$chosen_ndx] «$finalp» (${_VM_C_BLUE}another_base${_VM_C_OFF}) — скопирован"
+					_VM_LOG_PHONE+=("$finalp")
+					_VM_LOG_MOVED+=("выбран вариант [$chosen_ndx] «$finalp» (из another_base) — без переименования")
+				fi
+			else
+				if ((${#m1} > 0)); then
+					seed_member="${m1[1]}"
+					if [[ "${m1[1]}" != "$finalp" ]]; then
+						mkdir -p "$dst/${finalp:h}"
+						mv "$dst/${m1[1]}" "$dst/$finalp" || {
+							_vm_err "mv не удался"
+							return 1
+						}
+						print -r -- "  ${_VM_C_PURPLE}переименовано${_VM_C_OFF}: ${m1[1]} -> $finalp"
+						_VM_LOG_MOVED+=("переименование: ${m1[1]} → $finalp")
+					else
+						print -r -- "  файл остаётся по пути: $finalp"
+					fi
+				else
+					seed_member="${m2[1]}"
+					mkdir -p "$dst/${finalp:h}"
+					_vm_copy_file "$another_base_abs/${m2[1]}" "$dst/$finalp" || return 1
+					print -r -- "  ${_VM_C_PURPLE}создано из${_VM_C_OFF} ${_VM_C_BLUE}another_base${_VM_C_OFF}: $finalp"
+					_VM_LOG_MOVED+=("переименование: ${m2[1]} → $finalp")
+				fi
+			fi
+
+			# Сливаем остальные копии. Если содержимое РАЗЛИЧАЕТСЯ — открываем редактор
+			# (для текста — nvim -d, для .bases/.canvas — pretty-diff, для бинарника — меню);
+			# если содержимое ОДИНАКОВОЕ — редактор не нужен, просто убираем дубликат.
+			local m_src m_prc
+			for m in "${members[@]}"; do
+				[[ "$m" == "$seed_member" ]] && continue
+				if [[ -n "${only1[$m]}" ]]; then
+					m_src="$dst/$m"
+				else
+					m_src="$another_base_abs/$m"
+				fi
+				[[ -f "$m_src" ]] || continue
+				if cmp -s "$dst/$finalp" "$m_src"; then
+					# содержимое идентично — редактор не нужен
+					if [[ -n "${only1[$m]}" ]]; then
+						rm -f "$dst/$m"
+						_VM_LOG_MOVED+=("удалён дубликат (идентичен): $m")
+					fi
+				else
+					# содержимое различается — открываем редактор/меню для слияния
+					_vm_resolve_pair "$dst/$finalp" "$m_src" "$finalp"
+					m_prc=$?
+					((m_prc == 1)) && return 1
+					if [[ -n "${only1[$m]}" ]]; then
+						rm -f "$dst/$m"
+						_VM_LOG_MOVED+=("объединение: $m → $finalp")
+					fi
+				fi
+			done
+			rename_log+=("• объединено в «$finalp»  ←  ${(j:, :)members}")
 
 			for m in "${members[@]}"; do handled[$m]=1; done
 			((name_renamed++))
@@ -1106,15 +1086,15 @@ vault_merge() {
 	fi
 
 	# ---- лог-файл (.md для Obsidian) ----
-	local logfile="${out_abs:h}/${out_abs:t}.merge.md"
 	local base_name="${base:t}" another_name="${another_base:t}"
 	local t_iso=$(date '+%Y-%m-%dT%H:%M:%S')
 	local t_h=$(date '+%Y-%m-%d %H:%M:%S')
+	local t_stamp=$(date '+%Y%m%d_%H%M%S')
+	local logfile="${out_abs:h}/vault_merge_log_${t_stamp}.md"
 	{
 		# фронтматтер (YAML для Obsidian)
 		print -r -- "---"
-		print -r -- "tags:"
-		print -r -- "- merge_log"
+		print -r -- "type: log"
 		print -r -- "time: $t_iso"
 		print -r -- "merge_bases:"
 		print -r -- "  - $base_name"

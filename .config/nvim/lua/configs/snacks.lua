@@ -70,6 +70,6 @@ end, { desc = "Picker: Grep in Open Buffers" })
 -- ============================================================
 -- Terminal: всплывающее окно
 -- ============================================================
-map({ "n", "t" }, "<C-\\>", function()
+map({ "n", "t" }, "<leader>t", function()
 	Snacks.terminal.toggle()
 end, { desc = "Terminal: Toggle" })

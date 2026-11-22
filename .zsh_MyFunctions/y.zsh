@@ -1,6 +1,6 @@
 y() {
   if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-    cat <<EOF
+    command cat <<EOF
 y - запуск Yazi с переходом в директорию при выходе
 
 Доступные компоненты:
@@ -15,10 +15,19 @@ EOF
     return 0
   fi
 
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	if ! command -v yazi >/dev/null 2>&1; then
+		print -u2 "y: yazi не найден в PATH"
+		return 1
+	fi
+
+	local tmp cwd
+	tmp=$(mktemp "${TMPDIR:-/tmp}/yazi-cwd.XXXXXX") || {
+		print -u2 "y: не удалось создать временный файл"
+		return 1
+	}
 	yazi "$@" --cwd-file="$tmp"
-	local cwd="$(command cat -- "$tmp")"
+	cwd=$(command cat -- "$tmp")
 	command rm -f -- "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	[[ -n "$cwd" && "$cwd" != "$PWD" ]] && builtin cd -- "$cwd"
 }
 
