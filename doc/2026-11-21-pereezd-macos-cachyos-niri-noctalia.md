@@ -147,8 +147,8 @@ created: 2026-11-21
 | Neovim | `~/.config/nvim` | Добавлены niri-backend раскладки и `python3_host_prog` на `~/.global_venv`; clipboard/spell/ruff/stylua и tracked-мусор — отдельно |
 | Vim | `~/.vimrc` | Исправлен: GUI-опции только для GUI, `language en_US.utf8`, vim-plug под проверкой, `colorscheme` через `silent!`, spell без ошибки при отсутствии `ru` |
 | IdeaVim | `~/.ideavimrc` | Переписан в минимальный IdeaVim-совместимый вид: без vim-plug/`Plug`, NERDTree, `:language`, GUI-опций |
-| alacritty | `~/.config/alacritty/` | mac-only `blur`/`option_as_alt` убраны; live+repo созданы; биндинги `Ctrl+U/D/Y` пока оставлены — TODO по клавишам |
-| kitty | `~/.config/kitty/` | Убраны неизвестные `macos_blur`, `window_padding_height`, `unfocused_cursor_shape`, `draw_bold_text_with_bright_colors`; live+repo; `map cmd+...` оставлены до общей схемы клавиш |
+| alacritty | `~/.config/alacritty/` | Визуально и по общим клавишам выровнен под kitty: padding 3, 130x40, opacity убран, `Ctrl+Shift+PageUp/Down`, `Ctrl+Shift+=/-/0`, `Ctrl+Shift+N/Q`; шрифты сохранены. Вкладок/сплитов нет — через tmux |
+| kitty | `~/.config/kitty/` | Vim-first: `hjkl` фокус, `Alt+hjkl` перемещение, стрелки — ресайз; вкладки `,/.`, перенос `Alt+,/.`; W — вкладка, Q — окно; `kitty_grab` установлен |
 | niri | `~/.config/niri/` | Установлен, сессия работает; конфиг в бэкапе (`.config/niri/`), `niri validate` перед изменениями |
 | Noctalia | `~/.config/noctalia/` | Установлена; конфиг в бэкапе; `full_config.toml` применять вручную |
 | AeroSpace | `.config/aerospace/aerospace.toml` | Удалён как лишний: niri заменяет его, конфиг не переносится |
@@ -394,8 +394,8 @@ git status
 > [!todo] Согласовать позже
 > Затрагивает alacritty, kitty, nvim, niri и Noctalia. Сначала собрать текущие биндинги в одну таблицу, затем убрать конфликты. Пока не менять вслепую.
 
-- [ ] **alacritty:** `Ctrl+U/D/Y` сейчас перехватываются (`ScrollPageUp/Down`, `Copy`); решить — `Ctrl+Shift+...`, дефолты Alacritty или оставить.
-- [ ] **kitty:** `macos_blur` и неизвестные ключи уже убраны; активные `map cmd+...` перевести на `Super` только там, где niri не занял сочетание.
+- [x] **alacritty:** `Ctrl+U/D/Y` убраны; scroll — `Ctrl+Shift+PageUp/Down`, zoom — `Ctrl+Shift+=/-/0`, new window — `Ctrl+Shift+N`, quit — `Ctrl+Shift+Q`.
+- [ ] **kitty:** `macos_blur` и неизвестные ключи убраны; `cmd+...` переведены на `Ctrl+Shift`, дубль `cmd+w` исправлен, `kitty_grab` установлен.
 - [ ] **niri:** зафиксировать занятые `Super+...` и не дублировать их в терминалах/nvim.
 - [ ] **nvim:** проверить `Ctrl+U/D/Y`, `Ctrl+Shift+...` и конфликты с terminal-биндингами.
 - [ ] **Noctalia:** глобальные хоткеи (launcher, панели, скриншоты) свести с niri, чтобы не было двойных срабатываний.
@@ -457,20 +457,20 @@ git status
 - **Пути в скиллах.** `dsh-update` и `md-answer` переведены с `/Users/weed/...` на `$HOME/Documents/ForSys/Backup/my_files/DSH/...`; live-копии обновлены, `/Users` в них больше нет. Старый `my_files/DSH/dsh-backup-...` не трогали.
 - **`.ideavimrc`.** Переписан под IdeaVim: только `set`-опции без vim-plug, NERDTree, `:language`, `:langmenu` и GUI-опций; live и repo синхронизированы.
 - **`.config` (кроме nvim).** `btop` — системная тема; `neovide` — `/usr/bin/nvim` в repo; `tmux` — `tmux-256color`, `set-clipboard on`, `stty -ixon` в `.zshrc`; `lazygit`/`treemd`/`yazi`/`pgcli`/`psql` проверены, mac-путей нет; `mycli`/`pgcli`/`psql`/`tmux`/`neovide` live отсутствуют.
-- **alacritty.** Убраны mac-only `blur` и `option_as_alt`; live `~/.config/alacritty` создан со всеми четырьмя файлами, repo синхронизирован. Биндинги `Ctrl+U/D/Y` намеренно не менял — вынесены в «Напоминалку: клавиши».
-- **kitty.** Из `kitty.conf` убраны неизвестные ключи `macos_blur`, `window_padding_height`, `unfocused_cursor_shape`, `draw_bold_text_with_bright_colors`; `load_config` больше не выдаёт предупреждений. `map cmd+...` оставлены до общей схемы клавиш; live и repo синхронизированы.
+- **alacritty.** Убраны mac-only `blur` и `option_as_alt`; padding 3, размер 130x40, `opacity` убран — прозрачность даёт niri 0.94. Шрифты `JetBrainsMono NF` сохранены. `Ctrl+U/D/Y` убраны; добавлены `Ctrl+Shift+PageUp/Down`, `Ctrl+Shift+=/-/0`, `Ctrl+Shift+N` (new window), `Ctrl+Shift+Q` (quit). Вкладок/сплитов в Alacritty нет — только окна/tmux.
+- **kitty.** Vim-first: `Ctrl+Shift+hjkl` — фокус окон, `Ctrl+Shift+Alt+hjkl` — перемещение, `Ctrl+Shift+Arrow` — ресайз; вкладки — `Ctrl+Shift+,/.`, перенос вкладок — `Ctrl+Shift+Alt+,/.`. W закрывает вкладку, Q — окно. `kitty_grab` установлен из GitHub, `grab.py` компилируется; `load_config` — 0 ошибок. Live и repo синхронизированы.
 - **nvim: Linux-портирование.** Новый `lua/core/layout/niri.lua` + выбор niri первым в `core/layout/init.lua`; `python3_host_prog` на `~/.global_venv/bin/python`; Mason bin в `vim.env.PATH`; `tree-sitter-cli` из pacman и 12 парсеров; spell `ru` из `site/spell`; folding-fallback по `BufWinEnter`; vimtex на `xdg-open` с условным компилятором. Удалены `nvim.log`/бэкапы, `langmapper`, ручной `tree-sitter`; добавлен `.gitignore`; `:checkhealth` — 0 ошибок.
 - **`fzf-tab`.** Установлен из AUR (`fzf-tab 1.3.0-2`), файл `/usr/share/zsh/plugins/fzf-tab/fzf-tab.zsh` на месте, source в `.zshrc` работает.
 - **Git.** Ветка `master` переименована в `macos` и запушена; `master` удалён на GitHub; default переключён на `macos`; временная `BackupLinux` удалена; работа продолжается в `Backup` на ветке `linux`.
 - **`Apps.md`.** Структура и нумерация обновлены; предустановленные: `git`, `zsh`+OhMyZsh, `fastfetch`, `bat`, `btop`, `fzf`, `ripgrep`, `fd`, `vim`, `alacritty`. macOS-only удалены, Handy возвращён под Linux (AUR + `wtype` + модели), `fzf-tab` и `happ-desktop-bin` добавлены. `treemd` и `wtype` уже установлены, Handy пока нет.
-- **Текущий индекс `linux`.** Первый коммит `02b1326` (115 позиций); текущий коммит — 5 правок niri/Noctalia.
+- **Текущий индекс `linux`.** Первый коммит `02b1326`; niri/Noctalia — `161dfdf`; текущий коммит — kitty/alacritty и `kitty_grab`.
 - **Документ.** Перенесён из `~/Documents/ForSys/DSH/answers/` в `~/Documents/ForSys/Backup/doc/`; теперь входит в репозиторий, дальнейшие записи — здесь.
 - **Свежий DSH-бэкап.** `my_files/DSH/dsh-backup-20261122-020205`, 552K, 57 файлов: профили 3, TUI 14, скиллы 26; `secrets: 0`, `sessions: 0`; `sha256sum -c checksums.txt` — OK. Добавлен в коммит.
 - **niri: начальная настройка.** Явно `layout "us,ru"` и `options "ctrl:nocaps,grp:alt_shift_toggle"`; CapsLock → Ctrl, раскладка — Alt+Shift. `gaps 8`, `geometry-corner-radius 10`, `opacity 0.94`. Cheatsheet — `Mod+F1`; launcher — `Mod+Space`; уведомления — `Mod+N`, DND — `Mod+Shift+N`; терминал — `kitty`, браузер — Zen. Перемещение — `Mod+Shift+hjkl`, ресайз — `Mod+Ctrl+hjkl`, workspace — `Mod+Alt+J/K`, floating move — `Mod+Ctrl+Alt+hjkl`, floating resize — `Mod+Ctrl+Alt+Shift+hjkl`, floating/tiling focus — `Mod+V`; screenshot area — `Mod+Print`. Удалены старые mouse-алиасы перемещения (`Mod+Ctrl+Wheel*`, `Mod+Ctrl+Shift+Wheel*`, `Mod+Shift+Wheel*`) и дубли `Mod+Minus/Equal`. `niri validate` OK, English↔Russian проверено.
 - **niri/Noctalia в бэкапе.** Скопированы `.config/niri/` (10 файлов) и `.config/noctalia/` (2 файла); `backup_mySysFile niri noctalia` и `diff_mySysFile niri noctalia` — без различий. `full_config.toml` в help помечен как применяемый вручную.
 - **Чистка.** Удалены старый `dsh-backup-20261118-165930`, `kitty.conf.bak`, `.zshrc.bak*`, `.bash_profile.bak*`, `.gitconfig.bak*`, временный снимок функций и `/tmp`-артефакты.
 - **Zsh-функции.** Временный снимок `~/.zsh_MyFunctions.bak-20261122-020152` сделан и после проверки удалён; `zsh -n` всех 10 файлов — OK; help, `backup_mySysFile zshf` → `diff_mySysFile zshf` без различий, `gdbranch HEAD HEAD` без diff. В `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` добавлены `niri` и `noctalia`, в автодополнение — тоже; `full_config.toml` помечен как ручной.
-- **Текущее состояние на 2026-11-22.** nvim Linux-порт завершён (`:checkhealth` — 0 ошибок); `treemd` и `wtype` установлены, Handy ещё нет; `Apps.md` обновлён; niri/noctalia в бэкапе; первый коммит `02b1326`, текущий — настройка niri/Noctalia.
+- **Текущее состояние на 2026-11-22.** nvim Linux-порт завершён (`:checkhealth` — 0 ошибок); `treemd` и `wtype` установлены, Handy ещё нет; `Apps.md` обновлён; niri/noctalia в бэкапе; kitty/alacritty выровнены; `kitty_grab` установлен; оформление и клавиши — в отдельном коммите.
 
 ## Нюансы и грабли
 

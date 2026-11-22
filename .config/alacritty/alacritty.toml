@@ -11,13 +11,11 @@ draw_bold_text_with_bright_colors = true     # Нормальное отобра
 
                                              # --- Окно ---
 [window]
-opacity = 0.98                               # Прозрачность фона: 1.0 — непрозрачно,
-                                             # 0.0 — полностью прозрачно. 0.92 — лёгкая, текст остаётся читаемым
-padding = { x = 8, y = 8 }                   # Отступы текста от краёв окна в пикселях — чтобы текст не прилипал к рамке
+padding = { x = 3, y = 3 }                   # Как в kitty: window_padding_width 3
 startup_mode = "windowed"                    # Открывать окно в окне
                                              # (не полноэкранный режим, а просто максимизированное)
 [window.dimensions]
-columns = 126
+columns = 130
 lines = 40
 
                                              # --- Шрифт ---
@@ -59,15 +57,38 @@ history = 100000                             # Сколько строк хра�
 key = "Space"
 mods = "Control|Shift"
 action = "ToggleViMode"
+
 [[keyboard.bindings]]
-key = "Y"
-mods = "Control"
-action = "Copy"
-[[keyboard.bindings]]
-key = "U"
-mods = "Control"
+key = "PageUp"
+mods = "Control|Shift"
 action = "ScrollPageUp"
+
 [[keyboard.bindings]]
-key = "D"
-mods = "Control"
+key = "PageDown"
+mods = "Control|Shift"
 action = "ScrollPageDown"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Control|Shift"
+action = "CreateNewWindow"
+
+[[keyboard.bindings]]
+key = "Q"
+mods = "Control|Shift"
+action = "Quit"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Control|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control|Shift"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "0"
+mods = "Control|Shift"
+action = "ResetFontSize"
