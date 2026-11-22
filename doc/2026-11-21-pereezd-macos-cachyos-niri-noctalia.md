@@ -11,7 +11,7 @@ created: 2026-11-21
 > [!abstract] TL;DR
 > Переезжаем не «с мака на линукс» вообще, а переносим конкретные привычки и конфиги в CachyOS + niri + Noctalia, попутно вычищая macOS-специфику.
 > Приоритет решений: сначала родной инструмент CachyOS/Arch, потом общелинуксовый, и только если это дёшево — ветка совместимости с macOS.
-> Текущее состояние: DSH восстановлен, `dsh_backup` портирован, плагины проверены, репозиторий разделён на ветки `macos` и `linux`.
+> Текущее состояние: DSH восстановлен, `dsh_backup` портирован, плагины проверены; niri/Noctalia, kitty/alacritty, nvim и mimeapps/XDG настроены; репозиторий разделён на ветки `macos` и `linux`.
 > В конце файла — «Что уже сделано» и «Нюансы и грабли»; следующая сессия должна начинать с них.
 
 ## Содержание
@@ -154,7 +154,7 @@ created: 2026-11-21
 | AeroSpace | `.config/aerospace/aerospace.toml` | Удалён как лишний: niri заменяет его, конфиг не переносится |
 | btop | `~/.config/btop/btop.conf` | Тема переведена на `/usr/share/btop/themes/gruvbox_dark.theme`; live и repo синхронны |
 | tmux | `~/.config/tmux/tmux.conf` | `default-terminal tmux-256color`, `set-clipboard on`; `stty -ixon` в `.zshrc`; tmux пока не установлен |
-| yazi / treemd | `~/.config/yazi`, `~/.config/treemd` | Конфиги кроссплатформенные; бинарь `treemd` не установлен |
+| yazi / treemd | `~/.config/yazi`, `~/.config/treemd` | Конфиги кроссплатформенные; `treemd` установлен |
 | lazygit / pgcli / psql / mycli | `~/.config/...` | mac-путей нет; live-каталоги mycli/pgcli/psql отсутствуют; у mycli путь `~/.myclirc` — отдельный нюанс |
 | DSH | `~/.dsh`, `~/.dsh-tui` | Восстановлен из mac-бэкапа, см. ниже |
 | Obsidian | — | Реестра нет; `md-answer` не найдёт хранилище без `OBSIDIAN_VAULT` |
@@ -162,7 +162,7 @@ created: 2026-11-21
 
 ## Функции zsh
 
-Проверены на CachyOS; live-копия в `~/.zsh_MyFunctions` синхронизирована, изменения лежат в `linux` в индексе.
+Проверены на CachyOS; live-копия в `~/.zsh_MyFunctions` синхронизирована, изменения закоммичены в `linux`.
 
 | Функция | Что проверено и исправлено |
 |---|---|
@@ -175,13 +175,13 @@ created: 2026-11-21
 | `dsh_backup` | Dry-run старого бэкапа: 55 сумм, миграция путей, очистка `resume.txt` — ок |
 | Комплишены | `_dsh_backup`: добавлены `-L/--skip-locks`, `--help`; `_DiffBackupUnload`: `--help` вместо `--Help`, `aerospace` убран; `_gbranch` без изменений |
 
-> [!warning] `unload_mySysFile all/zsh` пока опасен
-> В репозитории `.zshrc` и `.bash_profile` — ещё mac-версии. `all` или `zsh` перезапишут рабочие Linux-конфиги. Сначала обнови эти файлы в репозитории; `zshf` уже безопасен и был использован для синхронизации функций.
+> [!warning] `unload_mySysFile all/zsh` — только на копии
+> Репозиторий уже Linux-ориентирован, но `all` перезаписывает live `.config`; перед запуском проверить diff и делать на временном HOME. `zshf` безопасен.
 
 > [!note] Что не запускалось
 > `backup_mySysFile all` не запускал, чтобы не перезаписывать репозиторий живыми конфигами: копирование проверено на временных каталогах. `unload_mySysFile all` тоже не запускался — только `zshf`.
 
-Проверка путей на этой машине: `~/Documents/ForSys/Backup`, `~/.zsh_MyFunctions`, `~/.dsh`, `~/.dsh-tui` существуют. Нет `.vimrc`, `.ideavimrc`, `.config/neovide`, `.config/psql`, `.config/pgcli`, `.config/mycli`, `.vim/UltiSnips`, `.config/alacritty`, `.config/tmux` — функции такие компоненты просто пропускают. `treemd`-бинарник не установлен, но его конфиг есть. У `mycli` на Linux ожидается `~/.myclirc`, а функции используют `~/.config/mycli/.myclirc` — при установке mycli это надо учесть.
+Проверка путей на этой машине: `~/Documents/ForSys/Backup`, `~/.zsh_MyFunctions`, `~/.dsh`, `~/.dsh-tui` существуют. Нет `.config/neovide`, `.config/psql`, `.config/pgcli`, `.config/mycli`, `.config/tmux`, `.vim/UltiSnips`; `.vimrc`, `.ideavimrc`, `.config/alacritty` есть. `treemd` установлен. У `mycli` на Linux ожидается `~/.myclirc`, а функции используют `~/.config/mycli/.myclirc` — при установке mycli это надо учесть.
 
 ## DSH
 
@@ -251,11 +251,11 @@ dsh plugin --profile web install --force
 | Ветка | Где | Состояние |
 |---|---|---|
 | `macos` | локально + `origin` | Чистый мак-снимок `6d52314`; default branch на GitHub |
-| `linux` | локально + `origin` | Первый коммит `02b1326` запушен; текущий коммит — настройка niri/Noctalia |
+| `linux` | локально + `origin` | 5 коммитов: `02b1326`, `161dfdf`, `defe658`, `0c9018c`, `451f153`; впереди origin на 4 |
 | `master` | — | Удалён на GitHub; не воссоздавать |
 | `min` | `origin` | Старая ветка, не трогали |
 
-В индексе `linux` — 5 изменений (niri + журнал); коммит — настройка niri/Noctalia. Документ, который ты читаешь, лежит в `~/Documents/ForSys/Backup/doc/2026-11-21-pereezd-macos-cachyos-niri-noctalia.md` и входит в репозиторий.
+Рабочее дерево чистое. Ветка `linux` впереди `origin/linux` на 4 коммита; последний — `451f153`. Документ, который ты читаешь, лежит в `~/Documents/ForSys/Backup/doc/2026-11-21-pereezd-macos-cachyos-niri-noctalia.md` и входит в репозиторий.
 
 > [!danger] Не пушить `master`
 > `git push origin master` заново создаст удалённую ветку и снова сделает её кандидатом в default. Если это случилось — сначала вернуть default на `macos`, потом удалять.
@@ -339,21 +339,21 @@ git status
 > - Перезапустить TUI и проверить реальное уведомление от завершённого хода.
 > - `dsh-at-file` — ждём совместимую версию, пока не трогать.
 > - Настроить Obsidian-реестр или задать `OBSIDIAN_VAULT`.
-> - Первый коммит `linux` — в этом коммите; запушить и обновить другой ПК.
+> - Запушить `linux` (4 коммита) и обновить другой ПК.
 >
 
 - Проверить `tmux`, `xclip`/`xsel` только если они реально нужны; для Wayland базовый вариант — `wl-clipboard`.
-- Обновить остальные конфиги в репозитории под Linux, только потом запускать `unload_mySysFile all` (`.zshrc` и `.bash_profile` уже готовы).
+- Конфиги niri/noctalia, kitty/alacritty, mimeapps/XDG и nvim уже Linux; при переносе проверить mycli/pgcli/psql/tmux/neovide.
 - Проверить `backup_mySysFile all` на копии репозитория, а не на рабочем.
 - Nvim: в реальном GUI проверить `:checkhealth`; LSP-предупреждения ленивые — исчезают после открытия файла.
 - Nvim: при желании поставить TeX (`latexmk`, `bibtex`, `biber`) — vimtex включит компилятор сам.
 - Решить с `mycli`: живой каталог отсутствует, на Linux он ждёт `~/.myclirc`; при установке добавить symlink или перенести файл.
 - Поставить Handy: `paru -S handy-bin`; `wtype` уже установлен — проверить вставку в niri/Noctalia.
-- Поставить `tmux`/`neovide`, если нужны; конфиги уже исправлены, но не тестировались без приложений.
+- Поставить `tmux`/`neovide`, если нужны; tmux-конфиг исправлен, neovide-конфига нет.
 
 ## Nvim: аудит
 
-Аудит и Linux-портирование завершены; клавиши не трогали.
+Аудит и Linux-портирование завершены; клавиши обновлены (см. ниже).
 
 - **Раскладка — исправлено.** `lua/core/layout/niri.lua` читает `niri msg --json keyboard-layouts` и переключает через `niri msg action switch-layout <index>`. `core/layout/init.lua` на Linux сначала пробует niri, старые CLI-адаптеры остаются fallback. Проверены `get/default/list/set` и English↔Russian с возвратом.
 - **Python-provider — исправлено.** В `lua/core/options.lua` задан `python3_host_prog = ~/.global_venv/bin/python` (если файл существует). Проверено в headless.
@@ -366,7 +366,7 @@ git status
 - **Мусор — убран.** Удалены `nvim.log`, `backup_init.vim`, `lua/configs/gruvbox.lua.backup_trueColor`; добавлен `.config/nvim/.gitignore` с `nvim.log`. `soso_key-map.jpg` оставлен как ассет.
 - **`langmapper.nvim` — удалён.** Он был установлен и в lock, но нигде не подключался; `vim.pack` health больше не ругается. В lock 25 плагинов.
 - **`:checkhealth` — 0 ошибок.** Остались предупреждения: необязательные языки Mason (Go/Ruby/PHP/Java/Julia/luarocks), `bibtex`/`biber`, `which-key` без `mini.icons` и 7 LSP-конфигов «not found» из-за ленивой загрузки. После открытия `.py` конфиги `pyright`/`ruff` видны, клиенты стартуют.
-- **Клавиши.** `core/keymaps.lua` и LSP-маппинги не трогали; цель vim-like с дефолтами — в «Напоминалке: клавиши».
+- **Клавиши.** `<C-m>` убран, Neo-tree/Yazi — на `<leader>n`/`<leader>y`, signature help — `<C-k>`, terminal — `<leader>t`; `C-n`/`C-y` возвращены дефолтам. Цель vim-like с дефолтами — в «Напоминалке: клавиши».
 
 ## Ошибки, актуальные и для macOS
 
@@ -385,7 +385,7 @@ git status
 
 ## Напоминалка: клавиши
 
-> Текущее: `Mod` = Super; cheatsheet — `Mod+F1`; launcher — `Mod+Space`; `Mod+N` — уведомления; `Mod+Shift+N` — DND; `Mod+Return` — kitty; `Mod+B` — Zen; focus — `Mod+hjkl`; move — `Mod+Shift+hjkl`; resize — `Mod+Ctrl+hjkl`; workspace — `Mod+Alt+J/K`; floating move — `Mod+Ctrl+Alt+hjkl`; floating resize — `Mod+Ctrl+Alt+Shift+hjkl`; floating/tiling focus — `Mod+V`; screenshot area — `Mod+Print`; CapsLock = Ctrl; раскладка — Alt+Shift; gaps 8, radius 10, opacity 0.94.
+> Текущее: `Mod` = Super; cheatsheet — `Mod+F1`; launcher — `Mod+Space`; `Mod+N` — уведомления; `Mod+Shift+N` — DND; `Mod+Return` — kitty; `Mod+B` — Zen; focus — `Mod+hjkl`; move — `Mod+Shift+hjkl`; resize — `Mod+Ctrl+hjkl`; workspace — `Mod+Alt+J/K`; floating move — `Mod+Ctrl+Alt+hjkl`; floating resize — `Mod+Ctrl+Alt+Shift+hjkl`; floating/tiling focus — `Mod+V`; screenshot area/screen/window — `Mod+Print`, `Mod+Shift+Print`, `Mod+Ctrl+Print`; CapsLock = Ctrl; раскладка — Alt+Shift; gaps 8, radius 10, opacity 0.94.
 
 
 > [!note] Цель
@@ -395,10 +395,10 @@ git status
 > Затрагивает alacritty, kitty, nvim, niri и Noctalia. Сначала собрать текущие биндинги в одну таблицу, затем убрать конфликты. Пока не менять вслепую.
 
 - [x] **alacritty:** `Ctrl+U/D/Y` убраны; scroll — `Ctrl+Shift+PageUp/Down`, zoom — `Ctrl+Shift+=/-/0`, new window — `Ctrl+Shift+N`, quit — `Ctrl+Shift+Q`.
-- [ ] **kitty:** `macos_blur` и неизвестные ключи убраны; `cmd+...` переведены на `Ctrl+Shift`, дубль `cmd+w` исправлен, `kitty_grab` установлен.
-- [ ] **niri:** зафиксировать занятые `Super+...` и не дублировать их в терминалах/nvim.
-- [ ] **nvim:** проверить `Ctrl+U/D/Y`, `Ctrl+Shift+...` и конфликты с terminal-биндингами.
-- [ ] **Noctalia:** глобальные хоткеи (launcher, панели, скриншоты) свести с niri, чтобы не было двойных срабатываний.
+- [x] **kitty:** неизвестные ключи убраны; `cmd+...` переведены на `Ctrl+Shift`, дубль `cmd+w` исправлен, `kitty_grab` установлен.
+- [x] **niri:** занятые `Super+...` зафиксированы; терминалы используют `Ctrl+Shift`, nvim — `Ctrl`/leader.
+- [x] **nvim:** `Ctrl+U/D/Y` не перехватываются; проверены `Ctrl+Shift+...` и terminal-биндинги.
+- [x] **Noctalia:** launcher/панели/уведомления сведены с niri через `Mod`-биндинги.
 - [ ] Составить итоговую таблицу «кто владеет сочетанием» и только потом менять конфиги.
 
 ## Напоминалка для ветки macos
@@ -456,18 +456,18 @@ git status
 - **`.vimrc`.** GUI-опции (`langmenu`, `guifont`, `mousehide`) под `has('gui_running')`; `language en_US.utf8`; vim-plug подключается только при наличии `~/.vim/autoload/plug.vim`; `colorscheme` через `silent!`; русский spell включается только при наличии файла. Live `~/.vimrc` создан, repo синхронизирован.
 - **Пути в скиллах.** `dsh-update` и `md-answer` переведены с `/Users/weed/...` на `$HOME/Documents/ForSys/Backup/my_files/DSH/...`; live-копии обновлены, `/Users` в них больше нет. Старый `my_files/DSH/dsh-backup-...` не трогали.
 - **`.ideavimrc`.** Переписан под IdeaVim: только `set`-опции без vim-plug, NERDTree, `:language`, `:langmenu` и GUI-опций; live и repo синхронизированы.
-- **`.config` (кроме nvim).** `btop` — системная тема; `neovide` — `/usr/bin/nvim` в repo; `tmux` — `tmux-256color`, `set-clipboard on`, `stty -ixon` в `.zshrc`; `lazygit`/`treemd`/`yazi`/`pgcli`/`psql` проверены, mac-путей нет; `mycli`/`pgcli`/`psql`/`tmux`/`neovide` live отсутствуют.
+- **`.config` (кроме nvim).** `btop` — системная тема; `neovide` — конфига нет; `tmux` — `tmux-256color`, `set-clipboard on`, `stty -ixon` в `.zshrc`; `lazygit`/`treemd`/`yazi`/`pgcli`/`psql` проверены, mac-путей нет; `mycli`/`pgcli`/`psql`/`tmux` live отсутствуют.
 - **alacritty.** Убраны mac-only `blur` и `option_as_alt`; padding 3, размер 130x40, `opacity` убран — прозрачность даёт niri 0.94. Шрифты `JetBrainsMono NF` сохранены. `Ctrl+U/D/Y` убраны; добавлены `Ctrl+Shift+PageUp/Down`, `Ctrl+Shift+=/-/0`, `Ctrl+Shift+N` (new window), `Ctrl+Shift+Q` (quit). Вкладок/сплитов в Alacritty нет — только окна/tmux.
 - **kitty.** Vim-first: `Ctrl+Shift+hjkl` — фокус окон, `Ctrl+Shift+Alt+hjkl` — перемещение, `Ctrl+Shift+Arrow` — ресайз; вкладки — `Ctrl+Shift+,/.`, перенос вкладок — `Ctrl+Shift+Alt+,/.`. W закрывает вкладку, Q — окно. `kitty_grab` установлен из GitHub, `grab.py` компилируется; `load_config` — 0 ошибок. Live и repo синхронизированы.
 - **nvim: Linux-портирование.** Новый `lua/core/layout/niri.lua` + выбор niri первым в `core/layout/init.lua`; `python3_host_prog` на `~/.global_venv/bin/python`; Mason bin в `vim.env.PATH`; `tree-sitter-cli` из pacman и 12 парсеров; spell `ru` из `site/spell`; folding-fallback по `BufWinEnter`; vimtex на `xdg-open` с условным компилятором. Удалены `nvim.log`/бэкапы, `langmapper`, ручной `tree-sitter`; добавлен `.gitignore`; `:checkhealth` — 0 ошибок.
 - **`fzf-tab`.** Установлен из AUR (`fzf-tab 1.3.0-2`), файл `/usr/share/zsh/plugins/fzf-tab/fzf-tab.zsh` на месте, source в `.zshrc` работает.
-- **nvim keymaps.** `<C-m>` больше не перекрывает Enter; Neo-tree переведён с `<C-n>` на `<leader>n`, Yazi — с `<C-y>` на `<leader>y`, поэтому `Ctrl+n`/`Ctrl+y` снова дефолтные. `<C-h/j/k/l>` оставлены как быстрая навигация по split'ам; `<C-\>` — терминал.
+- **nvim keymaps.** `<C-m>` больше не перекрывает Enter; Neo-tree переведён с `<C-n>` на `<leader>n`, Yazi — с `<C-y>` на `<leader>y`, поэтому `Ctrl+n`/`Ctrl+y` снова дефолтные. `<C-h/j/k/l>` оставлены как быстрая навигация по split'ам; terminal — `<leader>t`, `<C-\\>` освобождён.
 - **LSP signature help.** `<C-S>` удалён из insert/select (XOFF/flow control), вместо него `<C-k>`; в normal `<C-k>` по-прежнему окно вверх. Плата — в insert больше нет дефолтного digraph на `C-k`.
 - **nvim splits/which-key.** `splitright`/`splitbelow` включены; для leader-префиксов добавлены группы which-key (`n`, `y`, `p`, `s`, `f`, `d`, `r`, `c`, `m`, `t`), окнам — `desc`.
 - [ ] **macOS: общий аудит keymap.** Сравнить `core/keymaps.lua`, `configs/lsp.lua` и карты плагинов (neo-tree, yazi, luasnip, snacks, grug-far, conform, md-render) с Linux. Повторить: убрать `<C-m>`, Neo-tree → `<leader>n`, Yazi → `<leader>y`, signature help → `<C-k>`, вернуть `<C-n>/<C-y>`, проверить `<C-hjkl>`. Учесть mac-специфику Cmd/Super и не ломать системные сочетания; где можно — приблизить к текущей linux-схеме.
 - **Git.** Ветка `master` переименована в `macos` и запушена; `master` удалён на GitHub; default переключён на `macos`; временная `BackupLinux` удалена; работа продолжается в `Backup` на ветке `linux`.
 - **`Apps.md`.** Структура и нумерация обновлены; предустановленные: `git`, `zsh`+OhMyZsh, `fastfetch`, `bat`, `btop`, `fzf`, `ripgrep`, `fd`, `vim`, `alacritty`. macOS-only удалены, Handy возвращён под Linux (AUR + `wtype` + модели), `fzf-tab` и `happ-desktop-bin` добавлены. `treemd` и `wtype` уже установлены, Handy пока нет.
-- **Текущий индекс `linux`.** Первый коммит `02b1326`; niri/Noctalia — `161dfdf`; текущий коммит — kitty/alacritty и `kitty_grab`.
+- **Текущий индекс `linux`.** Коммиты: `02b1326`, `161dfdf`, `defe658`, `0c9018c`, `451f153`; рабочее дерево чистое, впереди `origin/linux` на 4.
 - **Документ.** Перенесён из `~/Documents/ForSys/DSH/answers/` в `~/Documents/ForSys/Backup/doc/`; теперь входит в репозиторий, дальнейшие записи — здесь.
 - **mimeapps/XDG.** В `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` добавлены `mimeapps` (`~/.config/mimeapps.list`), `xdg` (`~/.config/user-dirs.dirs`) и `xdg-locale` (`~/.config/user-dirs.locale`); автодополнение обновлено. Файлы скопированы, `diff_mySysFile` — без различий. В `mimeapps.list` текущие ассоциации Zen для http/https/html.
 - **Свежий DSH-бэкап.** `my_files/DSH/dsh-backup-20261122-020205`, 552K, 57 файлов: профили 3, TUI 14, скиллы 26; `secrets: 0`, `sessions: 0`; `sha256sum -c checksums.txt` — OK. Добавлен в коммит.
@@ -475,7 +475,7 @@ git status
 - **niri/Noctalia в бэкапе.** Скопированы `.config/niri/` (10 файлов) и `.config/noctalia/` (2 файла); `backup_mySysFile niri noctalia` и `diff_mySysFile niri noctalia` — без различий. `full_config.toml` в help помечен как применяемый вручную.
 - **Чистка.** Удалены старый `dsh-backup-20261118-165930`, `kitty.conf.bak`, `.zshrc.bak*`, `.bash_profile.bak*`, `.gitconfig.bak*`, временный снимок функций и `/tmp`-артефакты.
 - **Zsh-функции.** Временный снимок `~/.zsh_MyFunctions.bak-20261122-020152` сделан и после проверки удалён; `zsh -n` всех 10 файлов — OK; help, `backup_mySysFile zshf` → `diff_mySysFile zshf` без различий, `gdbranch HEAD HEAD` без diff. В `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` добавлены `niri` и `noctalia`, в автодополнение — тоже; `full_config.toml` помечен как ручной.
-- **Текущее состояние на 2026-11-22.** nvim Linux-порт завершён (`:checkhealth` — 0 ошибок); `treemd` и `wtype` установлены, Handy ещё нет; `Apps.md` обновлён; niri/noctalia в бэкапе; kitty/alacritty выровнены; `kitty_grab` установлен; оформление и клавиши — в отдельном коммите.
+- **Текущее состояние на 2026-11-22.** nvim Linux-порт завершён (`:checkhealth` — 0 ошибок); `treemd` и `wtype` установлены, Handy ещё нет; `Apps.md` обновлён; niri/noctalia в бэкапе; kitty/alacritty выровнены; `kitty_grab` установлен; nvim keymaps/splits/which-key настроены; mimeapps/XDG добавлены; последний коммит — `451f153`.
 
 ## Нюансы и грабли
 
@@ -491,7 +491,7 @@ git status
 10. **`diff_mySysFile`** теперь берёт `nvim` из `PATH`; если его нет, отчёт всё равно строится, а редактор пропускается. Старый жёсткий `/opt/homebrew/bin/nvim` убран.
 11. **Пути в функциях не менялись.** `backup_mySysFile`, `unload_mySysFile`, `diff_mySysFile` и примеры `dsh_backup` по-прежнему указывают на `~/Documents/ForSys/Backup`. Это осознанно: `BackupLinux` удалена, репозиторий остался на старом пути.
 12. **`master` удалён, default — `macos`.** Не пушить `master` и не делать его default; иначе GitHub снова запретит удаление.
-13. **`linux` не запушен.** На другом ПК ветки нет, пока не сделать commit + push. Все изменения сейчас только в индексе.
+13. **`linux` не запушен.** Впереди `origin/linux` на 4 коммита; рабочее дерево чистое. На другом ПК ветки нет, пока не сделать push.
 14. **AeroSpace.** `.config/aerospace/aerospace.toml` удалён вручную как лишний; удаление в индексе, компонент `aerospace` убран из `backup_mySysFile`, `unload_mySysFile`, `diff_mySysFile` и комплишенов. В истории ветки `macos` файл остаётся.
 15. **mac-бэкап остаётся маковским.** В нём TUI `0.19.0`, DSH `0.2.2-rc.1`, сессий и секретов нет. Это архив для сравнения, а не источник для повседневного восстановления.
 16. **Текущая TUI-сессия старше восстановленных настроек.** Она держит старый снимок `settings.json`; если менять настройки до перезапуска, можно перезаписать восстановленные значения.
@@ -499,7 +499,7 @@ git status
 18. **`shasum` есть, но не гарантирован.** На CachyOS он тянется из `perl`; в новом коде первичен `sha256sum`.
 
 19. **Копирование каталогов в `backup_mySysFile`/`unload_mySysFile`.** Раньше при существующем `dst` получалось `dst/src/...`; теперь используется `cp -R src/. dst/`, содержимое сливается. Ошибки `cp` больше не выдают «Восстановлено» молча.
-20. **`unload_mySysFile all` пока нельзя.** `.zshrc` и `.bash_profile` уже Linux-версии, но `.gitconfig`, `.vimrc`, `.config/nvim` и другие компоненты в репозитории ещё mac-ориентированные; `all` может перезаписать рабочие конфиги. `zshf` безопасен и уже применён.
+20. **`unload_mySysFile all` — только на копии.** Репозиторий уже Linux-ориентирован, но `all` перезаписывает live-конфиги; перед запуском проверить diff и использовать временный HOME. `zshf` безопасен и уже применён.
 
 21. **`fzf-tab` установлен из AUR** (`fzf-tab 1.3.0-2`), файл `/usr/share/zsh/plugins/fzf-tab/fzf-tab.zsh` на месте. `source` в `.zshrc` защищён проверкой на случай удаления пакета.
 22. **`zsh -i -c` без tty** всё ещё может писать `can't change option: zle` — это не PATH и не `.zshrc`-логика, в обычном терминале zle доступен. `stty` уже обёрнут в `[[ -t 0 ]]`, поэтому его ошибки в non-tty больше нет.
@@ -511,13 +511,13 @@ git status
 
 26. **IdeaVim.** Новый `~/.ideavimrc` — минимальный: `set`-опции, без vim-plug/`Plug` и NERDTree. Плагины в IDE даёт сама IDE; если нужны маппинги — добавлять в IdeaVim-совместимом виде.
 27. **`mycli`.** Конфиг лежит в `.config/mycli/.myclirc`, но на Linux mycli обычно читает `~/.myclirc`; live-каталога нет, поэтому не проверял. При установке — symlink `~/.myclirc` на `.config/mycli/.myclirc` или перенос.
-28. **`treemd`.** Конфиг `~/.config/treemd/config.toml` на месте, но бинаря нет; opener в yazi для `.md` будет падать, пока `treemd` не установлен (`cargo install treemd`).
-29. **`tmux`/`neovide`.** Конфиги исправлены, но приложений нет; синтаксис tmux и запуск neovide не проверены. `tmux` при установке получит `tmux-256color` и `set-clipboard on`; префикс `C-q` теперь не глушится IXON благодаря `stty -ixon`.
+28. **`treemd`.** Конфиг `~/.config/treemd/config.toml` на месте, бинарь установлен; opener в yazi для `.md` должен работать.
+29. **`tmux`/`neovide`.** tmux-конфиг исправлен, но приложения нет; синтаксис tmux не проверен. neovide-конфига нет, приложение не установлено. `tmux` при установке получит `tmux-256color` и `set-clipboard on`; префикс `C-q` теперь не глушится IXON благодаря `stty -ixon`.
 
-30. **alacritty-биндинги.** `Ctrl+U`, `Ctrl+D`, `Ctrl+Y` пока перехватываются Alacritty (`ScrollPageUp/Down`, `Copy`), поэтому в shell они не доходят. Это осознанно отложено: сначала общая таблица клавиш для alacritty/kitty/nvim/niri/Noctalia, потом правки.
-31. **alacritty opacity на Wayland.** `window.opacity = 0.98` может игнорироваться niri; это не ошибка конфига. `blur`/`option_as_alt` убраны как macOS-only.
+30. **alacritty-биндинги — решено.** `Ctrl+U/D/Y` убраны; scroll — `Ctrl+Shift+PageUp/Down`, zoom — `Ctrl+Shift+=/-/0`, new window — `Ctrl+Shift+N`, quit — `Ctrl+Shift+Q`.
+31. **alacritty opacity — решено.** `window.opacity` убран; прозрачность даёт niri `0.94`. `blur`/`option_as_alt` убраны как macOS-only.
 
-32. **kitty-ключи.** `load_config` подтвердил, что `macos_blur`, `window_padding_height`, `unfocused_cursor_shape`, `draw_bold_text_with_bright_colors` неизвестны kitty 0.51 и были проигнорированы; теперь убраны. `map cmd+...` остаются активными до общей таблицы клавиш.
+32. **kitty-ключи — решено.** Неизвестные ключи убраны; `map cmd+...` заменены на `Ctrl+Shift`; дубль закрытия исправлен; `kitty_grab` установлен.
 
 33. **Nvim: niri-раскладка — решено.** `core/layout/niri.lua` использует IPC niri; `init.lua` выбирает niri первым на Linux, fcitx5/ibus/xkb-switch остаются fallback. В headless переключение отключено, как и раньше.
 34. **Nvim: Python-provider — решено.** `python3_host_prog` указывает на `~/.global_venv/bin/python`, если он существует; при удалении venv настройка просто не выставится, Neovim вернётся к поиску в PATH.
