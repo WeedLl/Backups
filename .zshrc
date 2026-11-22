@@ -228,7 +228,9 @@ VI_MODE_SET_CURSOR=true
 MODE_INDICATOR="%F{red}--NORMAL--%f "
 INSERT_MODE_INDICATOR="%F{green}--INSERT--%f "
 
-stty intr undef
+# tmux prefix C-q = XON/XOFF: отключаем flow control, иначе вывод замирает.
+[[ -t 0 ]] && stty intr undef
+[[ -t 0 ]] && stty -ixon
 # Ctrl+C → Normal
 function _ctrl-c-smart() {
 	if [[ -z "$BUFFER" ]]; then
