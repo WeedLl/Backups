@@ -61,15 +61,38 @@ history = 100000                             # Сколько строк хра�
 key = "Space"
 mods = "Control|Shift"
 action = "ToggleViMode"
+
 [[keyboard.bindings]]
-key = "Y"
-mods = "Control"
-action = "Copy"
-[[keyboard.bindings]]
-key = "U"
-mods = "Control"
+key = "PageUp"
+mods = "Command"
 action = "ScrollPageUp"
+
 [[keyboard.bindings]]
-key = "D"
-mods = "Control"
+key = "PageDown"
+mods = "Command"
 action = "ScrollPageDown"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Command"
+action = "CreateNewWindow"
+
+[[keyboard.bindings]]
+key = "Q"
+mods = "Command"
+action = "Quit"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Command"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Command"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "0"
+mods = "Command"
+action = "ResetFontSize"

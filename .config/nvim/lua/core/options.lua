@@ -30,6 +30,10 @@ opt.colorcolumn = "120"
 -- Всегда иметь визуальный отступ от верхнего и нижнего края.
 opt.scrolloff = 15
 
+-- Новые split'ы — справа и снизу, как ожидается.
+opt.splitright = true
+opt.splitbelow = true
+
 -- Подсветка строки курсора
 opt.cursorline = true
 

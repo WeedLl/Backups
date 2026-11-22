@@ -131,6 +131,6 @@ neo_tree.setup({
 	},
 })
 
-vim.keymap.set("n", "<C-n>", function()
+vim.keymap.set("n", "<leader>n", function()
 	vim.cmd("Neotree toggle")
 end, { desc = "Toggle file tree" })
