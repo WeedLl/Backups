@@ -17,7 +17,7 @@ while [ $# -gt 0 ]; do
     --copy) MODE=copy; shift ;;
     --dest) DEST="${2:?}"; shift 2 ;;
     --uninstall) UNINSTALL=1; shift ;;
-    -h|--help) sed -n '2,10p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help) sed -n '2,8p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) die "install: неизвестный аргумент $1" ;;
   esac
 done

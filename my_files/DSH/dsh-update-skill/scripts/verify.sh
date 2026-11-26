@@ -1,25 +1,28 @@
 #!/usr/bin/env bash
 # verify.sh — проверка, что после обновления всё живо.
 #
-#   verify.sh [--all | --profile NAME]... [--baseline DIR] [--smoke] [--json]
+#   verify.sh [--all | --profile NAME]... [--baseline DIR] [--smoke] [--write-doc] [--json]
 #
 # Без --profile проверяются все профили. Базовая линия по умолчанию — последний снимок.
 # --smoke добавляет живые проверки: web (HTTP + активация плагинов), tui (boot в PTY),
 # headless (один короткий прогон; пропускается без ключа в окружении).
+# --write-doc после проверки переписывает журнал версий (doc.sh).
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-usage() { sed -n '2,10p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,9p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 
 SEL=()
 BASELINE=''
 SMOKE=0
 AS_JSON=0
+WRITE_DOC=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --all) SEL=(); shift ;;
     --profile) SEL+=("${2:?--profile требует имя}"); shift 2 ;;
     --baseline) BASELINE="${2:?}"; shift 2 ;;
     --smoke) SMOKE=1; shift ;;
+    --write-doc) WRITE_DOC=1; shift ;;
     --json) AS_JSON=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) die "verify: неизвестный аргумент $1" ;;
@@ -31,6 +34,7 @@ state_init
 ts="$(stamp)"
 outdir="$REPORT_DIR/verify-$ts"
 mkdir -p "$outdir" || die "не удалось создать $outdir"
+printf '%s\n' "$outdir" >"$REPORT_DIR/.latest" 2>/dev/null || true
 tsv="$outdir/findings.tsv"
 : >"$tsv"
 
@@ -114,7 +118,13 @@ smoke_tui() {
   local p=$1 out err pid alive broken
   out="$outdir/smoke-$p.out"
   err="$outdir/smoke-$p.err"
-  script -q /dev/null dsh --profile "$p" >"$out" 2>"$err" &
+  if ! have script; then
+    dsh --profile "$p" >"$out" 2>"$err" &
+  elif [ "$(uname -s)" = "Darwin" ]; then
+    script -q /dev/null dsh --profile "$p" >"$out" 2>"$err" &
+  else
+    script -q -c "dsh --profile $p" /dev/null >"$out" 2>"$err" &
+  fi
   pid=$!
   sleep 10
   if kill -0 "$pid" 2>/dev/null; then alive=1; else alive=0; fi
@@ -139,7 +149,7 @@ smoke_headless() {
     return
   fi
   out="$outdir/smoke-headless.out"
-  timeout 180 dsh headless "$SMOKE_PROMPT" >"$out" 2>&1
+  run_timeout 180 dsh headless "$SMOKE_PROMPT" >"$out" 2>&1
   code=$?
   if [ "$code" -eq 0 ] && grep -q "$SMOKE_MARKER" "$out"; then
     emit ok headless smoke "живой прогон ответил $SMOKE_MARKER"
@@ -232,6 +242,17 @@ report="$outdir/report.txt"
 } | tee "$report"
 
 prune_reports "$KEEP_REPORTS" 0 >/dev/null 2>&1
+
+if [ "$WRITE_DOC" -eq 1 ]; then
+  info "обновляю журнал версий…"
+  if [ -n "$BASELINE" ] && [ -f "$BASELINE/manifest.json" ]; then
+    "$LIB_DIR/doc.sh" write --snapshot "$BASELINE" --verify-dir "$outdir" --kind update \
+      || warn "журнал версий не обновлён (см. doc.sh выше)"
+  else
+    "$LIB_DIR/doc.sh" write --verify-dir "$outdir" --kind update \
+      || warn "журнал версий не обновлён (см. doc.sh выше)"
+  fi
+fi
 
 [ "$fails" -gt 0 ] && exit 1
 exit 0

@@ -45,6 +45,42 @@ die()  { err "$*"; exit 1; }
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
+# ── переносимость Linux/macOS ───────────────────────────────────────────
+# sha256sum есть в coreutils (Linux), shasum — в Perl (macOS и часть Linux).
+sha256_check_from() {
+  # sha256_check_from <рабочий-каталог> <checksums.txt>
+  local cwd=$1 sums=$2
+  if have sha256sum; then
+    ( cd "$cwd" && sha256sum -c "$sums" )
+  else
+    ( cd "$cwd" && shasum -a 256 -c "$sums" )
+  fi
+}
+
+sha256_emit_dir() {
+  # sha256_emit_dir <каталог> <checksums.txt>; хеширует только files/...
+  local dir=$1 out=$2 file
+  (
+    cd "$dir" || return 1
+    find files -type f -print0 | while IFS= read -r -d '' file; do
+      if have sha256sum; then sha256sum "$file"; else shasum -a 256 "$file"; fi
+    done >"$out" 2>/dev/null
+  )
+  return 0
+}
+
+timeout_bin() {
+  if have timeout; then printf 'timeout'; elif have gtimeout; then printf 'gtimeout'; fi
+}
+
+run_timeout() {
+  # run_timeout <секунды> <команда...>; без timeout/gtimeout — без ограничения.
+  local secs=$1 t
+  shift
+  t="$(timeout_bin)"
+  if [ -n "$t" ]; then "$t" "$secs" "$@"; else "$@"; fi
+}
+
 need_base() {
   have node || die "нужен node в PATH"
   have dsh  || die "не найден dsh в PATH"

@@ -1,6 +1,6 @@
 ---
 name: dsh-update
-description: Проверка и выполнение обновлений DSH — ядра, TUI и плагинов профилей web/tui/headless — с обязательным снимком, оценкой рисков, проверкой совместимости и пост-проверкой плагинов и скиллов. Вызывается ТОЛЬКО явно командой /dsh-update; сам не активируется и не запускается по инициативе агента.
+description: Проверка и выполнение обновлений DSH — ядра, TUI и плагинов профилей web/tui/headless — с обязательным снимком, оценкой рисков, проверкой совместимости, пост-проверкой плагинов и скиллов и журналом версий в Obsidian-совместимом md. Вызывается ТОЛЬКО явно командой /dsh-update; сам не активируется и не запускается по инициативе агента.
 ---
 
 # /dsh-update — обновление DSH без потери плагинов и скиллов
@@ -50,6 +50,7 @@ description: Проверка и выполнение обновлений DSH �
 | `/dsh-update update` | check → выбор → снимок → установка → проверка | да |
 | `/dsh-update rollback` | откат из снимка | да |
 | `/dsh-update selftest` | проверка допущений скилла | нет |
+| `/dsh-update doc` | переписать журнал версий по текущему состоянию | да (только журнал) |
 
 ¹ `verify` перезаписывает `cordis.yml` профилей (штатное поведение любого запуска
 профиля) и пишет отчёты в `~/.dsh/updates/reports/`.
@@ -65,7 +66,8 @@ description: Проверка и выполнение обновлений DSH �
 ```
 
 Проверяет: есть ли `dsh`, поддерживаются ли `--profile`, `--dump-config`,
-`dsh plugin --profile`, читаются ли профили, работает ли `collect.mjs`.
+`dsh plugin --profile`, читаются ли профили, работают ли `collect.mjs` и `doc.mjs`,
+есть ли `sha256sum`/`shasum` и `script`.
 
 - **exit 0** — продолжай.
 - **exit 1** — скрипты устарели. Покажи пользователю список расхождений и раздел
@@ -195,7 +197,8 @@ DSH_UPDATE_KEEP_SNAPSHOTS=3 DSH_UPDATE_KEEP_REPORTS=10 .../snapshot.sh prune
 
 ### После установки
 
-- `apply.sh` сам вызывает `verify.sh` (отключить: `--no-verify`).
+- `apply.sh` сам вызывает `verify.sh` (отключить: `--no-verify`) и переписывает
+  журнал версий `doc/dsh-versions.md` (см. §13).
 - В конце печатает путь снимка и команду отката.
 - **Сообщи пользователю: нужен ручной перезапуск TUI/web.** Текущая сессия
   работает на старом коде, и её проверки не отражают новую версию до рестарта.
@@ -205,6 +208,7 @@ DSH_UPDATE_KEEP_SNAPSHOTS=3 DSH_UPDATE_KEEP_REPORTS=10 .../snapshot.sh prune
 ```bash
 ~/.dsh/skills/dsh-update/scripts/verify.sh --all
 ~/.dsh/skills/dsh-update/scripts/verify.sh --all --smoke
+~/.dsh/skills/dsh-update/scripts/verify.sh --all --write-doc  # + журнал версий
 ```
 
 Что проверяется:
@@ -234,6 +238,10 @@ DSH_UPDATE_KEEP_SNAPSHOTS=3 DSH_UPDATE_KEEP_REPORTS=10 .../snapshot.sh prune
 Код выхода `1` — есть ошибки. Покажи их, не «сглаживай», и не перезапускай
 сессию, пока они не разобраны.
 
+`--write-doc` нужен после ручного `/update` внутри TUI: снимка до обновления
+может не быть, тогда «до» берётся из предыдущей записи журнала. Ошибка записи
+журнала не меняет код выхода проверки.
+
 ## 8. Шаг 5 — отчёт пользователю
 
 Коротко, без пересказа всего лога:
@@ -243,6 +251,7 @@ DSH_UPDATE_KEEP_SNAPSHOTS=3 DSH_UPDATE_KEEP_REPORTS=10 .../snapshot.sh prune
 Пропущено: dsh-fact-check 2.0.2 (major), dsh-context 0.85.1 (0.x minor)
 Проверка: 0 ошибок, 4 предупреждения (dsh_backup не покрывает skills/ и storages/)
 Снимок: ~/.dsh/updates/snapshots/20261118-163000-pre-update
+Журнал: ~/Documents/ForSys/Backup/doc/dsh-versions.md
 Откат: .../rollback.sh --snapshot <тот же путь> --yes
 Дальше: перезапустите TUI вручную — сессия работает на старом коде.
 ```
@@ -262,6 +271,9 @@ DSH_UPDATE_KEEP_SNAPSHOTS=3 DSH_UPDATE_KEEP_REPORTS=10 .../snapshot.sh prune
 **Если TUI сейчас запущен — попросите его закрыть перед откатом.** Работающий
 интерфейс держит состояние в памяти и после отката перезапишет восстановленные
 файлы `~/.dsh-tui` своим. Web-сервер безопаснее, но его тоже лучше остановить.
+
+После отката `rollback.sh` сам переписывает журнал версий: строка `откат` в
+истории и обновлённый раздел «Сейчас».
 
 ## 10. Локальные форки: что делать при поломке
 
@@ -295,9 +307,9 @@ dsh plugin --profile tui add "file:/Users/weed/Documents/Ai/DSH/dsh-tui-pkg-ru"
 
 1. Остановись. Не выполняй «похожие» команды по памяти.
 2. Покажи пользователю, какой именно пункт `selftest` не сошёлся.
-3. Предложи обновить файлы скилла в каталоге
-   `~/Documents/Ai/DSH/dsh-update-skill` (вручную, без системы контроля версий),
-   затем правку затронутых скриптов.
+3. Предложи обновить файлы скилла в каталоге, откуда он установлен: посмотри
+   `readlink ~/.dsh/skills/dsh-update` (симлинк) или сам каталог с `SKILL.md`.
+   Правь исходник, затем переустанови `install.sh --link` или `--copy`.
 4. Только после этого повторяй `/dsh-update`.
 
 ## 12. Ограничения и особые случаи
@@ -317,8 +329,56 @@ dsh plugin --profile tui add "file:/Users/weed/Documents/Ai/DSH/dsh-tui-pkg-ru"
 - **Снимок и сам скилл.** Снимок копирует скиллы, лежащие в `~/.dsh/skills`
   обычными каталогами. Если скилл подключён симлинком, его содержимое в снимок
   не попадает — держите рядом копию каталога.
+- **Журнал версий.** Пишется best-effort: ошибка не отменяет обновление. В нём
+  только версии, пути и результаты проверки — без токенов и ключей. Если `doc/`
+  нет, скилл спрашивает Backup или answers (см. §13).
 
-## 13. Файлы скилла
+## 13. Журнал версий
+
+После каждого обновления скилл переписывает заметку `dsh-versions.md`: ядро, TUI
+и **все** плагины по профилям, «до → после» для текущего и предыдущего
+обновления, результат проверки и снимок. Формат — Obsidian: `type: backup`,
+`tags: [sys]`, `created` (дата), `time` (дата-время), TL;DR, таблицы и callouts.
+Файл самодостаточен; `doc/` не обязан быть частью хранилища.
+
+### Куда писать
+
+| Приоритет | Условие | Путь |
+|---|---|---|
+| 1 | задан `DSH_UPDATE_DOC_DIR` | туда, каталог создать |
+| 2 | `~/Documents/ForSys/Backup/doc/` существует | `Backup/doc/dsh-versions.md` |
+| 3 | `doc/` нет, `Backup/` есть | **спросить**: `Backup/dsh-versions.md` (рекомендую) или `answers/dsh-versions.md` |
+| 4 | `Backup/` нет | `answers/dsh-versions.md`, создать |
+
+`answers/` — как у `md-answer`: `$MD_ANSWER_DIR` или `answers/` в рабочем
+каталоге. Корень Backup можно переопределить `DSH_UPDATE_BACKUP_ROOT`, каталог
+answers — `DSH_UPDATE_ANSWERS_DIR`. Выбор из пункта 3 запоминается в
+`~/.dsh/updates/doc-target`, чтобы не спрашивать каждый раз. Если `Backup/doc` появится позже, приоритет 2 снова
+выигрывает.
+
+Рядом с заметкой лежит скрытый `.dsh-versions.json` — история для «предыдущего»
+обновления и исходная дата `created`. Без него после второго обновления
+«предыдущее» взять неоткуда.
+
+### Команды
+
+```bash
+~/.dsh/skills/dsh-update/scripts/doc.sh path                  # куда писать
+~/.dsh/skills/dsh-update/scripts/doc.sh write --snapshot DIR  # после обновления
+~/.dsh/skills/dsh-update/scripts/doc.sh write --dir DIR       # выбрать fallback
+~/.dsh/skills/dsh-update/scripts/doc.sh write --stdout        # посмотреть, не писать
+```
+
+`apply.sh` пишет журнал сам; ошибка записи не отменяет обновление. После ручного
+`/update` внутри TUI — `verify.sh --all --write-doc`. После `rollback.sh` журнал
+обновляется сам. Пропущенные мажоры передай в `apply.sh --skipped "pkg@ver
+(причина)"` или в `doc.sh write --skipped ...` — они попадут в «Не обновилось».
+
+Если `doc/` нет и выбор не сохранён, `apply.sh` предупредит: задай один вопрос
+(Backup или answers), затем повтори `doc.sh write --dir ...`. Само обновление уже
+выполнено; журнал можно дописать.
+
+## 14. Файлы скилла
 
 ```
 SKILL.md                     этот файл
@@ -328,6 +388,7 @@ scripts/snapshot.sh          снимок + самопроверка + очис�
 scripts/apply.sh             установка (official / точные версии)
 scripts/verify.sh            проверка после обновления
 scripts/rollback.sh          откат
+scripts/doc.sh|doc.mjs       журнал версий (dsh-versions.md)
 scripts/install.sh           установка скилла в ~/.dsh/skills
 scripts/util.mjs             semver, peer-диапазоны, lockfile, фронтматтер
 scripts/collect.mjs          сбор фактов о профилях

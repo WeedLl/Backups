@@ -44,9 +44,22 @@ fi
 [ -d "$DSH_HOME/profiles" ] && ok "профили: $DSH_HOME/profiles" || bad "нет каталога профилей $DSH_HOME/profiles"
 [ -d "$TUI_HOME" ] && ok "состояние TUI: $TUI_HOME" || soft "нет $TUI_HOME — проверка состояния TUI пропускается"
 
-for f in util.mjs collect.mjs check.mjs checks.mjs compare.mjs; do
+for f in util.mjs collect.mjs check.mjs checks.mjs compare.mjs doc.mjs; do
   [ -f "$LIB_DIR/$f" ] && ok "есть scripts/$f" || bad "нет scripts/$f"
 done
+[ -x "$LIB_DIR/doc.sh" ] && ok "есть scripts/doc.sh" || bad "нет исполняемого scripts/doc.sh"
+
+if have sha256sum || have shasum; then
+  ok "sha256: $(if have sha256sum; then printf 'sha256sum'; else printf 'shasum -a 256'; fi)"
+else
+  bad "нет sha256sum/shasum — снимок не проверить"
+fi
+
+if have script; then
+  ok "script есть — smoke TUI возможен"
+else
+  soft "нет script — smoke TUI будет пропущен"
+fi
 
 if node "$UTIL" cmp 1.0.0 1.0.1 >/dev/null 2>&1; then
   ok "util.mjs работает"
