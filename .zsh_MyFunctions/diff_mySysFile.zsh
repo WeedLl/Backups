@@ -135,7 +135,7 @@ EOF
 			continue
 		fi
 		# Сравнение
-		diff_output=$(command diff -rq "$current" "$backup" 2>/dev/null)
+		diff_output=$(LC_ALL=C command diff -rq "$current" "$backup" 2>/dev/null)
 		if [[ $? -eq 0 ]]; then
 			identical+=$key
 		else
@@ -246,7 +246,7 @@ EOF
 					elif [[ "$line" = "Only in "* ]]; then
 						only_in+="$line"
 					fi
-				done < <(command diff -rq "$current" "$backup" 2>/dev/null)
+				done < <(LC_ALL=C command diff -rq "$current" "$backup" 2>/dev/null)
 				if [[ ${#diff_files} -eq 0 && ${#only_in} -eq 0 ]]; then
 					echo ">>> $key: различий не найдено"
 				else
