@@ -13,7 +13,7 @@ _gdbranch_branches() {
 _gdbranch() {
   _arguments -s \
     '(-h --help)'{-h,--help}'[Показать справку]' \
-    '(-f --filter)'{-f,--filter}'[Фильтр по типу изменения]:filter:(A D M R C T U X B)' \
+    '(-f --filter)'{-f,--filter}'[Фильтр по типу изменения]:filter:(A C D M R T U X B)' \
     '1:base branch:_gdbranch_branches' \
     '2:target branch:_gdbranch_branches'
 }

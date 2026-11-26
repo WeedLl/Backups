@@ -26,8 +26,12 @@ unload_mySysFile — восстановить конфиги из бэкапа
   aerospace     - .config/aerospace/aerospace.toml
   treemd        - .config/treemd/config.toml
 
+Режим:
+  all           - все компоненты
+
 Пример:
-  unload_mySysFile zsh bash или unload_mySysFile all
+  unload_mySysFile zsh bash
+  unload_mySysFile all
 EOF
 		return 0
 	fi
@@ -65,7 +69,7 @@ EOF
 	)
 
 	if [[ $# -eq 0 ]]; then
-		echo "Использование: unload_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|tmux|treemd|aerospace|all]"
+		echo "Использование: unload_mySysFile [-h|--help] [bash|zsh|zshf|omz|ultisnips|vim|nvim|neovide|ideavim|git|lazygit|psql|pgcli|mycli|btop|kitty|alacritty|yazi|tmux|aerospace|treemd|all]"
 		return 1
 	fi
 

@@ -1,17 +1,18 @@
-#Сравнивает различия. Без аргументов - только отчёт по всем файлам.
-#diff_bzvp                  # проверить всё, только отчёт
-#diff_bzvp zsh git          # проверить только zsh и git
-#diff_bzvp diff             # проверить всё + vimdiff для отличающихся
-#diff_bzvp diff zsh vim     # vimdiff только для zsh и vim (если они отличаются)
-#Пришлось принудительно прописать путь к vimdiff из MacVim, ибо была ошибка UltiSnipps как в git difftool.
+# Сравнивает текущие файлы с бэкапом. Без аргументов — только отчёт по всем файлам.
+#diff_mySysFile                  # проверить всё, только отчёт
+#diff_mySysFile zsh git          # проверить только zsh и git
+#diff_mySysFile diff             # проверить всё + nvim -d для отличающихся
+#diff_mySysFile diff zsh vim     # nvim -d только для zsh и vim (если отличаются)
+# Для сравнения используется nvim -d из PATH; если nvim нет — сравнение в редакторе пропускается.
 
 diff_mySysFile() {
 	if [[ "$1" == "-h" || "$1" == "--help" ]]; then
 		command cat <<EOF
-diff_mySysFile — сравнить текущие файлы с бэкапом. Все, по одному или попарно "nVim -d"
+diff_mySysFile — сравнить текущие файлы с бэкапом. Все, по одному или попарно в nvim -d
+
+Использование: diff_mySysFile [-h|--help] [diff] [bash|zsh|zshf|omz|ultisnips|vim|nvim|neovide|ideavim|git|lazygit|psql|pgcli|mycli|btop|kitty|alacritty|yazi|tmux|aerospace|treemd]
 
 Доступные компоненты:
-  diff          - модификатор открытия попарного сравнения в "nVim -d"
   bash          - .bash_profile
   zsh           - .zshrc
   zshf          - .zsh_MyFunctions/
@@ -34,9 +35,13 @@ diff_mySysFile — сравнить текущие файлы с бэкапом.
   aerospace     - .config/aerospace/aerospace.toml
   treemd        - .config/treemd/config.toml
 
+Модификатор:
+  diff          - открыть nvim -d для отличающихся
 
 Пример:
-  diff_mySysFile zsh bash or diff_mySysFile diff (=all) or diff_mySysFile psql omz
+  diff_mySysFile zsh bash
+  diff_mySysFile diff          # все + nvim -d для отличающихся
+  diff_mySysFile psql omz
 EOF
 		return 0
 	fi
@@ -218,10 +223,10 @@ EOF
 	# vimdiff_McV для отличающихся
 	if [[ $use_vimdiff_McV = true && ${#different} -gt 0 && -z $vimdiff_bin ]]; then
 		echo ""
-		echo "nVim не найден в PATH — сравнение в редакторе пропущено."
+		echo "nvim не найден в PATH — сравнение в редакторе пропущено."
 	elif [[ $use_vimdiff_McV = true && ${#different} -gt 0 ]]; then
 		echo ""
-		echo "Открытие nVim -d для отличающихся файлов..."
+		echo "Открытие nvim -d для отличающихся файлов..."
 		for key in "${different[@]}"; do
 			local spec="${items[$key]}"
 			local current="${spec%:*}"
@@ -270,6 +275,6 @@ EOF
 		done
 	elif [[ $use_vimdiff_McV = true && ${#different} -eq 0 ]]; then
 		echo ""
-		echo "Отличий нет — nVim -d не нужен."
+		echo "Отличий нет — nvim -d не нужен."
 	fi
 }

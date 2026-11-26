@@ -1,10 +1,9 @@
 backup_mySysFile() {
 	if [[ "$1" == "-h" || "$1" == "--help" ]]; then
 		command cat <<EOF
-backup_mySysFile — обновить бэкапа
+backup_mySysFile — обновить бэкап конфигов
 
 Доступные компоненты:
-  all           - все компоненты
   bash          - .bash_profile
   zsh           - .zshrc
   zshf          - .zsh_MyFunctions/
@@ -27,8 +26,12 @@ backup_mySysFile — обновить бэкапа
   aerospace     - .config/aerospace/aerospace.toml
   treemd        - .config/treemd/config.toml
 
+Режим:
+  all           - все компоненты
+
 Пример:
-  backup_mySysFile zsh bash or backup_mySysFile all
+  backup_mySysFile zsh bash
+  backup_mySysFile all
 EOF
 		return 0
 	fi
@@ -63,7 +66,7 @@ EOF
 	)
 
 	if [[ $# -eq 0 ]]; then
-		echo "Использование: backup_mySysFile [bash|zsh|vim|nvim|ideavim|psql|git|pgcli|ultisnips|omz|btop|kitty|alacritty|yazi|tmux|treemd|aerospace|all]"
+		echo "Использование: backup_mySysFile [-h|--help] [bash|zsh|zshf|omz|ultisnips|vim|nvim|neovide|ideavim|git|lazygit|psql|pgcli|mycli|btop|kitty|alacritty|yazi|tmux|aerospace|treemd|all]"
 		return 1
 	fi
 
