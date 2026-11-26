@@ -7,6 +7,13 @@ local map = vim.keymap.set
 map({ "i", "s" }, "<C-k>", vim.lsp.buf.signature_help, { silent = true, desc = "LSP: Signature help" })
 pcall(vim.keymap.del, { "i", "s" }, "<C-S>")
 
+-- Ctrl+C в Insert при русской раскладке.
+-- Терминал с kitty keyboard protocol присылает <C-с> (U+0441 + Ctrl),
+-- а не <C-c>, поэтому встроенный i_CTRL-C не срабатывает. Ведём на
+-- <Esc>: он выходит в Normal и запускает InsertLeave, на котором
+-- держится вся логика раскладки (и cursorline в core/autocmds.lua).
+map({ "i", "s" }, "<C-с>", "<Esc>", { desc = "Insert: exit to Normal (RU layout)" })
+
 -- Выключение подсветки для данного поиска через /
 vim.keymap.set("n", "<esc>", ":nohlsearch<CR>", { noremap = true, silent = true, desc = "Clear search highlight" })
 
