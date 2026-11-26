@@ -3,7 +3,7 @@
 | Параметр | Решение |
 |---|---|
 | Имя npm-пакета | `dsh-session-alerts` |
-| Каталог исходников | `~/Documents/Ai/DSH/dsh-session-alerts-plagin` |
+| Каталог исходников | `~/Documents/ForSys/Backup/my_files/DSH/dsh-session-alerts-plagin` |
 | Установка | профили `tui`, `web`, `headless` |
 | Звук | включён по умолчанию |
 | Фоновые сессии | уведомлять всегда, без исключений |
@@ -12,25 +12,25 @@
 ---
 
 ```text
-# Задача: плагин dsh-session-alerts — системные уведомления macOS для DSH (tui / web / headless)
+# Задача: плагин dsh-session-alerts — системные уведомления Linux для DSH (tui / web / headless)
 
 ## Контекст
-- macOS (Apple Silicon), терминал kitty 0.49.2; tmux не использовать.
-- DSH 0.2.0-rc.2 (`/opt/homebrew/lib/node_modules/@deepseek-ai/dsh`), dsh-tui 0.18.0.
+- Linux (CachyOS, x86_64), терминал kitty 0.49.2; tmux не использовать.
+- DSH 0.2.0-rc.2 (`$HOME/.local/lib/node_modules/@deepseek-ai/dsh`), dsh-tui 0.18.0.
 - Профили: `~/.dsh/profiles/tui`, `~/.dsh/profiles/web`, `~/.dsh/profiles/headless`.
   У каждого свой `package.json`, `cordis.patch.yml`, `node_modules`.
   pnpm, `nodeLinker: hoisted`, `autoInstallPeers: false`.
-- Каталог исходников: `~/Documents/Ai/DSH/dsh-session-alerts-plagin` (создан, пуст).
+- Каталог исходников: `~/Documents/ForSys/Backup/my_files/DSH/dsh-session-alerts-plagin` (создан, пуст).
 - Имя npm-пакета: `dsh-session-alerts` (имя каталога от него отличается — это нормально).
-- Установка: `dsh plugin --profile <p> add file:/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin`.
+- Установка: `dsh plugin --profile <p> add file:$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-session-alerts-plagin`.
 - Сначала ПРОЧИТАЙ исходники установленного DSH, а не полагайся на память:
-  `/opt/homebrew/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-approval`
+  `$HOME/.local/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-user-approval`
   `.../dsh-user-questions`, `.../dsh-session`, `.../dsh-agent`.
   Эталон host-плагина, который слушает сессии:
   `~/.dsh/profiles/tui/node_modules/dsh-working-activity`.
 
 ## Цель
-Один host-only плагин, который шлёт macOS-уведомление, когда:
+Один host-only плагин, который шлёт Linux-уведомление, когда:
 1. ход завершился успешно — в ЛЮБОЙ сессии, включая фоновые;
 2. ход упал или прерван (опционально, включено по умолчанию);
 3. инструмент просит подтверждение (approval) — включая фоновые сессии и субагентов;
@@ -84,17 +84,13 @@
 - Replay: не уведомлять о событиях, пришедших в первые 2 секунды после старта плагина
   (это проигрывание истории при подписке).
 
-## Транспорт (macOS)
-- `osascript -e 'display notification "<body>" with title "<title>" sound name "<sound>"'`.
-- Запуск через `execFile('osascript', [...])` БЕЗ shell; таймаут 3 с; `stdio: 'ignore'`.
-- Экранирование: убрать `"` и `\`, схлопнуть переводы строк, тело ≤ 200 символов,
-  заголовок ≤ 60.
-- Звук ВКЛЮЧЁН по умолчанию: `sound: 'Glass'`. Отдельные ключи:
-  `soundOnFinish: true`, `soundOnInterrupt: false`, `soundOnApproval: true`, `soundOnQuestion: true`.
-  `'none'` — тишина.
-- Если `osascript` упал — только `ctx.logger.warn`, никаких throw.
-- Опционально: если в PATH есть `terminal-notifier`, использовать его (даёт клик и иконку),
-  иначе osascript. Не добавлять зависимость в package.json.
+## Транспорт (Linux)
+- `notify-send -a DSH "<title>" "<body>"`.
+- Запуск через `execFile('notify-send', [...])` БЕЗ shell; таймаут 3 с; `stdio: 'ignore'`.
+- Заголовок и тело передаются отдельными argv; экранирование не нужно.
+  Тело ≤ 200 символов, заголовок ≤ 60.
+- `notify-send` не умеет звук и клик: `sound`, `soundOn*`, `activate` игнорируются.
+- Если `notify-send` упал — только `ctx.logger.warn`, никаких throw.
 
 ## Конфиг (schemastery, все поля с дефолтами)
 enabled: true
@@ -114,7 +110,7 @@ soundOnApproval: true
 soundOnQuestion: true
 titlePrefix: 'DSH'
 
-Ключ `quietWhenFocused` в v1 НЕ реализовывать: из host-процесса на macOS фокус надёжно
+Ключ `quietWhenFocused` в v1 НЕ реализовывать: из host-процесса на Linux фокус надёжно
 не определить без Accessibility, а костыль будет врать.
 
 ## Структура пакета (TypeScript, ESM, zero runtime deps)
@@ -127,7 +123,7 @@ dsh-session-alerts-plagin/
   src/index.ts          # apply(ctx, config): подписки, таймеры, dispose
   src/config.ts         # Config schema + resolveConfig
   src/events.ts         # structural-типы событий, без импорта dsh-*
-  src/notify.ts         # osascript / terminal-notifier, экранирование, лимитер
+  src/notify.ts         # notify-send, экранирование, лимитер
   src/format.ts         # тексты (ru/en), обрезка, подписи сессий
   src/limiter.ts        # debounce + maxPerMinute
   test/                 # node:test, без сети: format, limiter, экранирование
@@ -160,7 +156,7 @@ dsh-session-alerts-plagin/
 1. `npm install && npm run build && node --test` — юнит-тесты.
 2. Чистый профиль-копия:
    cp -R ~/.dsh/profiles/headless ~/.dsh/profiles/alert-test
-   dsh plugin --profile alert-test add file:/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin
+   dsh plugin --profile alert-test add file:$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-session-alerts-plagin
    dsh --profile alert-test --help    # композиция + активация без запроса к модели
 3. Ручные сценарии в профиле `tui` после рестарта:
    a. обычный ход → «ход завершён» (одно уведомление);
@@ -182,7 +178,7 @@ dsh-session-alerts-plagin/
 - [ ] Плагин стоит в `tui`, `web`, `headless` и грузится во всех трёх.
 - [ ] Уведомления приходят по всем включённым событиям, включая фоновые сессии.
 - [ ] Нет дублей и шторма при серии быстрых ходов.
-- [ ] Никогда не пишет в stdout/stderr и не роняет процесс при сбое osascript.
+- [ ] Никогда не пишет в stdout/stderr и не роняет процесс при сбое notify-send.
 - [ ] Звук включён по умолчанию и настраивается.
 - [ ] `taskNotifications` в TUI можно выключить — дублей не будет.
 - [ ] README: установка в 3 профиля, конфиг, ограничения, откат (remove + restart).
@@ -191,7 +187,7 @@ dsh-session-alerts-plagin/
 1. Прочитать `.d.ts` approval/questions/session в установленном DSH, зафиксировать поля.
 2. Каркас пакета + Config + заглушка notify (пишет только в лог).
 3. Подписки, правила дедупа и таймеров, юнит-тесты.
-4. Транспорт osascript + ручные сценарии на scratch-профиле.
+4. Транспорт notify-send + ручные сценарии на scratch-профиле.
 5. Установка в `tui`, сценарии a–g; затем `web` и `headless`.
 6. README + версия 1.0.0 + git init и первый коммит.
 
@@ -204,14 +200,14 @@ dsh-session-alerts-plagin/
 ## Как пользоваться
 
 ```bash
-cd ~/Documents/Ai/DSH/dsh-session-alerts-plagin
+cd ~/Documents/ForSys/Backup/my_files/DSH/dsh-session-alerts-plagin
 # открыть новую сессию DeepSeek в этом каталоге и вставить содержимое блока выше
 ```
 
 После реализации поставить в три профиля:
 
 ```bash
-P=/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin
+P=$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-session-alerts-plagin
 dsh plugin --profile tui      add file:$P
 dsh plugin --profile web      add file:$P
 dsh plugin --profile headless add file:$P

@@ -3,17 +3,17 @@
 ## Роль и результат
 Ты — инженер, который пишет один самодостаточный плагин для dsh-TUI 0.18.0.
 Результат — каталог
-`/Users/weed/Documents/Ai/DSH/dsh-session-delete-plagin`:
+`$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-session-delete-plagin`:
 рабочий плагин `dsh-session-delete`, тесты `node --test`, README на русском,
 `PROMPT.md` (этот текст). Ставится в профиль `tui`.
 
-Перед началом убедись, что cwd сессии — `/Users/weed/Documents/Ai/DSH`
+Перед началом убедись, что cwd сессии — `$HOME/Documents/ForSys/Backup/my_files/DSH`
 (или сам каталог плагина). Если нет — остановись и попроси пользователя
 перезапустить сессию в этом каталоге: почти вся работа должна идти без
 повышения прав.
 
 ## Что прочитать до кода (только чтение)
-1. Наш предыдущий плагин: `/Users/weed/Documents/Ai/DSH/dsh-session-alerts-plagin`
+1. Наш предыдущий плагин: `$HOME/Documents/ForSys/Backup/my_files/DSH/dsh-session-alerts-plagin`
    (структура, cordis.patch.yml, README, PROMPT.md, стиль отчёта).
 2. Гайд: `~/.dsh/profiles/tui/node_modules/@deepseek-harness-tui/dsh-tui/guide/dsh-tui-guide/plugins.en.md`.
 3. Типы швов и API (в этом порядке):
@@ -41,7 +41,7 @@
    (`pinnedSessionIds`/`archivedSessionIds`).
 
 ## Проверенные факты (сверяйся с кодом, но не перепроверяй с нуля)
-- dsh-TUI 0.18.0, Node ^22.19, macOS/kitty.
+- dsh-TUI 0.18.0, Node ^22.19, Linux/kitty.
 - Каталог `channel` доступен плагину ТОЛЬКО как `props.channel` сцены;
   сервиса `ctx.tuiChannel` в этой сборке нет.
 - `ctx.tuiDialogs` рендерится в обычном кадре чата; открытая сцена — ранний

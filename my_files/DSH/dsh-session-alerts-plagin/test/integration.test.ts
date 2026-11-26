@@ -15,7 +15,7 @@ process.env.DSH_SESSION_ALERTS_REPLAY_MS = '0'
 
 const BASE_SESSION = {
   id: 'session-abc123',
-  header: { cwd: '/Users/weed/projects/demo' },
+  header: { cwd: '/home/weed/projects/demo' },
 }
 
 /** Wait for pending timers/microtasks. */

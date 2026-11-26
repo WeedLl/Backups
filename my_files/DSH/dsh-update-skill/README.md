@@ -18,9 +18,9 @@ npm; пакет из npm перекрыл ваш локальный скилл; 
 ## Установка
 
 ```bash
-# каталог скилла уже лежит там, где нужно (например ~/Documents/Ai/DSH/dsh-update-skill)
-~/Documents/Ai/DSH/dsh-update-skill/scripts/install.sh          # симлинк
-~/Documents/Ai/DSH/dsh-update-skill/scripts/install.sh --copy   # независимая копия
+# из каталога, где лежит этот README
+./scripts/install.sh          # симлинк: правки видны сразу
+./scripts/install.sh --copy   # независимая копия
 
 # на другую машину: скопировать каталог целиком и запустить install.sh
 ```
@@ -46,6 +46,8 @@ scripts/snapshot.sh create --label pre-update
 scripts/apply.sh --tui 0.20.1 --yes
 scripts/verify.sh --all --smoke
 scripts/rollback.sh --yes
+scripts/doc.sh path                  # куда пишется журнал версий
+scripts/doc.sh write --stdout        # посмотреть журнал, не записывая
 ```
 
 ## Что внутри
@@ -59,6 +61,7 @@ scripts/rollback.sh --yes
 | `scripts/apply.sh` | установка: официальный апдейтер или точные версии |
 | `scripts/verify.sh` | пост-проверка: конфиги, bundles, lockfile, скиллы, smoke |
 | `scripts/rollback.sh` | откат файлов, опционально зависимостей и ядра |
+| `scripts/doc.sh` / `doc.mjs` | журнал версий `dsh-versions.md` для Obsidian |
 | `scripts/install.sh` | установка скилла в `~/.dsh/skills` |
 | `scripts/collect.mjs` | сбор фактов о профилях в JSON |
 | `scripts/util.mjs` | semver, peer-диапазоны, pnpm-lock, фронтматтер скиллов |
@@ -76,6 +79,8 @@ scripts/rollback.sh --yes
    после каждого шага. При провале — стоп и команда отката.
 5. **verify** — статические проверки + опционально живые: web (HTTP + активация
    плагинов), tui (boot в PTY), headless (короткий прогон).
+6. **doc** — после обновления переписывает `dsh-versions.md`: версии до/после,
+   предыдущее обновление, история, проверка и снимок.
 
 ## Где лежат данные
 
@@ -83,6 +88,7 @@ scripts/rollback.sh --yes
 ~/.dsh/updates/snapshots/<дата>-<метка>/   снимки конфигов, скиллов и состояния TUI
 ~/.dsh/updates/reports/verify-<дата>/      отчёты проверок (current.json, smoke-*.out)
 ~/.dsh/updates/snapshots/.latest           указатель на последний снимок
+~/.dsh/updates/doc-target                  выбранный fallback для журнала
 ```
 
 Хранятся последние **5 снимков** и **20 отчётов**; более старые удаляются
@@ -91,11 +97,20 @@ scripts/rollback.sh --yes
 `DSH_UPDATE_KEEP_SNAPSHOTS` и `DSH_UPDATE_KEEP_REPORTS`, ручная очистка —
 `scripts/snapshot.sh prune [--keep N] [--keep-reports M] [--dry-run]`.
 
+## Журнал версий
+
+После обновления скилл пишет `dsh-versions.md` — Obsidian-заметку с `type: backup`:
+ядро, TUI и все плагины по профилям, «до → после» текущего и предыдущего
+обновления, история, проверка и снимок. По умолчанию —
+`~/Documents/ForSys/Backup/doc/`; если `doc/` нет, скилл спрашивает `Backup/`
+или `answers/` и запоминает выбор. Рядом лежит скрытый `.dsh-versions.json` с
+историей. Ошибка записи журнала не отменяет обновление.
+
 ## Требования
 
-- macOS/Linux, bash, node ≥ 18
+- Linux, bash, node ≥ 18
 - `dsh` в PATH, `npm`/`pnpm` для установки
-- `shasum`, `curl`, `script` (есть в macOS)
+- `sha256sum`, `timeout`, `curl`; `script` (util-linux) — для smoke-теста TUI
 
 ## Разработка
 
@@ -116,3 +131,4 @@ node scripts/check.mjs --offline    # без сети
 - Живой headless-прогон требует `DEEPSEEK_API_KEY` в окружении.
 - Локальные форки не обновляются автоматически — только диагностика и
   переустановка по просьбе.
+- Журнал версий пишется best-effort и не содержит секретов.

@@ -15,7 +15,7 @@ state-файлов — после него остаются «призраки»
 Из каталога плагина:
 
 ```bash
-dsh plugin --profile tui add file:/Users/weed/Documents/Ai/DSH/dsh-session-delete-plagin
+dsh plugin --profile tui add "file:$PWD"
 ```
 
 Затем перезапустить TUI:

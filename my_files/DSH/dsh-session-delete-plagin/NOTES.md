@@ -2,7 +2,7 @@
 
 Все пути — от установленного `@deepseek-harness-tui/dsh-tui@0.18.0`
 (`~/.dsh/profiles/tui/node_modules/...`) и реальных файлов состояния на этой
-машине, если не указано иное. dsh CLI: 0.2.1-rc.5 (`/opt/homebrew/bin/dsh`),
+машине, если не указано иное. dsh CLI: 0.2.1-rc.5 (`$HOME/.local/bin/dsh`),
 Node: проверено `node --version` (>= 22).
 
 ## Эмпирическая проверка владения сценой (фаза 3)

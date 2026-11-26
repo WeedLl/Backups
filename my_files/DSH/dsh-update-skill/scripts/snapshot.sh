@@ -92,7 +92,7 @@ snapshot_create() {
     fs.writeFileSync(file, JSON.stringify(j, null, 2) + "\n")
   ' "$root/manifest.json" "$root" "$label"
 
-  ( cd "$root" && find files -type f -print0 | xargs -0 shasum -a 256 >checksums.txt 2>/dev/null )
+  sha256_emit_dir "$root" "$root/checksums.txt"
   [ -f "$root/checksums.txt" ] || : >"$root/checksums.txt"
 
   printf '%s\n' "$root" >"$SNAP_DIR/.latest"
@@ -109,13 +109,13 @@ snapshot_verify() {
   [ -f "$dir/manifest.json" ] || die "verify: нет manifest.json в $dir"
   [ -f "$dir/checksums.txt" ] || die "verify: нет checksums.txt в $dir"
   local bad=0
-  if ! ( cd "$dir" && shasum -a 256 -c checksums.txt >/tmp/dsh-update-shasum.$$ 2>&1 ); then
-    bad=$(grep -c 'FAILED' /tmp/dsh-update-shasum.$$ 2>/dev/null || printf '1')
-    rm -f /tmp/dsh-update-shasum.$$
+  if ! sha256_check_from "$dir" "$dir/checksums.txt" >/tmp/dsh-update-sha256.$$ 2>&1; then
+    bad=$(grep -c 'FAILED' /tmp/dsh-update-sha256.$$ 2>/dev/null || printf '1')
+    rm -f /tmp/dsh-update-sha256.$$
     err "контрольные суммы не сходятся (файлов с ошибкой: $bad)"
     return 1
   fi
-  rm -f /tmp/dsh-update-shasum.$$
+  rm -f /tmp/dsh-update-sha256.$$
 
   # Пробное восстановление в temp: доказывает, что снимок реально разворачивается.
   local tmp
@@ -123,7 +123,7 @@ snapshot_verify() {
   mkdir -p "$tmp/files"
   cp -R "$dir/files/." "$tmp/files/" 2>/dev/null || { rm -rf "$tmp"; err "не удалось скопировать файлы снимка"; return 1; }
   local restored=0
-  if ! ( cd "$tmp" && shasum -a 256 -c "$dir/checksums.txt" >/dev/null 2>&1 ); then
+  if ! sha256_check_from "$tmp" "$dir/checksums.txt" >/dev/null 2>&1; then
     rm -rf "$tmp"
     err "пробное восстановление дало другие контрольные суммы"
     return 1

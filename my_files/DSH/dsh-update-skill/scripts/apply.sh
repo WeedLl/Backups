@@ -2,7 +2,7 @@
 # apply.sh — выполнить обновление по выбранному плану.
 #
 #   apply.sh --official [--yes]                     # как /update, но без перезапуска TUI
-#   apply.sh [--tui VER] [--core VER] [--plugin P:NAME@VER]... [--yes]
+#   apply.sh [--tui VER] [--core VER] [--plugin P:NAME@VER]... [--skipped TEXT]... [--yes]
 #   apply.sh ... --dry-run | --snapshot DIR | --no-verify
 #
 # Без --yes ничего не делает: только печатает план команд.
@@ -10,16 +10,18 @@
 # обновление не начинается. По завершении запускается verify.sh.
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-usage() { sed -n '2,12p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,10p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 
 TUI_VER=''; CORE_VER=''; OFFICIAL=0; YES=0; DRY=0; NO_VERIFY=0; SNAP=''
 PLUGINS=()
+SKIPPED=()
 while [ $# -gt 0 ]; do
   case "$1" in
     --official) OFFICIAL=1; shift ;;
     --tui) TUI_VER="${2:?}"; shift 2 ;;
     --core) CORE_VER="${2:?}"; shift 2 ;;
     --plugin) PLUGINS+=("${2:?--plugin требует profile:name@version}"); shift 2 ;;
+    --skipped) SKIPPED+=("${2:?--skipped требует текст}"); shift 2 ;;
     --yes|-y) YES=1; shift ;;
     --dry-run) DRY=1; shift ;;
     --no-verify) NO_VERIFY=1; shift ;;
@@ -180,6 +182,15 @@ if [ "$NO_VERIFY" -ne 1 ]; then
   info "проверка после обновления…"
   "$LIB_DIR/verify.sh" || warn "проверка нашла проблемы — см. отчёт выше"
 fi
+
+log ""
+info "записываю журнал версий…"
+doc_args=(write --snapshot "$snapshot_dir" --kind update)
+[ "$NO_VERIFY" -eq 1 ] && doc_args+=(--no-verify)
+if [ ${#SKIPPED[@]} -gt 0 ]; then
+  for item in "${SKIPPED[@]}"; do doc_args+=(--skipped "$item"); done
+fi
+"$LIB_DIR/doc.sh" "${doc_args[@]}" || warn "журнал версий не записан (см. doc.sh выше)"
 
 log ""
 log "Снимок для отката: $snapshot_dir"

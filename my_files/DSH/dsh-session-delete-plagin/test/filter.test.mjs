@@ -11,7 +11,7 @@ import {
   truncate,
 } from '../session-ops.js'
 
-function session(id, updatedAt, { title = `Задача ${id}`, cwd = '/Users/weed/proj' } = {}) {
+function session(id, updatedAt, { title = `Задача ${id}`, cwd = '/home/weed/proj' } = {}) {
   return {
     id,
     updatedAt,
@@ -45,7 +45,7 @@ test('пустой список и undefined не падают', () => {
 })
 
 test('регистронезависимый поиск по title/cwd/id', () => {
-  const s = session('Abc-123', 100, { title: 'Рефакторинг', cwd: '/Users/weed/MyProject' })
+  const s = session('Abc-123', 100, { title: 'Рефакторинг', cwd: '/home/weed/MyProject' })
   assert.ok(matchesQuery(s, 'рефактор'))
   assert.ok(matchesQuery(s, 'РЕФАКТОР'))
   assert.ok(matchesQuery(s, 'myproject'))
@@ -94,12 +94,12 @@ test('isEmptyArtifact: только доказанно пустые', () => {
 })
 
 test('shortCwd: домашний каталог → ~, пусто → —', () => {
-  assert.equal(shortCwd('/Users/weed/proj', '/Users/weed'), '~/proj')
-  assert.equal(shortCwd('/Users/weed', '/Users/weed'), '~')
-  assert.equal(shortCwd('/tmp/x', '/Users/weed'), '/tmp/x')
-  assert.equal(shortCwd('', '/Users/weed'), '—')
-  assert.equal(shortCwd(undefined, '/Users/weed'), '—')
-  assert.equal(shortCwd('/Users/weeden/x', '/Users/weed'), '/Users/weeden/x')
+  assert.equal(shortCwd('/home/weed/proj', '/home/weed'), '~/proj')
+  assert.equal(shortCwd('/home/weed', '/home/weed'), '~')
+  assert.equal(shortCwd('/tmp/x', '/home/weed'), '/tmp/x')
+  assert.equal(shortCwd('', '/home/weed'), '—')
+  assert.equal(shortCwd(undefined, '/home/weed'), '—')
+  assert.equal(shortCwd('/home/weeden/x', '/home/weed'), '/home/weeden/x')
 })
 
 test('formatAge: минуты/часы/дни', () => {

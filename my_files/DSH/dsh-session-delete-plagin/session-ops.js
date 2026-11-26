@@ -68,7 +68,7 @@ export function formatAge(timestamp) {
   return `${Math.floor(hours / 24)} дн`
 }
 
-/** Короткий cwd: `/Users/weed/project` → `~/project`; пусто → `—`. */
+/** Короткий cwd: `/home/weed/project` → `~/project`; пусто → `—`. */
 export function shortCwd(cwd, home = '') {
   const value = typeof cwd === 'string' ? cwd : ''
   if (value === '') return '—'

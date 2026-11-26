@@ -24,7 +24,7 @@ test('truncate keeps short strings intact and caps long ones at code points', ()
 
 test('sessionLabel prefers title, falls back to cwd basename then short id', () => {
   assert.equal(sessionLabel({ id: 'abc123' }, '  My Title  ', 'ru'), 'My Title')
-  assert.equal(sessionLabel({ id: 'abc123', header: { cwd: '/Users/weed/projects/x' } }, '', 'ru'), 'x')
+  assert.equal(sessionLabel({ id: 'abc123', header: { cwd: '/home/weed/projects/x' } }, '', 'ru'), 'x')
   assert.equal(sessionLabel({ id: 'session-12345678' }, undefined, 'ru'), 'session-')
   assert.equal(sessionLabel({}, undefined, 'ru'), 'сессия')
   assert.equal(sessionLabel(null, undefined, 'en'), 'session')

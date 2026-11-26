@@ -45,6 +45,32 @@ die()  { err "$*"; exit 1; }
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
+# ── sha256 и timeout (Linux) ────────────────────────────────────────────
+sha256_check_from() {
+  # sha256_check_from <рабочий-каталог> <checksums.txt>
+  local cwd=$1 sums=$2
+  ( cd "$cwd" && sha256sum -c "$sums" )
+}
+
+sha256_emit_dir() {
+  # sha256_emit_dir <каталог> <checksums.txt>; хеширует только files/...
+  local dir=$1 out=$2 file
+  (
+    cd "$dir" || return 1
+    find files -type f -print0 | while IFS= read -r -d '' file; do
+      sha256sum "$file"
+    done >"$out" 2>/dev/null
+  )
+  return 0
+}
+
+run_timeout() {
+  # run_timeout <секунды> <команда...>
+  local secs=$1
+  shift
+  timeout "$secs" "$@"
+}
+
 need_base() {
   have node || die "нужен node в PATH"
   have dsh  || die "не найден dsh в PATH"

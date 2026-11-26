@@ -1,6 +1,6 @@
 # dsh-session-alerts
 
-Системные уведомления macOS и Linux для DSH (0.2.0-rc.2): когда ход агента завершился,
+Системные уведомления Linux для DSH (0.2.0-rc.2): когда ход агента завершился,
 упал или прерван, когда инструмент просит подтверждение, когда агент задаёт
 вопрос, и когда план ждёт ревью. Host-only cordis-плагин: **все сессии,
 включая фоновые и субагентские** — никаких исключений «только foreground».
@@ -12,12 +12,12 @@
 ## Установка
 
 ```bash
-cd ~/Documents/Ai/DSH/dsh-session-alerts-plagin
+# из каталога dsh-session-alerts-plagin
 npm install && npm run build && node --test     # сборка + 37 тестов
 
-dsh plugin --profile tui      add file:$PWD
-dsh plugin --profile web      add file:$PWD
-dsh plugin --profile headless add file:$PWD
+dsh plugin --profile tui      add "file:$PWD"
+dsh plugin --profile web      add "file:$PWD"
+dsh plugin --profile headless add "file:$PWD"
 ```
 
 Каждая команда: pnpm-установка пакета в профиль, добавление в
@@ -58,14 +58,13 @@ dsh plugin --profile headless remove dsh-session-alerts
     settleMs: 1500           # пауза перед «ход завершён» (см. ниже)
     debounceMs: 10000        # дедупликация одинаковых событий, мс
     maxPerMinute: 12         # глобальный лимит уведомлений в минуту
-    sound: 'Glass'           # системный звук; 'none' — тишина
+    sound: 'Glass'           # системный звук; на Linux игнорируется
     soundOnFinish: true
     soundOnInterrupt: false
     soundOnApproval: true
     soundOnQuestion: true
     titlePrefix: 'DSH'       # префикс заголовка
-    activate: ''             # bundle-id приложения, активируемого по клику
-                             #   (только terminal-notifier), напр. 'net.kovidgoyal.kitty'
+    activate: ''             # на Linux игнорируется; оставлен для совместимости
     lang: 'ru'               # 'ru' | 'en'
 ```
 
@@ -119,27 +118,6 @@ dsh plugin --profile headless remove dsh-session-alerts
 `activate` на Linux игнорируются, а уведомление показывает штатный демон
 рабочего стола (mako/dunst/swaync в зависимости от настройки сессии).
 
-На macOS транспорт по умолчанию — `osascript`. Ограничение macOS: у `osascript` нет
-собственного app-bundle, поэтому Notification Center приписывает уведомление
-**Script Editor** (иконка — Script Editor), а клик по уведомлению открывает
-Script Editor / папку со скриптами. Изменить это средствами osascript нельзя.
-
-Чтобы получить нормальную иконку и осмысленный клик — поставьте
-`terminal-notifier` (плагин подхватит его автоматически, он в PATH):
-
-```bash
-brew install terminal-notifier
-```
-
-Тогда: иконка — terminal-notifier (или кастомная: `make icon ICON=... APP_NAME=...`
-из исходников terminal-notifier — macOS всегда берёт иконку из bundle
-отправителя, поменять её per-notification нельзя), а клик по уведомлению
-активирует приложение из конфига `activate` (например kitty:
-`activate: 'net.kovidgoyal.kitty'`). Без `activate` клик просто закрывает
-уведомление. В v3 опции `-sender`/`-appIcon` удалены автором
-terminal-notifier (не работают на UserNotifications API), поэтому вместо
-них — `-activate`.
-
 ## Архитектура и безопасность
 
 - Cordis-плагин `name: 'session-alerts'`; подписки:
@@ -148,11 +126,9 @@ terminal-notifier (не работают на UserNotifications API), поэто
   `session/disposed`, и пассивные waterfall-слушатели `approval/request` /
   `user-questions/request`: плагин уведомляет и **всегда** возвращает
   `next()` — чужой запрос не потребляется, ответ принимает настоящий UI.
-- Транспорт: macOS — `execFile('osascript', ['-e', 'display notification …'])`
-  без shell (или `terminal-notifier`, если он есть в PATH; зависимость в
-  package.json не добавляется); Linux — `execFile('notify-send', ['-a', 'DSH',
-  title, body])`. Везде `stdio: 'ignore'` и таймаут 3 с. Упавший транспорт —
-  только `ctx.logger.warn`, процесс DSH не падает.
+- Транспорт: `execFile('notify-send', ['-a', 'DSH', title, body])`, без shell,
+  `stdio: 'ignore'`, таймаут 3 с. Упавший транспорт — только
+  `ctx.logger.warn`, процесс DSH не падает.
 - Экранирование: из текста убираются `"` и `\`, переносы строк схлопываются,
   заголовок ≤ 60, тело ≤ 200 символов.
 - Плагин ничего не пишет в stdout/stderr (кадр TUI не ломается), не читает и
@@ -182,16 +158,15 @@ node --test test/   # юнит-тесты (format/limiter/notify) + интегр
 - `DSH_SESSION_ALERTS_DEBUG_FILE=<path>` — JSON-строки: загрузка плагина,
   полученные события, решения о dispatch.
 - `DSH_SESSION_ALERTS_CAPTURE_FILE=<path>` — только payload'ы уведомлений
-  (спавн osascript отключается).
+  (спавн notify-send отключается).
 - `DSH_SESSION_ALERTS_LOG_ONLY=1` — payload'ы в память (используется тестами).
 - `DSH_SESSION_ALERTS_REPLAY_MS=<ms>` — переопределение replay-окна.
 
 ## Ограничения v1
 
-- macOS-only (osascript). На других платформах уведомления деградируют в warn.
-- Нет клика по уведомлению (с `terminal-notifier` клик открывает… ничего —
-  v1 без web-клиента и inbound-действий).
+- Linux: `notify-send`. Если его нет в PATH, уведомление деградирует в warn.
+- Клик по уведомлению не поддерживается: v1 без web-клиента и inbound-действий.
 - `quietWhenFocused` не реализован: из host-процесса фокус терминала надёжно
-  не определяется без Accessibility.
+  не определяется.
 - Копии в профилях ссылаются на каталог исходников (`file:`), не на
   опубликованный tarball.

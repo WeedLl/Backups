@@ -39,7 +39,7 @@
 | `cite` | алиас `quote` |
 | свой тип через дефис (`foo-bar`) | в treemd нейтральный `❯`, в md-render не парсится, в render-markdown не колаут |
 
-Полный справочник по 22 переносимым маркерам — `callouts-compat.md` в `~/Documents/Ai/DSH/MDcallouts/`.
+Полный справочник по 22 переносимым маркерам — `callouts-compat.md` (в этот репозиторий не входит).
 
 ## Синтаксис
 

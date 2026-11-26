@@ -10,7 +10,7 @@
 # Без --yes показывает, что будет восстановлено, и выходит.
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-usage() { sed -n '2,13p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,10p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 
 SNAP=''; YES=0; DRY=0; REINSTALL=0; CORE=0
 while [ $# -gt 0 ]; do
@@ -107,6 +107,9 @@ if [ "$CORE" -eq 1 ] && [ -n "$target_core" ] && [ "$target_core" != "$current_c
     *) warn "способ установки ядра не распознан — откатите вручную до $target_core" ;;
   esac
 fi
+
+info "обновляю журнал версий…"
+"$LIB_DIR/doc.sh" write --kind rollback --snapshot "$SNAP" || warn "журнал версий не обновлён (см. doc.sh выше)"
 
 log ""
 warn "если TUI сейчас запущен, он может перезаписать восстановленное состояние — закройте его перед откатом"
