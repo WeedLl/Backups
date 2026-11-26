@@ -11,8 +11,9 @@ created: 2026-11-21
 > [!abstract] TL;DR
 > Переезжаем не «с мака на линукс» вообще, а переносим конкретные привычки и конфиги в CachyOS + niri + Noctalia, попутно вычищая macOS-специфику.
 > Приоритет решений: сначала родной инструмент CachyOS/Arch, потом общелинуксовый, и только если это дёшево — ветка совместимости с macOS.
-> Текущее состояние: DSH восстановлен, `dsh_backup` портирован, плагины проверены; niri/Noctalia, kitty/alacritty, nvim и mimeapps/XDG настроены; репозиторий разделён на ветки `macos` и `linux`.
+> Текущее состояние (2026-11-27): DSH восстановлен, плагины проверены; niri с автологином SDDM и локскрином Noctalia, монитор на 100 Гц; kitty/alacritty, nvim и mimeapps/XDG настроены; добавлен `syspy` для системных python-утилит; репозиторий на ветках `macos` и `linux`, обе запушены в `Backups`.
 > В конце файла — «Что уже сделано» и «Нюансы и грабли»; следующая сессия должна начинать с них.
+> Актуален на коммит, в котором лежит эта строка (2026-11-27). Предыдущая актуализация — `8530cd1` (2026-11-22); с коммита `876c9cc` (2026-11-25) журнал отставал, записи за 23–27 ноября дописаны задним числом.
 
 ## Содержание
 - [[#Цель и принципы]]
@@ -44,8 +45,8 @@ created: 2026-11-21
 - **Каждый mac-изм получает запись** в разделах «Что уже сделано» и «Нюансы», иначе следующая сессия повторит работу.
 - **Ветка `macos` — архив, а не рабочая.** Все новые правки идут в `linux`; `master` удалён и не воссоздаётся.
 
-> [!note] Сопутствующий аудит
-> Подробный разбор конфигов, раскладки, терминалов, niri/Noctalia и зеркал лежит в `~/Documents/2026-11-21-konfigi-backup-cachyos.md`. Этот файл — процесс и журнал, а не замена аудиту.
+> [!note] Про отдельный аудит
+> Файл `~/Documents/2026-11-21-konfigi-backup-cachyos.md` удалён 2026-11-25 как устаревший. Актуальные правила, решения и журнал — только здесь; спорные места из аудита перенесены в «Правила портирования» и «Нюансы и грабли».
 
 ## Среда
 
@@ -60,7 +61,7 @@ created: 2026-11-21
 | Secret Service | `gnome-keyring-daemon` запущен с компонентами `pkcs11,secrets` |
 | Shell | zsh 5.9.2, oh-my-zsh из `/usr/share/oh-my-zsh` |
 | DSH | ядро `0.2.2-rc.5`, TUI `0.20.2` |
-| Терминалы | kitty `0.51.0`, alacritty `0.17.0` |
+| Терминалы | kitty `0.51.1`, alacritty `0.17.0` |
 | Буфер обмена | `wl-copy`/`wl-paste` есть; `xclip`, `xsel`, `tmux` пока не установлены |
 | Хеши | `sha256sum` (coreutils), `shasum` из `core_perl` |
 | Obsidian | реестр `~/.config/obsidian/obsidian.json` отсутствует |
@@ -150,7 +151,7 @@ created: 2026-11-21
 | alacritty | `~/.config/alacritty/` | Визуально и по общим клавишам выровнен под kitty: padding 3, 130x40, opacity убран, `Ctrl+Shift+PageUp/Down`, `Ctrl+Shift+=/-/0`, `Ctrl+Shift+N/Q`; шрифты сохранены. Вкладок/сплитов нет — через tmux |
 | kitty | `~/.config/kitty/` | Vim-first: `hjkl` фокус, `Alt+hjkl` перемещение, стрелки — ресайз; вкладки `,/.`, перенос `Alt+,/.`; W — вкладка, Q — окно; `kitty_grab` установлен |
 | niri | `~/.config/niri/` | Установлен, сессия работает; конфиг в бэкапе (`.config/niri/`), `niri validate` перед изменениями |
-| Noctalia | `~/.config/noctalia/` | Установлена; конфиг в бэкапе; `full_config.toml` применять вручную |
+| Noctalia | `~/.config/noctalia/` | Установлена; конфиг в бэкапе; `full_config.toml` перекрывает `config.toml` (нюанс 46) |
 | AeroSpace | `.config/aerospace/aerospace.toml` | Удалён как лишний: niri заменяет его, конфиг не переносится |
 | btop | `~/.config/btop/btop.conf` | Тема переведена на `/usr/share/btop/themes/gruvbox_dark.theme`; live и repo синхронны |
 | tmux | `~/.config/tmux/tmux.conf` | `default-terminal tmux-256color`, `set-clipboard on`; `stty -ixon` в `.zshrc`; tmux пока не установлен |
@@ -250,15 +251,18 @@ dsh plugin --profile web install --force
 
 | Ветка | Где | Состояние |
 |---|---|---|
-| `macos` | локально + `origin` | Чистый мак-снимок `6d52314`; default branch на GitHub |
-| `linux` | локально + `origin` | 5 коммитов: `02b1326`, `161dfdf`, `defe658`, `0c9018c`, `451f153`; впереди origin на 4 |
+| `macos` | локально + `Backups` | снимок мака + фильтр уведомлений dsh-TUI (`f8941b9`); default branch на GitHub |
+| `linux` | локально + `Backups` | синхронно с remote (актуальный хеш — `git log -1 --format=%h`) |
 | `master` | — | Удалён на GitHub; не воссоздавать |
-| `min` | `origin` | Старая ветка, не трогали |
+| `min` | `Backups` | `723beed` — описания компонентов в zsh-функциях |
 
-Рабочее дерево чистое. Ветка `linux` впереди `origin/linux` на 4 коммита; последний — `451f153`. Документ, который ты читаешь, лежит в `~/Documents/ForSys/Backup/doc/2026-11-21-pereezd-macos-cachyos-niri-noctalia.md` и входит в репозиторий.
+Удалённый репозиторий теперь называется `Backups` (бывший `origin`) — в командах ниже используется новое имя. Рабочее дерево чистое, `linux` совпадает с `Backups/linux`. Документ, который ты читаешь, лежит в `~/Documents/ForSys/Backup/doc/2026-11-21-pereezd-macos-cachyos-niri-noctalia.md` и входит в репозиторий.
+
+> [!warning] Не ребейзить общие ветки
+> 2026-11-25 на другом ПК переписали историю `linux` и `macos` (rebase): те же коммиты с новыми хешами, локально стало «впереди 14, позади 14», и `git pull` отказывался. Лечили так: `git branch archive/...`, `git reset --hard Backups/<branch>`, затем `git push --force-with-lease`. Архивные ветки после проверки удалили. Правило: общие ветки не ребейзить; если история всё же разошлась — сверить содержимое (`git diff archive/... HEAD`), а не мержить вслепую.
 
 > [!danger] Не пушить `master`
-> `git push origin master` заново создаст удалённую ветку и снова сделает её кандидатом в default. Если это случилось — сначала вернуть default на `macos`, потом удалять.
+> `git push Backups master` заново создаст удалённую ветку и снова сделает её кандидатом в default. Если это случилось — сначала вернуть default на `macos`, потом удалять.
 
 Другой ПК, где ещё `master`:
 
@@ -266,8 +270,8 @@ dsh plugin --profile web install --force
 cd /путь/к/Backup
 git stash -u                 # если есть незакоммиченные правки
 git fetch --prune
-git remote set-head origin -a
-git switch -c macos --track origin/macos
+git remote set-head Backups -a
+git switch -c macos --track Backups/macos
 git branch -d master         # если в master нет своих коммитов
 ```
 
@@ -277,7 +281,7 @@ git branch -d master         # если в master нет своих коммит
 
 ```bash
 git commit -m "linux: dsh_backup + notify-send + миграция"
-git push -u origin linux
+git push -u Backups linux
 ```
 
 потом там: `git fetch && git switch linux`.
@@ -328,18 +332,18 @@ git status
 - **Добавить `scripts/check-mac-isms.sh`** с грепом из чек-листа и прогонять перед коммитом; это дешевле, чем ловить `/opt/homebrew` в рантайме.
 - **Пометить `macos` тегом** (`git tag macos-2026-11-18`) и не коммитить в неё; ветка должна оставаться неизменным снимком.
 - **Не копировать папку целиком для экспериментов**, а использовать `git worktree`: у нас уже был лишний `BackupLinux`, который пришлось удалять.
-- **Пушить `linux` раньше**, чем накопится много изменений: другой ПК не увидит ветку, пока она локальная.
-- **Разделить документы:** аудит конфигов — отдельно, живой журнал/правила — этот файл; не дублировать таблицы.
+- **Не ребейзить общие ветки и пушить чаще.** После rebase `linux`/`macos` на другом ПК (2026-11-25) историю пришлось восстанавливать через `reset --hard` и force-push.
+- **Не дублировать таблицы:** отдельный аудит конфигов удалён, актуальные правила и журнал — только этот файл.
 - **Добавить мини-`doctor` для niri/Noctalia**: `notify-send`, `wl-copy`, `gnome-keyring`, `niri validate`, `noctalia` в процессах.
 - **Секреты не коммитить.** `dsh_backup -s` кладёт `credentials.yaml` только в бэкап с режимом 600; в git ему не место.
 
 ## Что дальше
 
 > [!todo] Ближайшие шаги
-> - Перезапустить TUI и проверить реальное уведомление от завершённого хода.
+> - Звук: переключить профиль карты с IEC958 на аналог или HDMI-аудио и зафиксировать дефолтный sink.
+> - Решить судьбу `full_config.toml` в `~/.config/noctalia/` — он перекрывает `config.toml`.
 > - `dsh-at-file` — ждём совместимую версию, пока не трогать.
-> - Настроить Obsidian-реестр или задать `OBSIDIAN_VAULT`.
-> - Запушить `linux` (4 коммита) и обновить другой ПК.
+> - Handy: `paru -S handy-bin`, проверить вставку в niri/Noctalia.
 >
 
 - Проверить `tmux`, `xclip`/`xsel` только если они реально нужны; для Wayland базовый вариант — `wl-clipboard`.
@@ -385,7 +389,7 @@ git status
 
 ## Напоминалка: клавиши
 
-> Текущее: `Mod` = Super; cheatsheet — `Mod+F1`; launcher — `Mod+Space`; `Mod+N` — уведомления; `Mod+Shift+N` — DND; `Mod+Return` — kitty; `Mod+B` — Zen; focus — `Mod+hjkl`; move — `Mod+Shift+hjkl`; resize — `Mod+Ctrl+hjkl`; workspace — `Mod+Alt+J/K`; floating move — `Mod+Ctrl+Alt+hjkl`; floating resize — `Mod+Ctrl+Alt+Shift+hjkl`; floating/tiling focus — `Mod+V`; screenshot area/screen/window — `Mod+Print`, `Mod+Shift+Print`, `Mod+Ctrl+Print`; CapsLock = Ctrl; раскладка — Alt+Shift; gaps 8, radius 10, opacity 0.94.
+> Текущее: `Mod` = Super; cheatsheet — `Mod+F1`; launcher — `Mod+Space`; `Mod+N` — уведомления; `Mod+Shift+N` — DND; `Mod+Return` — kitty; `Mod+B` — Zen; `Mod+Shift+V` — буфер Noctalia; focus — `Mod+hjkl`; move — `Mod+Shift+hjkl`; resize — `Mod+Ctrl+hjkl`; workspace — `Mod+Alt+J/K`; floating move — `Mod+Ctrl+Alt+hjkl`; floating resize — `Mod+Ctrl+Alt+Shift+hjkl`; floating/tiling focus — `Mod+V`; screenshot area/screen/window — `Mod+Print`, `Mod+Shift+Print`, `Mod+Ctrl+Print`; CapsLock = Ctrl; раскладка — Alt+Shift; gaps 8, radius 10, opacity 0.94.
 
 
 > [!note] Цель
@@ -467,19 +471,25 @@ git status
 - [ ] **macOS: общий аудит keymap.** Сравнить `core/keymaps.lua`, `configs/lsp.lua` и карты плагинов (neo-tree, yazi, luasnip, snacks, grug-far, conform, md-render) с Linux. Повторить: убрать `<C-m>`, Neo-tree → `<leader>n`, Yazi → `<leader>y`, signature help → `<C-k>`, вернуть `<C-n>/<C-y>`, проверить `<C-hjkl>`. Учесть mac-специфику Cmd/Super и не ломать системные сочетания; где можно — приблизить к текущей linux-схеме.
 - **Git.** Ветка `master` переименована в `macos` и запушена; `master` удалён на GitHub; default переключён на `macos`; временная `BackupLinux` удалена; работа продолжается в `Backup` на ветке `linux`.
 - **`Apps.md`.** Структура и нумерация обновлены; предустановленные: `git`, `zsh`+OhMyZsh, `fastfetch`, `bat`, `btop`, `fzf`, `ripgrep`, `fd`, `vim`, `alacritty`. macOS-only удалены, Handy возвращён под Linux (AUR + `wtype` + модели), `fzf-tab` и `happ-desktop-bin` добавлены. `treemd` и `wtype` уже установлены, Handy пока нет.
-- **Текущий индекс `linux`.** Коммиты: `02b1326`, `161dfdf`, `defe658`, `0c9018c`, `451f153`; рабочее дерево чистое, впереди `origin/linux` на 4.
+- **Текущий индекс `linux`.** Рабочее дерево чистое, ветка синхронна с `Backups/linux`; журнал актуален в текущем коммите (см. `git log -1`), до него: `afe6dbd`, `65ae9a2`, `876c9cc`.
 - **Документ.** Перенесён из `~/Documents/ForSys/DSH/answers/` в `~/Documents/ForSys/Backup/doc/`; теперь входит в репозиторий, дальнейшие записи — здесь.
 - **mimeapps/XDG.** В `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` добавлены `mimeapps` (`~/.config/mimeapps.list`), `xdg` (`~/.config/user-dirs.dirs`) и `xdg-locale` (`~/.config/user-dirs.locale`); автодополнение обновлено. Файлы скопированы, `diff_mySysFile` — без различий. В `mimeapps.list` текущие ассоциации Zen для http/https/html.
 - **Свежий DSH-бэкап.** `my_files/DSH/dsh-backup-20261122-020205`, 552K, 57 файлов: профили 3, TUI 14, скиллы 26; `secrets: 0`, `sessions: 0`; `sha256sum -c checksums.txt` — OK. Добавлен в коммит.
 - **niri: начальная настройка.** Явно `layout "us,ru"` и `options "ctrl:nocaps,grp:alt_shift_toggle"`; CapsLock → Ctrl, раскладка — Alt+Shift. `gaps 8`, `geometry-corner-radius 10`, `opacity 0.94`. Cheatsheet — `Mod+F1`; launcher — `Mod+Space`; уведомления — `Mod+N`, DND — `Mod+Shift+N`; терминал — `kitty`, браузер — Zen. Перемещение — `Mod+Shift+hjkl`, ресайз — `Mod+Ctrl+hjkl`, workspace — `Mod+Alt+J/K`, floating move — `Mod+Ctrl+Alt+hjkl`, floating resize — `Mod+Ctrl+Alt+Shift+hjkl`, floating/tiling focus — `Mod+V`; screenshot area — `Mod+Print`. Удалены старые mouse-алиасы перемещения (`Mod+Ctrl+Wheel*`, `Mod+Ctrl+Shift+Wheel*`, `Mod+Shift+Wheel*`) и дубли `Mod+Minus/Equal`. `niri validate` OK, English↔Russian проверено.
-- **niri/Noctalia в бэкапе.** Скопированы `.config/niri/` (10 файлов) и `.config/noctalia/` (2 файла); `backup_mySysFile niri noctalia` и `diff_mySysFile niri noctalia` — без различий. `full_config.toml` в help помечен как применяемый вручную.
+- **niri/Noctalia в бэкапе.** Скопированы `.config/niri/` (10 файлов) и `.config/noctalia/` (2 файла); `backup_mySysFile niri noctalia` и `diff_mySysFile niri noctalia` — без различий. в help уточнено, что `full_config.toml` перекрывает `config.toml`.
 - **Чистка.** Удалены старый `dsh-backup-20261118-165930`, `kitty.conf.bak`, `.zshrc.bak*`, `.bash_profile.bak*`, `.gitconfig.bak*`, временный снимок функций и `/tmp`-артефакты.
-- **Zsh-функции.** Временный снимок `~/.zsh_MyFunctions.bak-20261122-020152` сделан и после проверки удалён; `zsh -n` всех 10 файлов — OK; help, `backup_mySysFile zshf` → `diff_mySysFile zshf` без различий, `gdbranch HEAD HEAD` без diff. В `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` добавлены `niri` и `noctalia`, в автодополнение — тоже; `full_config.toml` помечен как ручной.
-- **Текущее состояние на 2026-11-22.** nvim Linux-порт завершён (`:checkhealth` — 0 ошибок); `treemd` и `wtype` установлены, Handy ещё нет; `Apps.md` обновлён; niri/noctalia в бэкапе; kitty/alacritty выровнены; `kitty_grab` установлен; nvim keymaps/splits/which-key настроены; mimeapps/XDG добавлены; последний коммит — `451f153`.
+- **Zsh-функции.** Временный снимок `~/.zsh_MyFunctions.bak-20261122-020152` сделан и после проверки удалён; `zsh -n` всех 10 файлов — OK; help, `backup_mySysFile zshf` → `diff_mySysFile zshf` без различий, `gdbranch HEAD HEAD` без diff. В `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` добавлены `niri` и `noctalia`, в автодополнение — тоже; в help отражён порядок слияния `*.toml` Noctalia.
+- **Текущее состояние на 2026-11-27.** nvim Linux-порт завершён; `treemd` и `wtype` установлены, Handy нет; niri: автологин SDDM + лок Noctalia, монитор 100 Гц, панель буфера на `Mod+Shift+V`; kitty/alacritty настроены, уведомления TUI отфильтрованы в Linux и macOS; `syspy` добавлен; mimeapps/XDG в бэкапе; журнал актуален в этом коммите.
 - **`noctalia-state` и README для переустановки.** В `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` добавлен компонент `noctalia-state` (`~/.local/state/noctalia/settings.toml`), автодополнение обновлено; `backup`, `diff` и `unload` проверены на живом файле. `.config/niri/README.md` переписан под переустановку: пакеты, клон репозитория в фиксированный путь, `unload_mySysFile niri noctalia noctalia-state`, SDDM-дроп-ин, генерация `storage.key` (64 hex), проверки, откат и что не переносится.
 - **Уведомления без дублей.** kitty больше не показывает OSC 99 от DSH TUI (`filter_notification title:"dsh-TUI"`), уведомления остаются за плагином `dsh-session-alerts`. Контрольный тест: OSC 99 с другим заголовком тост создаёт, с `dsh-TUI · Task complete` — нет.
 - **Keyring при автологине.** Пароль в PAM не передаётся, `login.keyring` остаётся заблокированным, и Noctalia просила его при старте. Хранилище переведено на файловый ключ (`storage.key_source = "file"`, `~/.local/state/noctalia/storage.key`, 64 hex, 600): при `Locked=true` промптера нет, история уведомлений и буфер пишутся. Старый ключ вытащен из Secret Service (`application=noctalia`, `name=master-key`), поэтому история не потерялась.
 - **Вход в систему: автологин SDDM + лок Noctalia.** `/etc/sddm.conf.d/10-autologin.conf` (`User=weed`, `Session=niri`, `Relogin=false`) убирает гриттер; `~/.config/niri/scripts/autolock-on-boot.sh` по `spawn-sh-at-startup` лочит экран при первом входе после загрузки: сверяет `boot_id` с `~/.cache/niri-autolock-boot`, ждёт IPC Noctalia до 20 с, без дроп-ина автологина не работает. Скрипт прогнан тестами с подменой `noctalia` (13 проверок), `niri validate` OK. README — `.config/niri/README.md`.
+
+- **kitty/niri: клавиши как на маке.** hsplit переехал на `Ctrl+Shift+\`, `kitty_grab` — на `Ctrl+Shift+E` (аналог `Cmd+E`), панель буфера Noctalia — на `Mod+Shift+V`. `Ctrl+Shift+Alt` не используется: Alt+Shift переключает раскладку. Карты `my_files/keymaps/01-wm-shell.png` и `02-terminal-tmux.png` обновлены под эти биндинги.
+- **Ветка `macos`: фильтр уведомлений.** `filter_notification title:"dsh-TUI"` добавлен и в mac-версию `kitty.conf` (коммит `f8941b9`), чтобы TUI не дублировал `osascript`-уведомления плагина.
+- **Git: расхождение с другим ПК.** После rebase на другой машине `linux` и `macos` разошлись (14/14); восстановили через архивные ветки, `reset --hard Backups/<branch>` и `push --force-with-lease`, архивные ветки удалили. `soso_key-map.jpg` удалён из всех трёх веток.
+- **Монитор 100 Гц.** `cfg/display.kdl`: `output "HDMI-A-1"` с режимом `1920x1080@100.000` (было 60). Блок машинный — на другой машине сверить `niri msg outputs`.
+- **`syspy` и справки функций.** Добавлена `~/.zsh_MyFunctions/syspy.zsh`: запускает системные python-скрипты через `/usr/bin/python3` в обход venv. В `-h` для `backup_mySysFile`/`unload_mySysFile`/`diff_mySysFile` отмечены машинные настройки niri и noctalia-state и уточнён порядок слияния `*.toml` Noctalia. Вошло в коммит вместе с этой записью.
 
 ## Нюансы и грабли
 
@@ -495,7 +505,7 @@ git status
 10. **`diff_mySysFile`** теперь берёт `nvim` из `PATH`; если его нет, отчёт всё равно строится, а редактор пропускается. Старый жёсткий `/opt/homebrew/bin/nvim` убран.
 11. **Пути в функциях не менялись.** `backup_mySysFile`, `unload_mySysFile`, `diff_mySysFile` и примеры `dsh_backup` по-прежнему указывают на `~/Documents/ForSys/Backup`. Это осознанно: `BackupLinux` удалена, репозиторий остался на старом пути.
 12. **`master` удалён, default — `macos`.** Не пушить `master` и не делать его default; иначе GitHub снова запретит удаление.
-13. **`linux` не запушен.** Впереди `origin/linux` на 4 коммита; рабочее дерево чистое. На другом ПК ветки нет, пока не сделать push.
+13. **`linux` запушен.** Ветка синхронна с `Backups/linux` (см. `git log -1`). После ребейза на другом ПК — см. предупреждение в разделе «Git: ветки и синхронизация».
 14. **AeroSpace.** `.config/aerospace/aerospace.toml` удалён вручную как лишний; удаление в индексе, компонент `aerospace` убран из `backup_mySysFile`, `unload_mySysFile`, `diff_mySysFile` и комплишенов. В истории ветки `macos` файл остаётся.
 15. **mac-бэкап остаётся маковским.** В нём TUI `0.19.0`, DSH `0.2.2-rc.1`, сессий и секретов нет. Это архив для сравнения, а не источник для повседневного восстановления.
 16. **Текущая TUI-сессия старше восстановленных настроек.** Она держит старый снимок `settings.json`; если менять настройки до перезапуска, можно перезаписать восстановленные значения.
@@ -536,6 +546,14 @@ git status
 
 43. **Документация.** Журнал перенесён в `Backup/doc/2026-11-21-pereezd-macos-cachyos-niri-noctalia.md` и добавлен в индекс `linux`; дальнейшие записи вести там, а не в `DSH/answers/`.
 
-44. **Автологин и keyring — решено файловым ключом.** Без пароля в PAM `login.keyring` не разблокируется (`gkr-pam: no password is available`, `couldn't unlock the login keyring`), и Noctalia при старте просила пароль ключницы — это и был «доп. пароль после входа». Хранилище переведено на `key_source = "file"` с ключом `~/.local/state/noctalia/storage.key` (64 hex, режим 600); ключ перенесён из Secret Service, поэтому старая история уведомлений и буфер расшифровались без потерь. Настройка живёт в `~/.local/state/noctalia/settings.toml` (state-каталог; копируется компонентом `noctalia-state`), `~/.config/noctalia/config.toml` для `[storage]` не читается.
+44. **Автологин и keyring — решено файловым ключом.** Без пароля в PAM `login.keyring` не разблокируется (`gkr-pam: no password is available`, `couldn't unlock the login keyring`), и Noctalia при старте просила пароль ключницы — это и был «доп. пароль после входа». Хранилище переведено на `key_source = "file"` с ключом `~/.local/state/noctalia/storage.key` (64 hex, режим 600); ключ перенесён из Secret Service, поэтому старая история уведомлений и буфер расшифровались без потерь. Настройка живёт в `~/.local/state/noctalia/settings.toml` (state-каталог; копируется компонентом `noctalia-state`), `~/.config/noctalia/config.toml` не сработал, потому что его перекрывает `full_config.toml` (нюанс 46).
 
 45. **Дубли уведомлений: kitty OSC 99 + плагин.** DSH TUI сам отправляет уведомления в терминал (в kitty это OSC 99, заголовки «dsh-TUI · Task complete / Approval needed / Waiting for your answer / Plan review»), а `dsh-session-alerts` шлёт те же события через `notify-send` — на одно событие приходило два. В `.config/kitty/kitty.conf` добавлен `filter_notification title:"dsh-TUI"`: kitty гасит только уведомления TUI, остальные приложения в терминале не задеты. Проверено вручную — kitty печатает `filtered out by filter_notification rule`, тост не появляется. Альтернатива — `taskNotifications: off` в настройках TUI, но фильтр надёжнее: не зависит от версии TUI и от того, какой плагин включён.
+
+46. **Noctalia: порядок слияния конфигов.** Сначала встроенные дефолты, затем **все** `*.toml` из `~/.config/noctalia/` по алфавиту, затем `~/.local/state/noctalia/settings.toml` (его пишет GUI) — он побеждает. Поэтому `full_config.toml` (полный дамп) перекрывает `config.toml`: правки в `config.toml` для уже записанных там ключей не применяются. Проверять через `noctalia config export`, а не только по файлам.
+
+47. **Системные python-утилиты и venv.** В PATH первым идёт `~/.global_venv/bin` (Python 3.15, без системных site-packages), а скрипты в `/usr/bin` с `#!/usr/bin/env python3` ждут системный 3.14. Из-за этого падает `powerprofilesctl` (`No module named 'gi'`) и ещё 18 скриптов. Обход — `syspy` (запускает через `/usr/bin/python3`), подробности в `syspy -h`.
+
+48. **`display.kdl` машинный.** `output "HDMI-A-1"` с `1920x1080@100` относится к этому монитору; на другой машине имя выхода и режим другие — niri проигнорирует блок или оставит preferred.
+
+49. **Столы на буквах в niri.** Именованные столы (`workspace "O" { }`) постоянные, встают левее цифровых и сдвигают позиции: `Mod+1` начинает вести в первый именованный. Эксперимент с O/D на этой машине откатили — цифровые столы остались как были.

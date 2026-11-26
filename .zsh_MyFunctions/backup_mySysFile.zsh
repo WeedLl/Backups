@@ -25,12 +25,16 @@ backup_mySysFile — обновить бэкап
   yazi          - .config/yazi/
   tmux          - .config/tmux/tmux.conf
   treemd        - .config/treemd/config.toml
-  niri          - .config/niri/
-  noctalia      - .config/noctalia/ (config.toml активный; full_config.toml применять вручную)
-  noctalia-state - .local/state/noctalia/settings.toml (активные настройки Noctalia)
+  niri          - .config/niri/ (в cfg/display.kdl — машинные output/mode/scale)
+  noctalia      - .config/noctalia/ (все *.toml сливаются по алфавиту; full_config перекрывает config.toml)
+  noctalia-state - .local/state/noctalia/settings.toml (настройки GUI, перекрывают .config/noctalia)
   mimeapps      - .config/mimeapps.list (ассоциации приложений)
   xdg           - .config/user-dirs.dirs
   xdg-locale    - .config/user-dirs.locale
+
+Машинно-зависимое: niri (cfg/display.kdl: имя выхода, режим, scale) и
+noctalia-state (бар, размещение панелей по мониторам). На другой машине эти
+строки ожидаемо различаются — восстанавливать осознанно, а не заливать вслепую.
 
 Пример:
   backup_mySysFile zsh bash or backup_mySysFile all

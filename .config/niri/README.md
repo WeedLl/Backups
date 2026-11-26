@@ -52,6 +52,11 @@ diff_mySysFile niri noctalia noctalia-state   # ожидаем «Различи�
 | `noctalia` | `.config/noctalia/` | `~/.config/noctalia/` |
 | `noctalia-state` | `.local/state/noctalia/settings.toml` | `~/.local/state/noctalia/settings.toml` |
 
+`cfg/display.kdl` машинный: после `unload_mySysFile niri` сверь `niri msg outputs`
+и подставь своё имя выхода и поддерживаемый режим — чужие `output`/`mode` niri
+проигнорирует или оставит preferred. Так же с `noctalia-state`: в нём бар и
+раскладка панелей привязаны к мониторам этой машины.
+
 ### 3. Автологин SDDM (root)
 
 ```bash
@@ -138,7 +143,7 @@ cd ~/Documents/ForSys/Backup && git add -A && git commit -m "niri/noctalia: ..."
 | `cfg/layout.kdl` | gaps 8, пресеты ширины колонок, прозрачный фон под обои Noctalia |
 | `cfg/rules.kdl` | радиус 10, opacity 0.94, blur, правила для Noctalia и Steam |
 | `cfg/animation.kdl` | пружины и длительности анимаций |
-| `cfg/display.kdl` | шаблон `output`, закомментирован `/-` |
+| `cfg/display.kdl` | `output "HDMI-A-1"`: 1920x1080@100 — машинное: имя выхода, режим, scale |
 | `cfg/misc.kdl` | окружение Qt/Electron под Wayland, курсор, blur композитора |
 | `noctalia.kdl` | цвета focus-ring/border/tab-indicator под Gruvbox |
 | `scripts/autolock-on-boot.sh` | лок Noctalia при первом входе после загрузки |
