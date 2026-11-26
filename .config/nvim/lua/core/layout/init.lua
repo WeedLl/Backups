@@ -16,7 +16,11 @@
 --     для прочих Wayland-композиторов можно передать свой backend.
 --
 -- Учитываемые сценарии:
---   * InsertEnter/InsertLeave, включая i_CTRL-O, Ctrl-C и Ctrl-[;
+--   * InsertEnter/InsertLeave, включая i_CTRL-O и Ctrl-[;
+--   * Ctrl-C в русской раскладке приходит как <C-с> и маппится на <Esc>
+--     в core/keymaps.lua, поэтому тоже идёт через InsertLeave;
+--     в английской раскладке Ctrl-C InsertLeave не вызывает — так
+--     задумано в Vim;
 --   * command-line и terminal mode;
 --   * FocusLost/FocusGained (в tmux нужен `set -g focus-events on`);
 --   * prompt-буферы (Snacks picker/input) принудительно английские,
